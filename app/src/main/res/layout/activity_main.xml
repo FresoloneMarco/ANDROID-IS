@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android_is.MainActivity">
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/tvLogin"
@@ -19,11 +19,12 @@
         app:layout_constraintVertical_bias="0.3" />
 
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:hint="@string/username"
+        android:hint="Email"
+        android:paddingHorizontal="21dp"
         app:layout_constraintEnd_toEndOf="@+id/etPassword"
         app:layout_constraintStart_toStartOf="@+id/etPassword"
         app:layout_constraintTop_toBottomOf="@id/tvLogin" />
@@ -35,7 +36,8 @@
         android:hint="@string/password"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etUsername"
+        app:layout_constraintTop_toBottomOf="@id/etEmail"
+        android:inputType="textPassword"
 
         />
 
@@ -51,5 +53,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
 
+    <TextView
+        android:id="@+id/not_yet_registered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/not_yet_registered"
+        app:layout_constraintTop_toBottomOf="@id/bLogin"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintHorizontal_bias="0.2"/>
+
+    <TextView
+        android:id="@+id/register_now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:text="@string/register_now"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toRightOf="@id/not_yet_registered"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

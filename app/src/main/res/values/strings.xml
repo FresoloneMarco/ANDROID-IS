@@ -1,8 +1,28 @@
 <resources>
     <string name="app_name">My Application</string>
+
+    //GLOBAL
     <string name="username">Username</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="v_password">Verifica Password</string>
     <string name="send">Send</string>
     <string name="login">Login</string>
     <string name="home">Home</string>
+    <string name="nome">Nome</string>
+    <string name="cognome">Cognome</string>
+
+    //ENDGLOBAL
+
+    <string name="not_yet_registered">Non ancora registrato ?</string>
+    <string name="register_now">Registrati</string>
+    <string name="login_failed">I dati inseriti sono errati</string>
+    <string name="missing_data">Inserisci i tuoi dati</string>
+
+    //Activity_Register
+    <string name="registrazione_1">Registrazione</string>
+    <string name="registrazione_2">Compila tutti i campi per registrarti</string>
+    <string name="sesso">Sesso</string>
+    <string name="missingData">Non hai compilato tutti i campi</string>
+    //End Activity_Register
 </resources>
