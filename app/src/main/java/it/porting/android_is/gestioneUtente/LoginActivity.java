@@ -90,6 +90,10 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("email", user.getEmail());
                         editor.commit();
                         flag = 1 ;
+                        if(flag == 1){
+                            Intent intent = new Intent(getApplicationContext(), MainActivityStudente.class);
+                            startActivity(intent);
+                        }
                     } else {
                         // If sign in fails, display a message to the user.
                         toast = Toast.makeText(getApplicationContext(), "I dati inseriti non sono corretti", Toast.LENGTH_LONG);
@@ -104,10 +108,7 @@ public class LoginActivity extends AppCompatActivity {
             toast.show();
         }
 
-        if(flag == 1){
-            Intent intent = new Intent(this, MainActivityStudente.class);
-            startActivity(intent);
-        }
+
     }
 
     public void register(){
