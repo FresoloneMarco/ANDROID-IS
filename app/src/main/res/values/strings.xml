@@ -25,5 +25,8 @@
     <string name="sesso">Sesso</string>
     <string name="missingData">Non hai compilato tutti i campi</string>
     <string name="accedi">Accedi</string>
+    <string name="registrati">Registrati</string>
+    <string name="f">F</string>
+    <string name="m">M</string>
     //End Activity_Register
 </resources>

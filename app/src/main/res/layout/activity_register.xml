@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:layout_marginTop="50dp"
         />
     <TextView
@@ -25,40 +25,45 @@
         app:layout_constraintTop_toBottomOf="@id/tvReg1"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:textSize="15dp"
+        android:textSize="15sp"
         />
 
     <EditText
         android:id="@+id/etNome"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="@string/nome"
+        android:layout_marginTop="20dp"
+        android:autofillHints=""
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/tvReg2"
+        android:hint="@string/nome"
+        android:inputType="text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="20dp"
-        />
+        app:layout_constraintTop_toBottomOf="@id/tvReg2" />
+
     <EditText
         android:id="@+id/etCognome"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="@string/cognome"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/etNome"
-        app:layout_constraintRight_toRightOf="parent"
+        android:hint="@string/cognome"
+        android:inputType="text"
         app:layout_constraintLeft_toLeftOf="parent"
-        />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etNome"
+        android:autofillHints="" />
+
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="@string/email"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/etCognome"
-        app:layout_constraintRight_toRightOf="parent"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
         app:layout_constraintLeft_toLeftOf="parent"
-        />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etCognome"
+        android:autofillHints="" />
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="300dp"
@@ -69,7 +74,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:inputType="textPassword"
-        />
+        android:autofillHints="" />
     <EditText
         android:id="@+id/etV_password"
         android:layout_width="300dp"
@@ -80,7 +85,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:inputType="textPassword"
-        />
+        android:autofillHints="" />
 
 
     <RadioGroup
@@ -99,7 +104,7 @@
             android:text="@string/sesso"
             app:layout_constraintTop_toBottomOf="@id/etV_password"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             />
@@ -107,12 +112,12 @@
     <RadioButton android:id="@+id/rd_M"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="M"
+        android:text="@string/m"
         />
     <RadioButton android:id="@+id/rd_F"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="F"
+        android:text="@string/f"
         />
 
     </RadioGroup>
@@ -122,7 +127,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="20dp"
-        android:text="Registrati"
+        android:text="@string/registrati"
         app:layout_constraintTop_toBottomOf="@id/radio_Sex"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
