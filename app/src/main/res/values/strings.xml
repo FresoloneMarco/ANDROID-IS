@@ -24,5 +24,7 @@
     <string name="registrazione_2">Compila tutti i campi per registrarti</string>
     <string name="sesso">Sesso</string>
     <string name="missingData">Non hai compilato tutti i campi</string>
+    <string name="email">Email</string>
+    <string name="accedi">Accedi</string>
     //End Activity_Register
 </resources>

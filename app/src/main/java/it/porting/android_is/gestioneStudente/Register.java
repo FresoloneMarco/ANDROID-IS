@@ -1,4 +1,4 @@
-package it.porting.android_is.gestioneUtente;
+package it.porting.android_is.gestioneStudente;
 
 
 import androidx.annotation.NonNull;

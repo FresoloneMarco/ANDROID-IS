@@ -1,4 +1,4 @@
-package it.porting.android_is;
+package it.porting.android_is.gestioneUtente;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,16 +8,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import it.porting.android_is.gestioneStudente.MainActivityStudente;
+import it.porting.android_is.R;
 
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private Button bLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(){
-        Intent intent = new Intent(this, Home.class);
+        Intent intent = new Intent(this, MainActivityStudente.class);
         startActivity(intent);
     }
 }
