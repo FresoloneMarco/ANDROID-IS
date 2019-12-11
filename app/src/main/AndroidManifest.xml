@@ -11,7 +11,10 @@
         android:theme="@style/AppTheme">
         <activity android:name=".gestioneStudente.Register"></activity>
         <activity android:name=".gestioneStudente.MainActivityStudente"></activity>
+        <activity android:name=".gestioneSegreteria.MainActivitySegreteria"></activity>
+        <activity android:name=".gestioneAdmin.MainActivityAdmin"></activity>
         <activity android:name=".gestioneUtente.LoginActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

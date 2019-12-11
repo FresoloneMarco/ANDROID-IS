@@ -17,11 +17,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import it.porting.android_is.R;
+import it.porting.android_is.gestioneAdmin.MainActivityAdmin;
+import it.porting.android_is.gestioneSegreteria.MainActivitySegreteria;
 import it.porting.android_is.gestioneStudente.MainActivityStudente;
 import it.porting.android_is.gestioneStudente.Register;
+import it.porting.android_is.utility.LazyInitializedSingleton;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,12 +39,15 @@ public class LoginActivity extends AppCompatActivity {
     private int flag;
     private Toast toast;
 
+    // START FIRESTORE DECLARATION
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //END FIRESTORE DECLARATION
+
     // [START declare_auth]
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
-    private SharedPreferences.Editor editor;
-    private SharedPreferences pref;
+
 
 
     @Override
@@ -49,10 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        //Inizializzazione shared preferences
-        pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        editor = pref.edit(); //editor
-        //Fine inizializzazione shared preferences
+
 
         mAuth = FirebaseAuth.getInstance();
         bLogin = findViewById(R.id.bLogin);
@@ -85,17 +90,58 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        editor.putString("email", user.getEmail());
-                        editor.commit();
-                        flag = 1 ;
-                        if(flag == 1){
-                            Intent intent = new Intent(getApplicationContext(), MainActivityStudente.class);
-                            startActivity(intent);
-                        }
+                     /* Se task.isSuccessful() ritorna true significa che l'utente è riuscito a loggare con successo
+                        A questo punto quindi prendiamo dal CloudFirestore dalla collezione 'utenti' il documento che
+                        ha come id l'email dell'utente appena loggato, così da poter avere più informazioni riguardanti l'utente
+                        tra le quali il ruolo che ha all'interno del sistema
+                      */
+                            DocumentReference docRef = db.collection("utenti").document(email);
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        // Facciamo il retrieve del documento e lo salviamo nel singleton, N.B: sarà salvato sottoforma di HASHMAP
+                                        LazyInitializedSingleton.getInstance().setUser(document.getData());
+                                    }
+                                }
+                            });
+
+                            // INZIO A VERIFICARE QUALE ACTIVITY LANCIARE DOPO IL LOGIN
+
+                            /*
+                            PRENDO IL DOCUMENTO DAL SINGLETON INSTANZIATO AL MOMENTO DEL LOGIN
+
+                            CASO 1 : lazyInizializedSingleton.getInstance().getUser().get("ruolo") restituisce un utente con ruolo "studente"
+                            CASO 2 : lazyInizializedSingleton.getInstance().getUser().get("ruolo") restituisce un utente con ruolo "segretario"
+                            CASO 3 : lazyInizializedSingleton.getInstance().getUser().get("ruolo") restituisce un utente con ruolo "admin"
+
+                            */
+
+
+                            // START CASO 1
+                            if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("studente")){
+                                Intent intent = new Intent(getApplicationContext(), MainActivityStudente.class);
+                                startActivity(intent);
+                            }
+                            // END CASO 1
+
+                            // START CASO 2
+                            else if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("segretario")){
+                                Intent intent = new Intent(getApplicationContext(), MainActivitySegreteria.class);
+                                startActivity(intent);
+                            }
+                            //END CASO 2
+
+                            // START CASO 3
+                            else if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("admin")){
+                                Intent intent = new Intent(getApplicationContext(), MainActivityAdmin.class);
+                                startActivity(intent);
+                            }
+                            //END CASO 3
+
                     } else {
-                        // If sign in fails, display a message to the user.
+
                         toast = Toast.makeText(getApplicationContext(), "I dati inseriti non sono corretti", Toast.LENGTH_LONG);
                         toast.show();
                     }
