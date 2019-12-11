@@ -31,7 +31,15 @@
     <string name="home_studente">Home Studente</string>
     <string name="home_segreteria">Home Segreteria</string>
     <string name="home_admin">Home Admin</string>
-    <string name="logo">logo</string>
     <string name="non_ancora_registrato">Non ancora registrato?</string>
+    <string name="logo">logo</string>
+    <string name="id">ID</string>
+    <string name="data_rilascio">Data rilascio</string>
+    <string name="data_scadenza">Data scadenza</string>
+    <string name="inoltra">Inoltra</string>
+    <string name="anno">Anno</string>
+    <string name="livello">Livello</string>
+    <string name="seriale">Seriale</string>
+    <string name="cfu_da_validare">CFU da validare</string>
     //End Activity_Register
 </resources>

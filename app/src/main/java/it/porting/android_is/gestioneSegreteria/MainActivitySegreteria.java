@@ -13,12 +13,16 @@ import java.util.ArrayList;
 
 import it.porting.android_is.R;
 import it.porting.android_is.adapter.RequestAdapter;
+import it.porting.android_is.firebaseArchive.FireBaseArchive;
+import it.porting.android_is.firebaseArchive.bean.RequestBean;
 
 public class MainActivitySegreteria extends AppCompatActivity {
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private RequestAdapter requestAdapter;
+    private FireBaseArchive fireBaseArchive;
+    private ArrayList<RequestBean> requests;
 
 
     @Override
@@ -30,15 +34,16 @@ public class MainActivitySegreteria extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
+        fireBaseArchive = new FireBaseArchive();
 
-        ArrayList <String> arrayList = new ArrayList<String>();
-        for (int i=0; i < 10; i++){
-            arrayList.add("Persona "+ i);
-        }
-
-        requestAdapter = new RequestAdapter(arrayList);
+        requests = fireBaseArchive.getAllRequests();
+        System.out.println("prova" + requests.toString());
+        requestAdapter = new RequestAdapter(requests);
         recyclerView.setAdapter(requestAdapter);
-        }
+
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
