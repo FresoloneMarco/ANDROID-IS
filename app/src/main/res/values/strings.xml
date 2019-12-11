@@ -32,5 +32,6 @@
     <string name="home_segreteria">Home Segreteria</string>
     <string name="home_admin">Home Admin</string>
     <string name="logo">logo</string>
+    <string name="non_ancora_registrato">Non ancora registrato?</string>
     //End Activity_Register
 </resources>
