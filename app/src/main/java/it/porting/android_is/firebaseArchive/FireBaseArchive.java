@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -27,9 +25,6 @@ public class FireBaseArchive {
         db = FirebaseFirestore.getInstance();
     }
 
-
-
-
     public ArrayList<RequestBean> getAllRequests(){
 
         CollectionReference collectionReference = db.collection("request");
@@ -40,6 +35,7 @@ public class FireBaseArchive {
                 if(task.isSuccessful()){
                     for(QueryDocumentSnapshot req : task.getResult()){
                         RequestBean requestBean = req.toObject(RequestBean.class);
+                        System.out.println("inarchive" + requestBean.toString());
                         requestBeans.add(requestBean);
 
                     }

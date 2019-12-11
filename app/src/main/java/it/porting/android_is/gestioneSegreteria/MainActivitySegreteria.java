@@ -35,7 +35,9 @@ public class MainActivitySegreteria extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         fireBaseArchive = new FireBaseArchive();
+
         requests = fireBaseArchive.getAllRequests();
+        System.out.println("prova" + requests.toString());
         requestAdapter = new RequestAdapter(requests);
         recyclerView.setAdapter(requestAdapter);
 
