@@ -1,5 +1,6 @@
 package it.porting.android_is.gestioneStudente;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,15 +24,18 @@ public class MainActivityStudente extends AppCompatActivity {
         setContentView(R.layout.activity_home_studente);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable (Color.rgb(255,153,0)));
-        actionBar.setTitle("");
-        Button bmod;
-        bmod = findViewById(R.id.button2);
-        bmod.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                modpage();
-            }
-        });
+        actionBar.setTitle("Home");
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.option1:  modpage();
+                                return true;
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 
     public void modpage(){
@@ -41,6 +46,7 @@ public class MainActivityStudente extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
+
         return true;
     }
 }
