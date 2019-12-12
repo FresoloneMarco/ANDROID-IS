@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import org.w3c.dom.Text;
+
 import it.porting.android_is.R;
 
 public class EditActivityUtente extends AppCompatActivity {
@@ -32,21 +34,25 @@ public class EditActivityUtente extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
-        actionBar.setTitle("");
+        actionBar.setTitle("Modifica Profilo");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String email,cognome,nome,pssw;
             EditText nomeEt, cognomeEt, psswEt;
+            TextView emailTv;
             nomeEt = findViewById(R.id.editText);
             nome= nomeEt.toString();
+            email= user.getEmail();
+            emailTv= findViewById(R.id.textView8);
+            emailTv.setText(email);
             cognomeEt = findViewById(R.id.editText2);
             cognome= cognomeEt.toString();
             psswEt = findViewById(R.id.editText3);
             pssw= psswEt.toString();
-            user.updatePassword(pssw);
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(nome)
-                    .build();
+           // user.updatePassword(pssw);
+           //UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                 //   .setDisplayName(nome)
+              //      .build();
 
             /*user.updateProfile(profileUpdates)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
