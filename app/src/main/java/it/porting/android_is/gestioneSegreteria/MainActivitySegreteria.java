@@ -3,12 +3,12 @@ package it.porting.android_is.gestioneSegreteria;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,7 +16,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Queue;
 
 import it.porting.android_is.R;
 import it.porting.android_is.adapter.RequestAdapter;
@@ -37,14 +36,16 @@ public class MainActivitySegreteria extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_segreteria);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("");
+        actionBar.setTitle("Home Segreteria");
         requestBeans = new ArrayList<RequestBean>();
 
         //individuo la recyclerview
         recyclerView = findViewById(R.id.recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
         //inizializzo un riferimento all'oggetto che si interfaccia con firebase
         fireBaseArchive = new FireBaseArchive();
 
@@ -57,8 +58,6 @@ public class MainActivitySegreteria extends AppCompatActivity {
                     for(QueryDocumentSnapshot req : task.getResult()){
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
-
-
                     }
 
                     //inizializzo l'adapter
@@ -81,9 +80,5 @@ public class MainActivitySegreteria extends AppCompatActivity {
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
-        return true;
-    }
+
 }
