@@ -10,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import it.porting.android_is.R;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
@@ -23,8 +25,10 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
 
     ArrayList<RequestBean>arrayList;
 
+
     public RequestAdapter(ArrayList<RequestBean> arrayList) {
         this.arrayList = arrayList;
+
 
     }
 
@@ -54,13 +58,20 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        int formato = DateFormat.LONG;
+        DateFormat dateFormat = DateFormat.getDateInstance(formato, Locale.ITALY);
+        String dataRelease = dateFormat.format(arrayList.get(position).getRelease_date().toDate());
+        String dataExpiry = dateFormat.format(arrayList.get(position).getExpiry_date().toDate());
         holder.idText.setText(Integer.toString(arrayList.get(position).getId()));
         holder.livelloText.setText(arrayList.get(position).getLevel());
-        holder.releaseText.setText(arrayList.get(position).getRelease_date().toString());
-        holder.expiryText.setText(arrayList.get(position).getExpiry_date().toString());
+        holder.releaseText.setText(dataRelease);
+        holder.expiryText.setText(dataExpiry);
         holder.annoText.setText(arrayList.get(position).getYear());
         holder.serialeText.setText(Integer.toString(arrayList.get(position).getSerial()));
         holder.cfuText.setText(Integer.toString(arrayList.get(position).getValidated_cfu()));
+
+
 
     }
 
