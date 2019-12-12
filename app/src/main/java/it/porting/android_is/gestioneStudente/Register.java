@@ -10,8 +10,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ public class Register extends AppCompatActivity {
     private  EditText etPassword;
     private  EditText etVPassword;
     private  RadioGroup rdgroup_Sex;
+    private ProgressBar progressBar;
     private  Button btReg;
     private  FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -60,6 +63,7 @@ public class Register extends AppCompatActivity {
         etVPassword = findViewById(R.id.etV_password);
         rdgroup_Sex = findViewById(R.id.radio_Sex);
         btReg       = findViewById(R.id.btReg);
+        progressBar = findViewById(R.id.progressBar);
 
 
 
@@ -75,6 +79,10 @@ public class Register extends AppCompatActivity {
     }
 
     public void register(){
+        progressBar.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
         final  String nome      = String.valueOf(etNome.getText());
         final  String cognome   = String.valueOf(etCognome.getText());
         final  String email     = String.valueOf(etEmail.getText());
@@ -83,9 +91,15 @@ public class Register extends AppCompatActivity {
         final  String sex =  "M";
         final  Context context = this;
         if(nome.equals("") || cognome.equals("") || email.equals("") || password.equals("") || vpassword.equals("")){
+            progressBar.setVisibility(View.GONE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
             Toast.makeText(this, "Non hai compilato tutti i campi", Toast.LENGTH_LONG).show();
         }
         else if(!password.equals(vpassword)){
+            progressBar.setVisibility(View.GONE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
             Toast.makeText(this, "I campi password non corrispondono", Toast.LENGTH_LONG).show();
         }
         else {
@@ -117,11 +131,17 @@ public class Register extends AppCompatActivity {
                                                     Log.w("DEBUG", "Error writing document", e);
                                                 }
                                             });
+                                    progressBar.setVisibility(View.GONE);
+                                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                                     Toast.makeText(context, "Registrazione avvenuta con successo !", Toast.LENGTH_LONG).show();
                                     Intent intent =  new Intent(getApplicationContext(), LoginActivity.class);
                                     startActivity(intent);
 
                                 } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                                     Toast.makeText(context, "Errore durante la registrazione !", Toast.LENGTH_LONG).show();
 
                                 }
