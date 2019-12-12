@@ -129,52 +129,19 @@ public class LoginActivity extends AppCompatActivity {
                                     DocumentSnapshot document = task.getResult();
                                     // Facciamo il retrieve del documento e lo salviamo nel singleton, N.B: sarà salvato sottoforma di HASHMAP
                                     LazyInitializedSingleton.getInstance().setUser(document.getData());
+                                    progressBar.setVisibility(View.GONE);
+                                    redirect();
+
+                                }
+
+                                else{
+                                    progressBar.setVisibility(View.GONE);
+                                    toast = Toast.makeText(getApplicationContext(), "I dati inseriti non sono stati caricati in sessione", Toast.LENGTH_LONG);
+                                    toast.show();
+
                                 }
                             }
                         });
-
-                        // INZIO A VERIFICARE QUALE ACTIVITY LANCIARE DOPO IL LOGIN
-
-                            /*
-                            PRENDO IL DOCUMENTO DAL SINGLETON INSTANZIATO AL MOMENTO DEL LOGIN
-
-                            CASO 1 : lazyInizializedSingleton.getInstance().getUser().get("ruolo") restituisce un utente con ruolo "studente"
-                            CASO 2 : lazyInizializedSingleton.getInstance().getUser().get("ruolo") restituisce un utente con ruolo "segretario"
-                            CASO 3 : lazyInizializedSingleton.getInstance().getUser().get("ruolo") restituisce un utente con ruolo "admin"
-
-                            */
-
-
-                        // START CASO 1
-                        if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("studente")){
-                            progressBar.setVisibility(View.GONE);
-                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-                            Intent intent = new Intent(getApplicationContext(), MainActivityStudente.class);
-                            startActivity(intent);
-                        }
-                        // END CASO 1
-
-                        // START CASO 2
-                        else if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("segretario")){
-                            progressBar.setVisibility(View.GONE);
-                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-                            Intent intent = new Intent(getApplicationContext(), MainActivitySegreteria.class);
-                            startActivity(intent);
-                        }
-                        //END CASO 2
-
-                        // START CASO 3
-                        else if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("admin")){
-                            progressBar.setVisibility(View.GONE);
-                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-                            Intent intent = new Intent(getApplicationContext(), MainActivityAdmin.class);
-                            startActivity(intent);
-                        }
-                        //END CASO 3
-
                     } else {
                         progressBar.setVisibility(View.GONE);
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -194,6 +161,54 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
     }
+
+
+    public void redirect(){
+        // INZIO A VERIFICARE QUALE ACTIVITY LANCIARE DOPO IL LOGIN
+
+                            /*
+                            PRENDO IL DOCUMENTO DAL SINGLETON INSTANZIATO AL MOMENTO DEL LOGIN
+
+                            CASO 1 : lazyInizializedSingleton.getInstance().getUser().get("ruolo") restituisce un utente con ruolo "studente"
+                            CASO 2 : lazyInizializedSingleton.getInstance().getUser().get("ruolo") restituisce un utente con ruolo "segretario"
+                            CASO 3 : lazyInizializedSingleton.getInstance().getUser().get("ruolo") restituisce un utente con ruolo "admin"
+
+                            */
+
+
+        // START CASO 1
+        if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("studente")){
+            progressBar.setVisibility(View.GONE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+            Intent intent = new Intent(getApplicationContext(), MainActivityStudente.class);
+            startActivity(intent);
+        }
+        // END CASO 1
+
+        // START CASO 2
+        else if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("segretario")){
+            progressBar.setVisibility(View.GONE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+            Intent intent = new Intent(getApplicationContext(), MainActivitySegreteria.class);
+            startActivity(intent);
+        }
+        //END CASO 2
+
+        // START CASO 3
+        else if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("admin")){
+            progressBar.setVisibility(View.GONE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+            Intent intent = new Intent(getApplicationContext(), MainActivityAdmin.class);
+            startActivity(intent);
+        }
+        //END CASO 3
+    }
+
+
+
 
     @Override
     public void onBackPressed() {
