@@ -6,9 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,10 +36,11 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
     private TextView tvRegisterNow;
+    private ProgressBar progressBar;
     private String email;
     private String password;
-    private int flag;
     private Toast toast;
+    private Boolean exit = false;
 
     // START FIRESTORE DECLARATION
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -63,6 +67,8 @@ public class LoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         tvRegisterNow = findViewById(R.id.register_now);
+        progressBar = findViewById(R.id.progressBar);
+
         tvRegisterNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,11 +82,32 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     public void login(){
+
+        progressBar.setVisibility(View.VISIBLE);
+        /*
+        TOGLIERE I COMMENTI QUANDO RIUSCIREMO A RISOLVERE IL PROBLEMA DI TOCCARE 'ACCEDI' 2 VOLTE
+
+        SERVONO PER BLOCCARE L'ACTIVITY MENTRE CI STA LA PROGRESSBAR
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        */
         //verifico che l'utente abbia inserito qualcosa
-        if(!String.valueOf(etEmail.getText()).equals("") && !String.valueOf(etPassword.getText()).equals("")) {
+        if(String.valueOf(etEmail.getText()).equals("") && String.valueOf(etPassword.getText()).equals("")) {
+
+            //se l'utente non ha inserito niente negli edit text
+            progressBar.setVisibility(View.GONE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+            toast = Toast.makeText(getApplicationContext(), "Dati non inseriti", Toast.LENGTH_LONG);
+            toast.show();
+
+        } else {
+            //Se l'utente ha compilato tutti i campi
+
             email = String.valueOf(etEmail.getText());
             password = String.valueOf(etPassword.getText());
 
@@ -94,19 +121,19 @@ public class LoginActivity extends AppCompatActivity {
                         ha come id l'email dell'utente appena loggato, così da poter avere più informazioni riguardanti l'utente
                         tra le quali il ruolo che ha all'interno del sistema
                       */
-                            DocumentReference docRef = db.collection("utenti").document(email);
-                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot document = task.getResult();
-                                        // Facciamo il retrieve del documento e lo salviamo nel singleton, N.B: sarà salvato sottoforma di HASHMAP
-                                        LazyInitializedSingleton.getInstance().setUser(document.getData());
-                                    }
+                        DocumentReference docRef = db.collection("utenti").document(email);
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    // Facciamo il retrieve del documento e lo salviamo nel singleton, N.B: sarà salvato sottoforma di HASHMAP
+                                    LazyInitializedSingleton.getInstance().setUser(document.getData());
                                 }
-                            });
+                            }
+                        });
 
-                            // INZIO A VERIFICARE QUALE ACTIVITY LANCIARE DOPO IL LOGIN
+                        // INZIO A VERIFICARE QUALE ACTIVITY LANCIARE DOPO IL LOGIN
 
                             /*
                             PRENDO IL DOCUMENTO DAL SINGLETON INSTANZIATO AL MOMENTO DEL LOGIN
@@ -118,28 +145,39 @@ public class LoginActivity extends AppCompatActivity {
                             */
 
 
-                            // START CASO 1
-                            if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("studente")){
-                                Intent intent = new Intent(getApplicationContext(), MainActivityStudente.class);
-                                startActivity(intent);
-                            }
-                            // END CASO 1
+                        // START CASO 1
+                        if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("studente")){
+                            progressBar.setVisibility(View.GONE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-                            // START CASO 2
-                            else if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("segretario")){
-                                Intent intent = new Intent(getApplicationContext(), MainActivitySegreteria.class);
-                                startActivity(intent);
-                            }
-                            //END CASO 2
+                            Intent intent = new Intent(getApplicationContext(), MainActivityStudente.class);
+                            startActivity(intent);
+                        }
+                        // END CASO 1
 
-                            // START CASO 3
-                            else if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("admin")){
-                                Intent intent = new Intent(getApplicationContext(), MainActivityAdmin.class);
-                                startActivity(intent);
-                            }
-                            //END CASO 3
+                        // START CASO 2
+                        else if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("segretario")){
+                            progressBar.setVisibility(View.GONE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                            Intent intent = new Intent(getApplicationContext(), MainActivitySegreteria.class);
+                            startActivity(intent);
+                        }
+                        //END CASO 2
+
+                        // START CASO 3
+                        else if(String.valueOf(LazyInitializedSingleton.getInstance().getUser().get("ruolo")).equals("admin")){
+                            progressBar.setVisibility(View.GONE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                            Intent intent = new Intent(getApplicationContext(), MainActivityAdmin.class);
+                            startActivity(intent);
+                        }
+                        //END CASO 3
 
                     } else {
+                        progressBar.setVisibility(View.GONE);
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                         toast = Toast.makeText(getApplicationContext(), "I dati inseriti non sono corretti", Toast.LENGTH_LONG);
                         toast.show();
@@ -147,10 +185,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
             });
-        } else {
-            //se l'utente non ha inserito niente negli edit text
-            toast = Toast.makeText(getApplicationContext(), "Dati non inseriti", Toast.LENGTH_LONG);
-            toast.show();
         }
 
 
@@ -159,5 +193,14 @@ public class LoginActivity extends AppCompatActivity {
     public void register(){
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        progressBar.setVisibility(View.GONE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        moveTaskToBack(false);
+
     }
 }

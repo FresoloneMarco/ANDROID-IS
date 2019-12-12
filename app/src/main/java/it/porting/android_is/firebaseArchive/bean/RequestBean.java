@@ -2,6 +2,10 @@ package it.porting.android_is.firebaseArchive.bean;
 
 import com.google.firebase.Timestamp;
 
+/**
+ * Bean per requests
+ */
+
 
 public class RequestBean {
     private int id;

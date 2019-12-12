@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -31,15 +30,22 @@ public class MainActivitySegreteria extends AppCompatActivity {
         setContentView(R.layout.activity_home_segreteria);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("");
+
+        //individuo la recyclerview
         recyclerView = findViewById(R.id.recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        //inizializzo un riferimento all'oggetto che si interfaccia con firebase
         fireBaseArchive = new FireBaseArchive();
 
+        //prelevo tutte le request da inserire nella recyclerview
         requests = fireBaseArchive.getAllRequests();
-        System.out.println("prova" + requests.toString());
+        //inizializzo l'adapter
         requestAdapter = new RequestAdapter(requests);
+        //imposto l'adapter per la recyclerview
         recyclerView.setAdapter(requestAdapter);
+
 
     }
 

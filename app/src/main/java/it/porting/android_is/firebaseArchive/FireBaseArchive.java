@@ -19,34 +19,51 @@ import it.porting.android_is.firebaseArchive.bean.RequestBean;
 
 public class FireBaseArchive {
 
+    //istanza di connessione al db
     FirebaseFirestore db;
+    final ArrayList <RequestBean> requestBeans;
+
+
 
     public FireBaseArchive(){
         db = FirebaseFirestore.getInstance();
+        requestBeans = new ArrayList<RequestBean>();
     }
+
+
+    /**
+     * Consente di prelevare tutte le request dal db, restituisce un arraylist di request
+     */
 
     public ArrayList<RequestBean> getAllRequests(){
 
+        //Eseguo la "query", salvando la collection
         CollectionReference collectionReference = db.collection("request");
-        final ArrayList <RequestBean> requestBeans = new ArrayList<RequestBean>();
+
+        //una volta completata, lancio onComplete
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
+                    //Se il task ha successo, salvo ogni "tupla" all'interno dell ArrayList
                     for(QueryDocumentSnapshot req : task.getResult()){
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         System.out.println("inarchive" + requestBean.toString());
                         requestBeans.add(requestBean);
 
                     }
+
                 }
                 else{
                     Log.d("Errore nella query","ERRORE");
                 }
             }
         });
-        return requestBeans;
 
+        for(RequestBean r : requestBeans){
+            System.out.println("Prova"+ r. toString());
+        }
+        return requestBeans;
     }
 
 }

@@ -24,7 +24,7 @@ public class ViewActivityUtente extends AppCompatActivity {
         setContentView(R.layout.activity_view_profile);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable (Color.rgb(255,153,0)));
-        actionBar.setTitle("");
+        actionBar.setTitle("Il Mio Profilo");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String email,cognome,nome;
