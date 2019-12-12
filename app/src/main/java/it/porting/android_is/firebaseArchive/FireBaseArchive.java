@@ -25,6 +25,7 @@ public class FireBaseArchive {
 
 
     public FireBaseArchive(){
+
         db = FirebaseFirestore.getInstance();
     }
 
