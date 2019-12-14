@@ -10,6 +10,15 @@ public class UtenteBean {
     private String cognome;
     private String sesso;
     private String ruolo;
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public void setNome(String nome) {
         this.nome = nome;

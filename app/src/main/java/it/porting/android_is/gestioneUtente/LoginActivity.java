@@ -87,13 +87,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(){
 
         progressBar.setVisibility(View.VISIBLE);
-        /*
-        TOGLIERE I COMMENTI QUANDO RIUSCIREMO A RISOLVERE IL PROBLEMA DI TOCCARE 'ACCEDI' 2 VOLTE
 
-        SERVONO PER BLOCCARE L'ACTIVITY MENTRE CI STA LA PROGRESSBAR
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        */
         //verifico che l'utente abbia inserito qualcosa
         if(String.valueOf(etEmail.getText()).equals("") && String.valueOf(etPassword.getText()).equals("")) {
 

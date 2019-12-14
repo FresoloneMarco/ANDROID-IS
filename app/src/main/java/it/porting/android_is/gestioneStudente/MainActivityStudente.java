@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 import it.porting.android_is.R;
+import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
 
 public class MainActivityStudente extends AppCompatActivity {
@@ -33,6 +34,8 @@ public class MainActivityStudente extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.option1:  modpage();
                                 return true;
+            case R.id.option2:  guida();
+                                return true;
         }
         return super.onOptionsItemSelected(item);
 
@@ -40,6 +43,11 @@ public class MainActivityStudente extends AppCompatActivity {
 
     public void modpage(){
         Intent intent = new Intent(getApplicationContext(), ViewActivityUtente.class);
+        startActivity(intent);
+    }
+
+    public void guida(){
+        Intent intent = new Intent(getApplicationContext(), Guida.class);
         startActivity(intent);
     }
 

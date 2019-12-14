@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,15 +66,19 @@ public class ViewActivityUtente extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         UtenteBean utenteBean = task.getResult().toObject(UtenteBean.class);
-                        String cognome,nome;
+                        String cognome,nome,password;
                         TextView nomeTv,cognomeTv;
-
+                        EditText psswEt;
                         cognome=utenteBean.getCognome();
                         nome=utenteBean.getNome();
+                        password=utenteBean.getPassword();
                         nomeTv= findViewById(R.id.textView6);
                         nomeTv.setText(nome);
                         cognomeTv= findViewById(R.id.textView7);
                         cognomeTv.setText(cognome);
+                        psswEt=findViewById(R.id.editText4);
+                        psswEt.setText(password);
+                        psswEt.setEnabled(false);
                     }
                     else{
                         Log.d("Errore nella query","ERRORE");
