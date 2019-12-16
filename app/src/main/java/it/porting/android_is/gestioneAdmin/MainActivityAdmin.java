@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -23,6 +24,7 @@ import it.porting.android_is.R;
 import it.porting.android_is.adapter.RequestAdapter;
 import it.porting.android_is.firebaseArchive.FireBaseArchive;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
+import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 
 public class MainActivityAdmin extends AppCompatActivity {
 
@@ -31,6 +33,8 @@ public class MainActivityAdmin extends AppCompatActivity {
     private RequestAdapter requestAdapter;
     private FireBaseArchive fireBaseArchive;
     private ArrayList<RequestBean> requestBeans;
+    private UtenteBean utenteBean;
+    private final ArrayList<UtenteBean> utenteBeans = new ArrayList<UtenteBean>();
 
 
     @Override
@@ -61,11 +65,19 @@ public class MainActivityAdmin extends AppCompatActivity {
                     for(QueryDocumentSnapshot req : task.getResult()){
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
+                        fireBaseArchive.getUserByKey(requestBean.getUser_key(), new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                utenteBean = task.getResult().toObject(UtenteBean.class);
+                                utenteBeans.add(utenteBean);
+                            }
+                        });
+
                     }
 
                     //inizializzo l'adapter
 
-                    requestAdapter = new RequestAdapter(requestBeans);
+                    requestAdapter = new RequestAdapter(requestBeans, utenteBeans);
                     //imposto l'adapter per la recyclerview
 
                     recyclerView.setAdapter(requestAdapter);
@@ -77,6 +89,10 @@ public class MainActivityAdmin extends AppCompatActivity {
                 }
             }
         });
+
+
+
+
 
 
     }

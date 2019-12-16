@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import it.porting.android_is.R;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
+import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 
 
 /**
@@ -23,13 +24,13 @@ import it.porting.android_is.firebaseArchive.bean.RequestBean;
  */
 public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHolder>{
 
-    ArrayList<RequestBean>arrayList;
+    ArrayList<RequestBean> arrayList;
+    ArrayList<UtenteBean> utenteBeans;
 
 
-    public RequestAdapter(ArrayList<RequestBean> arrayList) {
+    public RequestAdapter(ArrayList<RequestBean> arrayList, ArrayList <UtenteBean> utenteBeans) {
         this.arrayList = arrayList;
-
-
+        this.utenteBeans = utenteBeans;
     }
 
 
@@ -70,6 +71,8 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
         holder.annoText.setText("Anno: " + arrayList.get(position).getYear());
         holder.serialeText.setText("Seriale: " + Integer.toString(arrayList.get(position).getSerial()));
         holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
+        holder.nomeText.setText("Nome: " + utenteBeans.get(position).getNome());
+        holder.cognomeText.setText("Cognome: " + utenteBeans.get(position).getCognome());
 
 
 
