@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -37,6 +39,7 @@ public class MainActivityAdmin extends AppCompatActivity {
         setContentView(R.layout.activity_home_admin);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Home Admin");
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
         requestBeans = new ArrayList<RequestBean>();
 
         //individuo la recyclerview
