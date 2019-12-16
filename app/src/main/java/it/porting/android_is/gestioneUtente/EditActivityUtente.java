@@ -97,7 +97,7 @@ public class EditActivityUtente extends AppCompatActivity {
 
 
         } else {
-            Toast.makeText(this, "Non sei loggato!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Non sei loggato!", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -136,6 +136,7 @@ public class EditActivityUtente extends AppCompatActivity {
                 });
         progressBar.setVisibility(View.GONE);
         Intent intent =  new Intent(getApplicationContext(), MainActivityStudente.class);
+        Toast.makeText(getApplicationContext(),"Modifica completata!", Toast.LENGTH_LONG);
         startActivity(intent);
 
 
