@@ -63,13 +63,13 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
         DateFormat dateFormat = DateFormat.getDateInstance(formato, Locale.ITALY);
         String dataRelease = dateFormat.format(arrayList.get(position).getRelease_date().toDate());
         String dataExpiry = dateFormat.format(arrayList.get(position).getExpiry_date().toDate());
-        holder.idText.setText(Integer.toString(arrayList.get(position).getId()));
-        holder.livelloText.setText(arrayList.get(position).getLevel());
-        holder.releaseText.setText(dataRelease);
-        holder.expiryText.setText(dataExpiry);
-        holder.annoText.setText(arrayList.get(position).getYear());
-        holder.serialeText.setText(Integer.toString(arrayList.get(position).getSerial()));
-        holder.cfuText.setText(Integer.toString(arrayList.get(position).getValidated_cfu()));
+        holder.idText.setText("ID richiesta: "  + Integer.toString(arrayList.get(position).getId()));
+        holder.livelloText.setText("Livello: " +  arrayList.get(position).getLevel());
+        holder.releaseText.setText("Rilascio: " + dataRelease);
+        holder.expiryText.setText("Scadenza: " + dataExpiry);
+        holder.annoText.setText("Anno: " + arrayList.get(position).getYear());
+        holder.serialeText.setText("Seriale: " + Integer.toString(arrayList.get(position).getSerial()));
+        holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
 
 
 

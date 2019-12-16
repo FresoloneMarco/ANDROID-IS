@@ -6,8 +6,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,15 +67,19 @@ public class ViewActivityUtente extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         UtenteBean utenteBean = task.getResult().toObject(UtenteBean.class);
-                        String cognome,nome;
+                        String cognome,nome,password;
                         TextView nomeTv,cognomeTv;
-
+                        EditText psswEt;
                         cognome=utenteBean.getCognome();
                         nome=utenteBean.getNome();
+                        password=utenteBean.getPassword();
                         nomeTv= findViewById(R.id.textView6);
                         nomeTv.setText(nome);
                         cognomeTv= findViewById(R.id.textView7);
                         cognomeTv.setText(cognome);
+                        psswEt=findViewById(R.id.editText4);
+                        psswEt.setText(password);
+                        psswEt.setEnabled(false);
                     }
                     else{
                         Log.d("Errore nella query","ERRORE");
@@ -102,6 +108,28 @@ public class ViewActivityUtente extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.option1:  modpage2();
+                return true;
+            case R.id.option2:  guida();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    public void modpage2(){
+        Intent intent = new Intent(getApplicationContext(), ViewActivityUtente.class);
+        startActivity(intent);
+    }
+
+    public void guida(){
+        Intent intent = new Intent(getApplicationContext(), Guida.class);
+        startActivity(intent);
     }
 }
 

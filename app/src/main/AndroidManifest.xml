@@ -13,6 +13,7 @@
         <activity android:name=".gestioneStudente.MainActivityStudente"></activity>
         <activity android:name=".gestioneSegreteria.MainActivitySegreteria"></activity>
         <activity android:name=".gestioneUtente.ViewActivityUtente"></activity>
+        <activity android:name=".gestioneUtente.Guida"></activity>
         <activity android:name=".gestioneUtente.EditActivityUtente"></activity>
         <activity android:name=".gestioneAdmin.MainActivityAdmin"></activity>
         <activity android:name=".gestioneUtente.LoginActivity">

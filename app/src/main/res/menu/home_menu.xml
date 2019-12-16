@@ -5,13 +5,11 @@
         android:title="Modifica profilo"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/option2"
-        android:title="Option 3"
-        app:showAsAction="never"/>
+    <item
+        android:id="@+id/option2"
+        android:title="Guida"
+        app:showAsAction="never" />
 
-    <item android:id="@+id/option3"
-        android:title="Option 1"
-        app:showAsAction="never"/>
 
     <item android:id="@+id/logout"
         android:title="Logout"
