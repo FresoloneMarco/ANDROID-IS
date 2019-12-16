@@ -10,9 +10,6 @@
         android:title="Guida"
         app:showAsAction="never" />
 
-    <item android:id="@+id/option3"
-        android:title="Option 1"
-        app:showAsAction="never"/>
 
     <item android:id="@+id/logout"
         android:title="Logout"
