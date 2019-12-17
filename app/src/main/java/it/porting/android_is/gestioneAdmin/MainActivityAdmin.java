@@ -11,10 +11,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,13 +42,10 @@ public class MainActivityAdmin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_admin);
+        setContentView(R.layout.activity_home_segreteria);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Home Admin");
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
-        /*requestBeans = new ArrayList<RequestBean>();
-        utenteBeans = new ArrayList<UtenteBean>();*/
-
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255, 153, 0)));
         //individuo la recyclerview
         recyclerView = findViewById(R.id.recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -54,53 +55,43 @@ public class MainActivityAdmin extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         //inizializzo un riferimento all'oggetto che si interfaccia con firebase
         fireBaseArchive = new FireBaseArchive();
-        //  getRequests();
-        //  getUsersData(requestBeans);
+
+
         //prelevo tutte le request da inserire nella recyclerview
         fireBaseArchive.getAllRequests(new OnCompleteListener<QuerySnapshot>() {
-
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     //Se il task ha successo, salvo ogni "tupla" all'interno dell ArrayList
-                    for(QueryDocumentSnapshot req : task.getResult()){
+                    for (QueryDocumentSnapshot req : task.getResult()) {
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
+                        System.out.println(requestBean.toString());
                     }
-                }
-                else{
-                    Log.d("Errore nella query","ERRORE");
+                    requestAdapter = new RequestAdapter(requestBeans);
+                    recyclerView.setAdapter(requestAdapter);
+
+                } else {
+                    Log.d("Errore nella query", "ERRORE");
                 }
             }
         });
-        requestAdapter = new RequestAdapter(requestBeans/*, utenteBeans*/);
-        recyclerView.setAdapter(requestAdapter);
-
-
-
-
     }
-
-
-/*
-    public void getUsersData(ArrayList<RequestBean> requestBeans){
-
-        for(RequestBean req : requestBeans) {
-            String email = req.getUser_key();
-            fireBaseArchive.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        UtenteBean utenteBean = task.getResult().toObject(UtenteBean.class);
-                        utenteBeans.add(utenteBean);
-                    }
-                }
-            });
-
-        }
-
-    }*/
-
-
-
 }
+
+
+ /* String email= requestBean.getUser_key();
+                            fireBaseArchive2.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    UtenteBean utenteBean = task.getResult().toObject(UtenteBean.class);
+                                    //machele pigliati queto array e fanne buon uso
+                                    utenteBeans.add(utenteBean);
+                                }
+                                else{
+                                    Log.d("Errore nella query","ERRORE");
+                                }
+                            }
+                        });
+                    }*/
