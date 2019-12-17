@@ -33,9 +33,9 @@ public class MainActivityStudente extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.option1:  modpage();
-                                return true;
+                return true;
             case R.id.option2:  guida();
-                                return true;
+                return true;
         }
         return super.onOptionsItemSelected(item);
 

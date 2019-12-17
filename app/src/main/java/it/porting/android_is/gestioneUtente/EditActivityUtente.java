@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -145,6 +146,29 @@ public class EditActivityUtente extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
         return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.option1:  modpage();
+                return true;
+            case R.id.option2:  guida();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    public void modpage(){
+        Intent intent = new Intent(getApplicationContext(), ViewActivityUtente.class);
+        startActivity(intent);
+    }
+
+    public void guida(){
+        Intent intent = new Intent(getApplicationContext(), Guida.class);
+        startActivity(intent);
     }
 }
 
