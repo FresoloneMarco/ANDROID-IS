@@ -14,7 +14,6 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -33,8 +32,8 @@ public class MainActivitySegreteria extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private RequestAdapter requestAdapter;
     private FireBaseArchive fireBaseArchive;
-    private ArrayList<RequestBean> requestBeans;
-    private ArrayList<UtenteBean> utenteBeans;
+    private final ArrayList<RequestBean> requestBeans = new ArrayList<>();
+    private final ArrayList<UtenteBean> utenteBeans = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +42,8 @@ public class MainActivitySegreteria extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Home Segreteria");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
-        requestBeans = new ArrayList<RequestBean>();
-        utenteBeans = new ArrayList<UtenteBean>();
+        /*requestBeans = new ArrayList<RequestBean>();
+        utenteBeans = new ArrayList<UtenteBean>();*/
 
         //individuo la recyclerview
         recyclerView = findViewById(R.id.recycler_view);
@@ -55,7 +54,18 @@ public class MainActivitySegreteria extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         //inizializzo un riferimento all'oggetto che si interfaccia con firebase
         fireBaseArchive = new FireBaseArchive();
+        getRequests();
+        getUsersData(requestBeans);
+        requestAdapter = new RequestAdapter(requestBeans, utenteBeans);
+        recyclerView.setAdapter(requestAdapter);
 
+
+
+
+    }
+
+
+    public /*ArrayList<RequestBean> */ void getRequests(){
         //prelevo tutte le request da inserire nella recyclerview
         fireBaseArchive.getAllRequests(new OnCompleteListener<QuerySnapshot>() {
 
@@ -69,14 +79,14 @@ public class MainActivitySegreteria extends AppCompatActivity {
                         requestBeans.add(requestBean);
                     }
 
-                    utenteBeans = getUsersData(requestBeans);
+                   // utenteBeans = getUsersData(requestBeans);
 
                     //inizializzo l'adapter
 
-                    requestAdapter = new RequestAdapter(requestBeans, utenteBeans);
+               /*     requestAdapter = new RequestAdapter(requestBeans, utenteBeans);
                     //imposto l'adapter per la recyclerview
 
-                    recyclerView.setAdapter(requestAdapter);
+                    recyclerView.setAdapter(requestAdapter);*/
 
 
                 }
@@ -85,10 +95,12 @@ public class MainActivitySegreteria extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
 
-    public ArrayList <UtenteBean> getUsersData(ArrayList<RequestBean> requestBeans){
+    public /*ArrayList <UtenteBean> */ void getUsersData(ArrayList<RequestBean> requestBeans){
 
         for(RequestBean req : requestBeans) {
             String email = req.getUser_key();
@@ -104,7 +116,6 @@ public class MainActivitySegreteria extends AppCompatActivity {
 
         }
 
-        return utenteBeans;
     }
 
 
