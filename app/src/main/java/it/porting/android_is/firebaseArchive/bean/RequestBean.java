@@ -16,10 +16,13 @@ public class RequestBean {
     private Timestamp release_date;
     private Timestamp expiry_date;
     private String user_key;
+    private String user_name;
+    private String user_surname;
 
 
     public RequestBean(int id, String level, int serial, int validated_cfu, String year,
-                       Timestamp release_date, Timestamp expiry_date, String user_key) {
+                       Timestamp release_date, Timestamp expiry_date, String user_key, String user_name,
+                       String user_surname) {
         this.id = id;
         this.level = level;
         this.serial = serial;
@@ -28,6 +31,8 @@ public class RequestBean {
         this.release_date = release_date;
         this.expiry_date = expiry_date;
         this.user_key = user_key;
+        this.user_name = user_name;
+        this.user_surname = user_surname;
     }
 
     public RequestBean(){}
@@ -96,6 +101,21 @@ public class RequestBean {
         this.user_key = user_key;
     }
 
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getUser_surname() {
+        return user_surname;
+    }
+
+    public void setUser_surname(String user_surname) {
+        this.user_surname = user_surname;
+    }
 
     @Override
     public String toString() {
@@ -108,6 +128,8 @@ public class RequestBean {
                 ", release_date=" + release_date +
                 ", expiry_date=" + expiry_date +
                 ", user_key='" + user_key + '\'' +
+                ", user_name='" + user_name + '\'' +
+                ", user_surname='" + user_surname + '\'' +
                 '}';
     }
 }

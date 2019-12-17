@@ -45,5 +45,7 @@
     <string name="livello">Livello</string>
     <string name="seriale">Seriale</string>
     <string name="cfu_da_validare">CFU da validare</string>
+    <string name="utente">utente</string>
+    <string name="utentemail">utenteMail</string>
     //End Activity_Register
 </resources>
