@@ -71,6 +71,7 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
         holder.annoText.setText("Anno: " + arrayList.get(position).getYear());
         holder.serialeText.setText("Seriale: " + Integer.toString(arrayList.get(position).getSerial()));
         holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
+
        /* holder.nomeText.setText("Nome: " + utenteBeans.get(position).getNome());
         holder.cognomeText.setText("Cognome: " + utenteBeans.get(position).getCognome());*/
 
