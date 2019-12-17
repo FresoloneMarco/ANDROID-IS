@@ -61,7 +61,7 @@ public class ViewActivityUtente extends AppCompatActivity {
             //inizializzo un riferimento all'oggetto che si interfaccia con firebase
             FireBaseArchive fireBaseArchive = new FireBaseArchive();
 
-            //prelevo tutte le request da inserire nella recyclerview
+            //prelevo tutti i dati da inserire nei campi
             fireBaseArchive.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {

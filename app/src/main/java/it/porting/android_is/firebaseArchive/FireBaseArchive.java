@@ -19,6 +19,7 @@ import org.w3c.dom.Document;
 import java.util.ArrayList;
 
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
+import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 
 
 public class FireBaseArchive {
@@ -27,8 +28,7 @@ public class FireBaseArchive {
     FirebaseFirestore db;
 
 
-
-    public FireBaseArchive(){
+    public FireBaseArchive() {
 
         db = FirebaseFirestore.getInstance();
     }
@@ -36,10 +36,11 @@ public class FireBaseArchive {
 
     /**
      * Consente di prelevare tutte le request dal db, restituisce un arraylist di request
+     *
      * @param onCompleteListener
      */
 
-    public void getAllRequests(OnCompleteListener<QuerySnapshot> onCompleteListener){
+    public void getAllRequests(OnCompleteListener<QuerySnapshot> onCompleteListener) {
         //Eseguo la "query", salvando la collection
         CollectionReference collectionReference = db.collection("request");
 
@@ -47,9 +48,11 @@ public class FireBaseArchive {
         collectionReference.get().addOnCompleteListener(onCompleteListener);
     }
 
-    public void getUserByKey(String email, OnCompleteListener<DocumentSnapshot> onCompleteListener){
-        DocumentReference doc =db.collection("utenti").document(email);
+    public void getUserByKey(String email, OnCompleteListener<DocumentSnapshot> onCompleteListener) {
+        DocumentReference doc = db.collection("utenti").document(email);
         doc.get().addOnCompleteListener(onCompleteListener);
+
     }
 
 }
+

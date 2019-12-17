@@ -15,9 +15,11 @@ public class RequestBean {
     private String year;
     private Timestamp release_date;
     private Timestamp expiry_date;
+    private String user_key;
 
 
-    public RequestBean(int id, String level, int serial, int validated_cfu, String year, Timestamp release_date, Timestamp expiry_date) {
+    public RequestBean(int id, String level, int serial, int validated_cfu, String year,
+                       Timestamp release_date, Timestamp expiry_date, String user_key) {
         this.id = id;
         this.level = level;
         this.serial = serial;
@@ -25,6 +27,7 @@ public class RequestBean {
         this.year = year;
         this.release_date = release_date;
         this.expiry_date = expiry_date;
+        this.user_key = user_key;
     }
 
     public RequestBean(){}
@@ -85,6 +88,15 @@ public class RequestBean {
         this.expiry_date = expiry_date;
     }
 
+    public String getUser_key(){
+        return this.user_key;
+    }
+
+    public void setUser_key(String user_key){
+        this.user_key = user_key;
+    }
+
+
     @Override
     public String toString() {
         return "RequestBean{" +
@@ -95,6 +107,7 @@ public class RequestBean {
                 ", year='" + year + '\'' +
                 ", release_date=" + release_date +
                 ", expiry_date=" + expiry_date +
+                ", user_key='" + user_key + '\'' +
                 '}';
     }
 }
