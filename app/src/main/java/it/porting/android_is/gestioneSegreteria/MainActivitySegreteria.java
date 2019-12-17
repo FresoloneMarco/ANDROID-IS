@@ -37,7 +37,9 @@ public class MainActivitySegreteria extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private RequestAdapter requestAdapter;
     private FireBaseArchive fireBaseArchive;
+    private FireBaseArchive fireBaseArchive2;
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
+    private ArrayList<UtenteBean> utenteBeans = new ArrayList<UtenteBean>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,10 @@ public class MainActivitySegreteria extends AppCompatActivity {
         setContentView(R.layout.activity_home_segreteria);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Home Segreteria");
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255, 153, 0)));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
+        /*requestBeans = new ArrayList<RequestBean>();
+        */
+
         //individuo la recyclerview
         recyclerView = findViewById(R.id.recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -55,33 +60,19 @@ public class MainActivitySegreteria extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         //inizializzo un riferimento all'oggetto che si interfaccia con firebase
         fireBaseArchive = new FireBaseArchive();
-
-
+        fireBaseArchive2 = new FireBaseArchive();
         //prelevo tutte le request da inserire nella recyclerview
         fireBaseArchive.getAllRequests(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
+                if(task.isSuccessful()){
                     //Se il task ha successo, salvo ogni "tupla" all'interno dell ArrayList
-                    for (QueryDocumentSnapshot req : task.getResult()) {
+                    for(QueryDocumentSnapshot req : task.getResult()){
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
-                        System.out.println(requestBean.toString());
-                    }
-                    requestAdapter = new RequestAdapter(requestBeans);
-                    recyclerView.setAdapter(requestAdapter);
+                        String email= requestBean.getUser_key();
 
-                } else {
-                    Log.d("Errore nella query", "ERRORE");
-                }
-            }
-        });
-    }
-}
-
-
- /* String email= requestBean.getUser_key();
-                            fireBaseArchive2.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
+                        fireBaseArchive2.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
@@ -94,4 +85,43 @@ public class MainActivitySegreteria extends AppCompatActivity {
                                 }
                             }
                         });
-                    }*/
+                    }
+
+                    requestAdapter = new RequestAdapter(requestBeans);
+                    recyclerView.setAdapter(requestAdapter);
+                }
+                else{
+                    Log.d("Errore nella query","ERRORE");
+                }
+            }
+        });
+
+
+
+
+
+    }
+
+
+/*
+    public void getUsersData(ArrayList<RequestBean> requestBeans){
+
+        for(RequestBean req : requestBeans) {
+            String email = req.getUser_key();
+            fireBaseArchive.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        UtenteBean utenteBean = task.getResult().toObject(UtenteBean.class);
+                        utenteBeans.add(utenteBean);
+                    }
+                }
+            });
+
+        }
+
+    }*/
+
+
+
+}

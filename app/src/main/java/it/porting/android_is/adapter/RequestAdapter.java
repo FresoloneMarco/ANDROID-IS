@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import it.porting.android_is.R;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
+import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 
 
 /**
@@ -24,10 +25,12 @@ import it.porting.android_is.firebaseArchive.bean.RequestBean;
 public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHolder>{
 
     ArrayList<RequestBean> arrayList;
+    //ArrayList<UtenteBean> utenteBeans;
 
 
-    public RequestAdapter(ArrayList<RequestBean> arrayList) {
+    public RequestAdapter(ArrayList<RequestBean> arrayList/*, ArrayList <UtenteBean> utenteBeans*/) {
         this.arrayList = arrayList;
+       // this.utenteBeans = utenteBeans;
     }
 
 
@@ -68,9 +71,12 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
         holder.annoText.setText("Anno: " + arrayList.get(position).getYear());
         holder.serialeText.setText("Seriale: " + Integer.toString(arrayList.get(position).getSerial()));
         holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
-        holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " +
-                arrayList.get(position).getUser_surname());
-        holder.utenteMailText.setText("Email: " + arrayList.get(position).getUser_key());
+
+       /* holder.nomeText.setText("Nome: " + utenteBeans.get(position).getNome());
+        holder.cognomeText.setText("Cognome: " + utenteBeans.get(position).getCognome());*/
+
+
+
     }
 
 
@@ -93,14 +99,14 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
 
         View root;
         TextView idText;
-        TextView utenteText;
+        TextView nomeText;
+        TextView cognomeText;
         TextView livelloText;
         TextView releaseText;
         TextView expiryText;
         TextView annoText;
         TextView serialeText;
         TextView cfuText;
-        TextView utenteMailText;
         Button btSend;
         
 
@@ -109,7 +115,8 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
             super(itemView);
             root = itemView;
             idText = root.findViewById(R.id.idText);
-            utenteText = root.findViewById(R.id.utenteText);
+            nomeText = root.findViewById(R.id.nomeText);
+            cognomeText = root.findViewById(R.id.cognomeText);
             livelloText = root.findViewById(R.id.livelloText);
             releaseText = root.findViewById(R.id.releaseText);
             expiryText = root.findViewById(R.id.expiryText);
@@ -117,7 +124,6 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
             serialeText = root.findViewById(R.id.serialeText);
             cfuText = root.findViewById(R.id.cfuText);
             btSend = root.findViewById(R.id.btSend);
-            utenteMailText = root.findViewById(R.id.utenteMailText);
 
 
 
