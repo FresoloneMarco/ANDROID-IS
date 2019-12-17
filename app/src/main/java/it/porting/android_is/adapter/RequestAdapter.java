@@ -16,7 +16,6 @@ import java.util.Locale;
 
 import it.porting.android_is.R;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
-import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 
 
 /**
@@ -25,12 +24,10 @@ import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHolder>{
 
     ArrayList<RequestBean> arrayList;
-    //ArrayList<UtenteBean> utenteBeans;
 
 
-    public RequestAdapter(ArrayList<RequestBean> arrayList/*, ArrayList <UtenteBean> utenteBeans*/) {
+    public RequestAdapter(ArrayList<RequestBean> arrayList) {
         this.arrayList = arrayList;
-       // this.utenteBeans = utenteBeans;
     }
 
 
@@ -71,9 +68,8 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
         holder.annoText.setText("Anno: " + arrayList.get(position).getYear());
         holder.serialeText.setText("Seriale: " + Integer.toString(arrayList.get(position).getSerial()));
         holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
-
-       /* holder.nomeText.setText("Nome: " + utenteBeans.get(position).getNome());
-        holder.cognomeText.setText("Cognome: " + utenteBeans.get(position).getCognome());*/
+        holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " + arrayList.get(position).getUser_surname());
+        holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
 
 
 
@@ -99,8 +95,8 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
 
         View root;
         TextView idText;
-        TextView nomeText;
-        TextView cognomeText;
+        TextView utenteText;
+        TextView emailText;
         TextView livelloText;
         TextView releaseText;
         TextView expiryText;
@@ -115,8 +111,8 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
             super(itemView);
             root = itemView;
             idText = root.findViewById(R.id.idText);
-            nomeText = root.findViewById(R.id.nomeText);
-            cognomeText = root.findViewById(R.id.cognomeText);
+            utenteText = root.findViewById(R.id.utenteText);
+            emailText = root.findViewById(R.id.emailText);
             livelloText = root.findViewById(R.id.livelloText);
             releaseText = root.findViewById(R.id.releaseText);
             expiryText = root.findViewById(R.id.expiryText);
