@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -51,7 +52,6 @@ public class FireBaseArchive {
     public void getUserByKey(String email, OnCompleteListener<DocumentSnapshot> onCompleteListener) {
         DocumentReference doc = db.collection("utenti").document(email);
         doc.get().addOnCompleteListener(onCompleteListener);
-
     }
 
 }

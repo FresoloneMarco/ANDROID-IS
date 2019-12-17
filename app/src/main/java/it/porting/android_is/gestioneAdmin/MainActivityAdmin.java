@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -32,10 +33,7 @@ public class MainActivityAdmin extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private RequestAdapter requestAdapter;
     private FireBaseArchive fireBaseArchive;
-    private ArrayList<RequestBean> requestBeans;
-    private UtenteBean utenteBean;
-    private final ArrayList<UtenteBean> utenteBeans = new ArrayList<UtenteBean>();
-
+    private ArrayList<RequestBean> requestBeans = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +42,8 @@ public class MainActivityAdmin extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Home Admin");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
-        requestBeans = new ArrayList<RequestBean>();
+        /*requestBeans = new ArrayList<RequestBean>();
+        utenteBeans = new ArrayList<UtenteBean>();*/
 
         //individuo la recyclerview
         recyclerView = findViewById(R.id.recycler_view);
@@ -55,9 +54,11 @@ public class MainActivityAdmin extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         //inizializzo un riferimento all'oggetto che si interfaccia con firebase
         fireBaseArchive = new FireBaseArchive();
-
+        //  getRequests();
+        //  getUsersData(requestBeans);
         //prelevo tutte le request da inserire nella recyclerview
         fireBaseArchive.getAllRequests(new OnCompleteListener<QuerySnapshot>() {
+
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
@@ -65,38 +66,40 @@ public class MainActivityAdmin extends AppCompatActivity {
                     for(QueryDocumentSnapshot req : task.getResult()){
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
-                        fireBaseArchive.getUserByKey(requestBean.getUser_key(), new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                utenteBean = task.getResult().toObject(UtenteBean.class);
-                                utenteBeans.add(utenteBean);
-                            }
-                        });
-
                     }
-
-                    //inizializzo l'adapter
-
-                    requestAdapter = new RequestAdapter(requestBeans, utenteBeans);
-                    //imposto l'adapter per la recyclerview
-
-                    recyclerView.setAdapter(requestAdapter);
-
-
                 }
                 else{
                     Log.d("Errore nella query","ERRORE");
                 }
             }
         });
-
-
+        requestAdapter = new RequestAdapter(requestBeans/*, utenteBeans*/);
+        recyclerView.setAdapter(requestAdapter);
 
 
 
 
     }
 
+
+/*
+    public void getUsersData(ArrayList<RequestBean> requestBeans){
+
+        for(RequestBean req : requestBeans) {
+            String email = req.getUser_key();
+            fireBaseArchive.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        UtenteBean utenteBean = task.getResult().toObject(UtenteBean.class);
+                        utenteBeans.add(utenteBean);
+                    }
+                }
+            });
+
+        }
+
+    }*/
 
 
 

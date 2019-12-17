@@ -11,9 +11,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -32,8 +37,9 @@ public class MainActivitySegreteria extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private RequestAdapter requestAdapter;
     private FireBaseArchive fireBaseArchive;
-    private final ArrayList<RequestBean> requestBeans = new ArrayList<>();
-    private final ArrayList<UtenteBean> utenteBeans = new ArrayList<>();
+    private FireBaseArchive fireBaseArchive2;
+    private ArrayList<RequestBean> requestBeans = new ArrayList<>();
+    private ArrayList<UtenteBean> utenteBeans = new ArrayList<UtenteBean>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +49,7 @@ public class MainActivitySegreteria extends AppCompatActivity {
         actionBar.setTitle("Home Segreteria");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
         /*requestBeans = new ArrayList<RequestBean>();
-        utenteBeans = new ArrayList<UtenteBean>();*/
+        */
 
         //individuo la recyclerview
         recyclerView = findViewById(R.id.recycler_view);
@@ -54,41 +60,35 @@ public class MainActivitySegreteria extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         //inizializzo un riferimento all'oggetto che si interfaccia con firebase
         fireBaseArchive = new FireBaseArchive();
-        getRequests();
-        getUsersData(requestBeans);
-        requestAdapter = new RequestAdapter(requestBeans, utenteBeans);
-        recyclerView.setAdapter(requestAdapter);
-
-
-
-
-    }
-
-
-    public /*ArrayList<RequestBean> */ void getRequests(){
+        fireBaseArchive2 = new FireBaseArchive();
         //prelevo tutte le request da inserire nella recyclerview
         fireBaseArchive.getAllRequests(new OnCompleteListener<QuerySnapshot>() {
-
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
                 if(task.isSuccessful()){
                     //Se il task ha successo, salvo ogni "tupla" all'interno dell ArrayList
                     for(QueryDocumentSnapshot req : task.getResult()){
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
+                        String email= requestBean.getUser_key();
+
+                        fireBaseArchive2.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    UtenteBean utenteBean = task.getResult().toObject(UtenteBean.class);
+                                    //machele pigliati queto array e fanne buon uso
+                                    utenteBeans.add(utenteBean);
+                                }
+                                else{
+                                    Log.d("Errore nella query","ERRORE");
+                                }
+                            }
+                        });
                     }
 
-                   // utenteBeans = getUsersData(requestBeans);
-
-                    //inizializzo l'adapter
-
-               /*     requestAdapter = new RequestAdapter(requestBeans, utenteBeans);
-                    //imposto l'adapter per la recyclerview
-
-                    recyclerView.setAdapter(requestAdapter);*/
-
-
+                    requestAdapter = new RequestAdapter(requestBeans);
+                    recyclerView.setAdapter(requestAdapter);
                 }
                 else{
                     Log.d("Errore nella query","ERRORE");
@@ -97,10 +97,14 @@ public class MainActivitySegreteria extends AppCompatActivity {
         });
 
 
+
+
+
     }
 
 
-    public /*ArrayList <UtenteBean> */ void getUsersData(ArrayList<RequestBean> requestBeans){
+/*
+    public void getUsersData(ArrayList<RequestBean> requestBeans){
 
         for(RequestBean req : requestBeans) {
             String email = req.getUser_key();
@@ -116,7 +120,7 @@ public class MainActivitySegreteria extends AppCompatActivity {
 
         }
 
-    }
+    }*/
 
 
 
