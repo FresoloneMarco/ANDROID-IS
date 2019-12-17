@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                 register();
             }
         });
+
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +154,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.M)
     private void generateKey() {
-
         try {
 
             keyStore = KeyStore.getInstance("AndroidKeyStore");
@@ -192,7 +192,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         try {
-
             keyStore.load(null);
 
             SecretKey key = (SecretKey) keyStore.getKey(KEY_NAME,
