@@ -13,9 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import it.porting.android_is.R;
 import it.porting.android_is.gestioneUtente.Guida;
+import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
+import it.porting.android_is.utility.LazyInitializedSingleton;
 
 public class MainActivityStudente extends AppCompatActivity {
 
@@ -36,6 +40,9 @@ public class MainActivityStudente extends AppCompatActivity {
                 return true;
             case R.id.option2:  guida();
                 return true;
+            case R.id.logout: logout();
+            return true;
+
         }
         return super.onOptionsItemSelected(item);
 
@@ -56,5 +63,17 @@ public class MainActivityStudente extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.home_menu, menu);
 
         return true;
+    }
+
+
+    public void logout(){
+        //Logout dal modulo di autenticazione di firebase
+        FirebaseAuth.getInstance().signOut();
+        //elimino la "sessione"
+        LazyInitializedSingleton lazyInitializedSingleton = LazyInitializedSingleton.getInstance();
+        lazyInitializedSingleton.clearInstance();
+        //ritorno alla pagina di login
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
     }
 }

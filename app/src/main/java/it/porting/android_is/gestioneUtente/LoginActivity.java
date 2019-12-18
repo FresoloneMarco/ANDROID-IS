@@ -91,7 +91,9 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         bLogin = findViewById(R.id.bLogin);
         etEmail = findViewById(R.id.etEmail);
+        etEmail.setText("");
         etPassword = findViewById(R.id.etPassword);
+        etPassword.setText("");
         tvRegisterNow = findViewById(R.id.register_now);
         progressBar = findViewById(R.id.progressBar);
 

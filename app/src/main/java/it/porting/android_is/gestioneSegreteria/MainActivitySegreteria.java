@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,6 +33,10 @@ import it.porting.android_is.adapter.RequestAdapter;
 import it.porting.android_is.firebaseArchive.FireBaseArchive;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.firebaseArchive.bean.UtenteBean;
+import it.porting.android_is.gestioneUtente.Guida;
+import it.porting.android_is.gestioneUtente.LoginActivity;
+import it.porting.android_is.gestioneUtente.ViewActivityUtente;
+import it.porting.android_is.utility.LazyInitializedSingleton;
 
 public class MainActivitySegreteria extends AppCompatActivity {
 
@@ -70,21 +77,6 @@ public class MainActivitySegreteria extends AppCompatActivity {
                     for(QueryDocumentSnapshot req : task.getResult()){
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
-                        String email= requestBean.getUser_key();
-
-                        fireBaseArchive2.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    UtenteBean utenteBean = task.getResult().toObject(UtenteBean.class);
-                                    //machele pigliati queto array e fanne buon uso
-                                    utenteBeans.add(utenteBean);
-                                }
-                                else{
-                                    Log.d("Errore nella query","ERRORE");
-                                }
-                            }
-                        });
                     }
 
                     requestAdapter = new RequestAdapter(requestBeans);
@@ -103,24 +95,51 @@ public class MainActivitySegreteria extends AppCompatActivity {
     }
 
 
-/*
-    public void getUsersData(ArrayList<RequestBean> requestBeans){
-
-        for(RequestBean req : requestBeans) {
-            String email = req.getUser_key();
-            fireBaseArchive.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        UtenteBean utenteBean = task.getResult().toObject(UtenteBean.class);
-                        utenteBeans.add(utenteBean);
-                    }
-                }
-            });
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.option1:  modpage();
+                return true;
+            case R.id.option2:  guida();
+                return true;
+            case R.id.logout: logout();
+                return true;
 
         }
+        return super.onOptionsItemSelected(item);
 
-    }*/
+    }
+
+    public void modpage(){
+        Intent intent = new Intent(getApplicationContext(), ViewActivityUtente.class);
+        startActivity(intent);
+    }
+
+    public void guida(){
+        Intent intent = new Intent(getApplicationContext(), Guida.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+
+        return true;
+    }
+
+
+    public void logout(){
+        //Logout dal modulo di autenticazione di firebase
+        FirebaseAuth.getInstance().signOut();
+        //elimino la "sessione"
+        LazyInitializedSingleton lazyInitializedSingleton = LazyInitializedSingleton.getInstance();
+        lazyInitializedSingleton.clearInstance();
+        //ritorno alla pagina di login
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+
 
 
 
