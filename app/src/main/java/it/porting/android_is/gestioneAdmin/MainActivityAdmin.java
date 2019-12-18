@@ -46,7 +46,6 @@ public class MainActivityAdmin extends AppCompatActivity {
     private FireBaseArchive fireBaseArchive;
     private FireBaseArchive fireBaseArchive2;
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
-    private ArrayList<UtenteBean> utenteBeans = new ArrayList<UtenteBean>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
