@@ -303,6 +303,8 @@ public class LoginActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), MainActivityStudente.class);
             startActivity(intent);
+            this.finish();
+
         }
         // END CASO 1
 
@@ -313,6 +315,7 @@ public class LoginActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), MainActivitySegreteria.class);
             startActivity(intent);
+            this.finish();
         }
         //END CASO 2
 
@@ -323,6 +326,7 @@ public class LoginActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), MainActivityAdmin.class);
             startActivity(intent);
+            this.finish();
         }
         //END CASO 3
     }

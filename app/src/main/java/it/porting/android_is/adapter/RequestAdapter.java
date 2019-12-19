@@ -70,9 +70,6 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
         holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
         holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " + arrayList.get(position).getUser_surname());
         holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
-
-
-
     }
 
 
