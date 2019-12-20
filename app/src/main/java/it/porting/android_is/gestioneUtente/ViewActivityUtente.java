@@ -117,6 +117,9 @@ public class ViewActivityUtente extends AppCompatActivity {
                 return true;
             case R.id.option2:  guida();
                 return true;
+
+            case R.id.logout:  logout();
+                return true;
         }
         return super.onOptionsItemSelected(item);
 
@@ -129,6 +132,17 @@ public class ViewActivityUtente extends AppCompatActivity {
 
     public void guida(){
         Intent intent = new Intent(getApplicationContext(), Guida.class);
+        startActivity(intent);
+    }
+
+    public void logout(){
+        //Logout dal modulo di autenticazione di firebase
+        FirebaseAuth.getInstance().signOut();
+        //elimino la "sessione"
+        LazyInitializedSingleton lazyInitializedSingleton = LazyInitializedSingleton.getInstance();
+        lazyInitializedSingleton.clearInstance();
+        //ritorno alla pagina di login
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
 }
