@@ -76,7 +76,8 @@ public class LoginActivity extends AppCompatActivity {
     private KeyStore keyStore;
     private Cipher cipher;
     private String KEY_NAME = "AndroidKey";
-
+    private SharedPreferences preferences;
+    private  SharedPreferences.Editor editor;
 
 
 
@@ -105,10 +106,10 @@ public class LoginActivity extends AppCompatActivity {
         etPassword.setText("");
         tvRegisterNow = findViewById(R.id.register_now);
         progressBar = findViewById(R.id.progressBar);
+        preferences = getSharedPreferences("users", MODE_PRIVATE);
 
 
-
-        tvRegisterNow.setOnClickListener(new View.OnClickListener() {
+                tvRegisterNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 register();
@@ -293,6 +294,8 @@ public class LoginActivity extends AppCompatActivity {
                                         progressBar.setVisibility(View.GONE);
                                         redirect();
 
+
+
                                     } else {
                                         progressBar.setVisibility(View.GONE);
                                         toast = Toast.makeText(getApplicationContext(), "I dati inseriti non sono stati caricati in sessione", Toast.LENGTH_LONG);
@@ -308,6 +311,11 @@ public class LoginActivity extends AppCompatActivity {
                             toast = Toast.makeText(getApplicationContext(), "I dati inseriti non sono corretti", Toast.LENGTH_LONG);
                             toast.show();
                         }
+
+
+
+
+
                     }
 
                 });
