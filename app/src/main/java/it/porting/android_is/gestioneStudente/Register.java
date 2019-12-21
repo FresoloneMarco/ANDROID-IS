@@ -90,12 +90,19 @@ public class Register extends AppCompatActivity {
         final  String vpassword = String.valueOf(etVPassword.getText());
         final  String sex =  "M";
         final  Context context = this;
+
+
+
        if(nome.equals("") || cognome.equals("") || email.equals("") ||  password.equals("") || vpassword.equals("")){
             progressBar.setVisibility(View.GONE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             Toast.makeText(this, "Non hai compilato tutti i campi", Toast.LENGTH_LONG).show();
         }
 
+       else if (sex.length()>2) {
+
+           Toast.makeText(this, "Il campo non è stato compilato correttamente", Toast.LENGTH_SHORT).show();
+       }
 
        else if(rdgroup_Sex.getCheckedRadioButtonId() == -1){
            progressBar.setVisibility(View.GONE);
@@ -168,7 +175,88 @@ public class Register extends AppCompatActivity {
             }
 
 
+        if(!nome.isEmpty()) {
+
+            for (int i = 0; i < nome.length(); i++) {
+
+                char ch = nome.charAt(i);
+
+                if (ch == '0' || ch == '1' || ch == '2' || ch == '3' || ch == '4' || ch == '5'
+                        || ch == '6' || ch == '7' || ch == '8' || ch == '9') {
+
+                    progressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                    Toast.makeText(context, "Errore durante la registrazione ! Il campo Nome non rispetta il formato desiderato", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }
+
+        else if(!cognome.isEmpty()) {
+
+            for (int i = 0; i < cognome.length(); i++) {
+
+                char ch = cognome.charAt(i);
+
+                if (ch == '0' || ch == '1' || ch == '2' || ch == '3' || ch == '4' || ch == '5'
+                        || ch == '6' || ch == '7' || ch == '8' || ch == '9') {
+
+                    progressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                    Toast.makeText(context, "Errore durante la registrazione ! Il campo Cognome non rispetta il formato desiderato", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }
+
+        else if(!email.isEmpty()) {
+
+            String inziale = email.substring(0);
+
+
+            String punto = email.substring(1);
+            String centrale = email.substring(2, cognome.length());
+
+            if (!(email.endsWith("@studenti.unisa.it"))) {
+
+                progressBar.setVisibility(View.GONE);
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                Toast.makeText(context, "Errore durante la registrazione ! Il campo email non rispetta il formato desiderato", Toast.LENGTH_LONG).show();
+
+
+            } else  if ((!inziale.equals(nome.charAt(0)))) {
+
+                        progressBar.setVisibility(View.GONE);
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                        Toast.makeText(context, "Errore durante la registrazione ! Il campo email non rispetta il formato desiderato", Toast.LENGTH_LONG).show();
+
+            } else if (((!punto.equals(".")))) {
+
+                        progressBar.setVisibility(View.GONE);
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                        Toast.makeText(context, "Errore durante la registrazione ! Il campo email non rispetta il formato desiderato", Toast.LENGTH_LONG).show();
+
+            } else if ((!centrale.equals(cognome))) {
+
+                        progressBar.setVisibility(View.GONE);
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                        Toast.makeText(context, "Errore durante la registrazione ! Il campo email non rispetta il formato desiderato", Toast.LENGTH_LONG).show();
+
+            }
+
+
+
+        }
+
 
     }
 }
+
+
 
