@@ -44,7 +44,7 @@
     <string name="anno">Anno</string>
     <string name="livello">Livello</string>
     <string name="seriale">Seriale</string>
-    <string name="cfu_da_validare">CFU da validare</string>
+    <string name="cfu_da_validare">CFU to validate</string>
     <string name="studente">Studente</string>
     //End Activity_Register
 </resources>
