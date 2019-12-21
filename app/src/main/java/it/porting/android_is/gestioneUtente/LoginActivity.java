@@ -3,14 +3,18 @@ package it.porting.android_is.gestioneUtente;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -41,6 +45,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.prefs.Preferences;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -71,6 +76,11 @@ public class LoginActivity extends AppCompatActivity {
     private KeyStore keyStore;
     private Cipher cipher;
     private String KEY_NAME = "AndroidKey";
+    private SharedPreferences preferences;
+    private  SharedPreferences.Editor editor;
+
+
+
 
 
     // START FIRESTORE DECLARATION
@@ -96,8 +106,10 @@ public class LoginActivity extends AppCompatActivity {
         etPassword.setText("");
         tvRegisterNow = findViewById(R.id.register_now);
         progressBar = findViewById(R.id.progressBar);
+        preferences = getSharedPreferences("users", MODE_PRIVATE);
 
-        tvRegisterNow.setOnClickListener(new View.OnClickListener() {
+
+                tvRegisterNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 register();
@@ -116,30 +128,33 @@ public class LoginActivity extends AppCompatActivity {
             fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
             keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
 
-            if (!fingerprintManager.isHardwareDetected()) {
+           if (!fingerprintManager.isHardwareDetected()) {
 
-                Toast.makeText(getApplicationContext(), "Fingerprint Scanner not detected in Device", Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), "Non è stato rilevato uno scanner di impronte", Toast.LENGTH_LONG);
 
             } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
 
-                Toast.makeText(getApplicationContext(), "Permission not granted to use Fingerprint Scanner", Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), "Permesso non autorizzato per l'uso dello scanner di impronte", Toast.LENGTH_LONG);
 
 
             } else if (!keyguardManager.isKeyguardSecure()) {
-                Toast.makeText(getApplicationContext(), "Add Lock to your Phone in Settings", Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), "Aggiungi un blocco al tuo telefono", Toast.LENGTH_LONG);
 
 
             } else if (!fingerprintManager.hasEnrolledFingerprints()) {
 
-                Toast.makeText(getApplicationContext(), "You should add atleast 1 Fingerprint to use this Feature", Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), "È necessario aggiungere almeno 1 impronta digitale per utilizzare questa funzione", Toast.LENGTH_LONG);
 
 
             } else {
 
-                Toast.makeText(getApplicationContext(), "Place your Finger on Scanner to Access the App.", Toast.LENGTH_LONG);
+               Toast.makeText(getApplicationContext(), "\n" + "Posiziona il dito sullo scanner per accedere all'app", Toast.LENGTH_LONG);
 
 
-                generateKey();
+               generateKey();
+
+
+           }
 
                 if (cipherInit()) {
 
@@ -147,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
                     Fingerprint fingerprintHandler = new Fingerprint(this);
                     fingerprintHandler.startAuth(fingerprintManager, cryptoObject);
 
-                }
+
             }
 
         }
@@ -188,6 +203,7 @@ public class LoginActivity extends AppCompatActivity {
     public boolean cipherInit() {
         try {
             cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/" + KeyProperties.BLOCK_MODE_CBC + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7);
+
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             throw new RuntimeException("Failed to get Cipher", e);
         }
@@ -211,71 +227,103 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void login(){
+    public void login() {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        //verifico che l'utente abbia inserito qualcosa
-        if(String.valueOf(etEmail.getText()).equals("") && String.valueOf(etPassword.getText()).equals("")) {
 
-            //se l'utente non ha inserito niente negli edit text
-            progressBar.setVisibility(View.GONE);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        //Se l'utente non ha compilato tutti i campi
+            if (String.valueOf(etEmail.getText()).equals("") && String.valueOf(etPassword.getText()).equals("")) {
 
-            toast = Toast.makeText(getApplicationContext(), "Dati non inseriti", Toast.LENGTH_LONG);
-            toast.show();
+                    progressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-        } else {
-            //Se l'utente ha compilato tutti i campi
+                    toast = Toast.makeText(getApplicationContext(), "Dati non inseriti", Toast.LENGTH_LONG);
+                    toast.show();
 
-            email = String.valueOf(etEmail.getText());
-            password = String.valueOf(etPassword.getText());
+                }
 
-            //modulo autenticazione firebase
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
+            //Se l'utente non ha compilato il campo dell'email
+            else if(String.valueOf(etEmail.getText()).equals("")){
+
+                    progressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                    toast = Toast.makeText(getApplicationContext(), "Email non inserita", Toast.LENGTH_LONG);
+                    toast.show();
+
+                }
+
+            //Se l'utente non ha compilato il campo della password
+            else if(String.valueOf(etPassword.getText()).equals("")){
+
+                    progressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                    toast = Toast.makeText(getApplicationContext(), "Password non inserita", Toast.LENGTH_LONG);
+                    toast.show();
+
+                }
+
+
+
+             else {
+                //Se l'utente ha compilato tutti i campi
+
+                email = String.valueOf(etEmail.getText());
+                password = String.valueOf(etPassword.getText());
+
+                //modulo autenticazione firebase
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
                      /* Se task.isSuccessful() ritorna true significa che l'utente è riuscito a loggare con successo
                         A questo punto quindi prendiamo dal CloudFirestore dalla collezione 'utenti' il documento che
                         ha come id l'email dell'utente appena loggato, così da poter avere più informazioni riguardanti l'utente
                         tra le quali il ruolo che ha all'interno del sistema
                       */
-                        DocumentReference docRef = db.collection("utenti").document(email);
-                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    // Facciamo il retrieve del documento e lo salviamo nel singleton, N.B: sarà salvato sottoforma di HASHMAP
-                                    LazyInitializedSingleton.getInstance().setUser(document.getData());
-                                    progressBar.setVisibility(View.GONE);
-                                    redirect();
+                            DocumentReference docRef = db.collection("utenti").document(email);
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        // Facciamo il retrieve del documento e lo salviamo nel singleton, N.B: sarà salvato sottoforma di HASHMAP
+                                        LazyInitializedSingleton.getInstance().setUser(document.getData());
+                                        progressBar.setVisibility(View.GONE);
+                                        redirect();
 
+
+
+                                    } else {
+                                        progressBar.setVisibility(View.GONE);
+                                        toast = Toast.makeText(getApplicationContext(), "I dati inseriti non sono stati caricati in sessione", Toast.LENGTH_LONG);
+                                        toast.show();
+
+                                    }
                                 }
+                            });
+                        } else  {
+                            progressBar.setVisibility(View.GONE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-                                else{
-                                    progressBar.setVisibility(View.GONE);
-                                    toast = Toast.makeText(getApplicationContext(), "I dati inseriti non sono stati caricati in sessione", Toast.LENGTH_LONG);
-                                    toast.show();
+                            toast = Toast.makeText(getApplicationContext(), "I dati inseriti non sono corretti", Toast.LENGTH_LONG);
+                            toast.show();
+                        }
 
-                                }
-                            }
-                        });
-                    } else {
-                        progressBar.setVisibility(View.GONE);
-                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-                        toast = Toast.makeText(getApplicationContext(), "I dati inseriti non sono corretti", Toast.LENGTH_LONG);
-                        toast.show();
+
+
+
                     }
-                }
 
-            });
+                });
+            }
+
+
         }
 
-
-    }
 
     public void register(){
         Intent intent = new Intent(this, Register.class);
@@ -342,4 +390,7 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(false);
 
     }
+
+
+
 }

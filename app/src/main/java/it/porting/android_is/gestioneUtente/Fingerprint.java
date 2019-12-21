@@ -29,6 +29,7 @@ public class Fingerprint extends FingerprintManager.AuthenticationCallback {
         CancellationSignal cancellationSignal = new CancellationSignal();
         fingerprintManager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
 
+
     }
 
 

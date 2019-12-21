@@ -90,12 +90,27 @@ public class Register extends AppCompatActivity {
         final  String vpassword = String.valueOf(etVPassword.getText());
         final  String sex =  "M";
         final  Context context = this;
-        if(nome.equals("") || cognome.equals("") || email.equals("") || password.equals("") || vpassword.equals("")){
+       if(nome.equals("") || cognome.equals("") || email.equals("") ||  password.equals("") || vpassword.equals("")){
             progressBar.setVisibility(View.GONE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
             Toast.makeText(this, "Non hai compilato tutti i campi", Toast.LENGTH_LONG).show();
         }
+
+
+       else if(rdgroup_Sex.getCheckedRadioButtonId() == -1){
+           progressBar.setVisibility(View.GONE);
+           getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+           Toast.makeText(this, "Non hai inserito il sesso", Toast.LENGTH_LONG).show();
+       }
+
+       else if(password.length() <  8){
+           progressBar.setVisibility(View.GONE);
+           getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+           Toast.makeText(this, "La password non rispetta la lunghezza minima", Toast.LENGTH_LONG).show();
+
+       }
+
         else if(!password.equals(vpassword)){
             progressBar.setVisibility(View.GONE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
