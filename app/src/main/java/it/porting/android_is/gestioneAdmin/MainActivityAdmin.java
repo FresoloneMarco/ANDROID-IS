@@ -14,25 +14,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 import it.porting.android_is.R;
-import it.porting.android_is.adapter.RequestAdapter;
+import it.porting.android_is.adapter.RequestAdapterAdmin;
 import it.porting.android_is.firebaseArchive.FireBaseArchive;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
-import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
@@ -42,7 +36,7 @@ public class MainActivityAdmin extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    private RequestAdapter requestAdapter;
+    private RequestAdapterAdmin requestAdapterAdmin;
     private FireBaseArchive fireBaseArchive;
     private FireBaseArchive fireBaseArchive2;
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
@@ -50,7 +44,7 @@ public class MainActivityAdmin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_segreteria);
+        setContentView(R.layout.activity_home_admin);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Home Admin");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
@@ -77,8 +71,8 @@ public class MainActivityAdmin extends AppCompatActivity {
                         requestBeans.add(requestBean);
                     }
 
-                    requestAdapter = new RequestAdapter(requestBeans);
-                    recyclerView.setAdapter(requestAdapter);
+                    requestAdapterAdmin = new RequestAdapterAdmin(requestBeans);
+                    recyclerView.setAdapter(requestAdapterAdmin);
                 }
                 else{
                     Log.d("Errore nella query","ERRORE");

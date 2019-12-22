@@ -21,12 +21,12 @@ import it.porting.android_is.firebaseArchive.bean.RequestBean;
 /**
  * Classe Adapter che consente la gestione della recyclerView nell'activity della segreteria
  */
-public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHolder>{
+public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapterSegreteria.ViewHolder>{
 
     ArrayList<RequestBean> arrayList;
 
 
-    public RequestAdapter(ArrayList<RequestBean> arrayList) {
+    public RequestAdapterSegreteria(ArrayList<RequestBean> arrayList) {
         this.arrayList = arrayList;
     }
 
@@ -41,7 +41,7 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.request_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.request_item_segreteria, parent, false);
 
         return new ViewHolder(v);
 
@@ -70,8 +70,7 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
         holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
         holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " + arrayList.get(position).getUser_surname());
         holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
-        holder.enteText.setText("Ente :" + arrayList.get(position).getEnte());
-        holder.statoText.setText("Stato :" + arrayList.get(position).isStato());
+
 
 
     }
@@ -105,8 +104,6 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
         TextView serialeText;
         TextView cfuText;
         Button btSend;
-        TextView enteText;
-        TextView statoText;
 
 
 
@@ -125,8 +122,7 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
             serialeText = root.findViewById(R.id.serialeText);
             cfuText = root.findViewById(R.id.cfuText);
             btSend = root.findViewById(R.id.btSend);
-            enteText = root.findViewById(R.id.enteText);
-            statoText = root.findViewById(R.id.statoText);
+
 
 
 

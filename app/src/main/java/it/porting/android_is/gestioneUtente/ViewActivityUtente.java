@@ -22,15 +22,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Document;
 
 import it.porting.android_is.R;
-import it.porting.android_is.adapter.RequestAdapter;
 import it.porting.android_is.firebaseArchive.FireBaseArchive;
-import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 import it.porting.android_is.utility.LazyInitializedSingleton;
 
