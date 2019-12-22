@@ -30,11 +30,11 @@
         android:id="@+id/emailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/utenteText" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idText" />
 
     <TextView
         android:id="@+id/releaseText"
@@ -44,7 +44,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/data_rilascio"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idText" />
+        app:layout_constraintTop_toBottomOf="@+id/emailText" />
 
     <TextView
         android:id="@+id/expiryText"
@@ -102,9 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/cfu_da_validare"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/annoText" />
 
@@ -114,11 +112,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="8dp"
         android:text="Ente"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cfuText"/>
+        app:layout_constraintTop_toBottomOf="@id/cfuText" />
 
     <TextView
         android:id="@+id/statoText"
