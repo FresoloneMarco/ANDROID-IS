@@ -70,6 +70,10 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
         holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
         holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " + arrayList.get(position).getUser_surname());
         holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
+        holder.enteText.setText("Ente :" + arrayList.get(position).getEnte());
+        holder.statoText.setText("Stato :" + arrayList.get(position).isStato());
+
+
     }
 
 
@@ -101,7 +105,11 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
         TextView serialeText;
         TextView cfuText;
         Button btSend;
-        
+        TextView enteText;
+        TextView statoText;
+
+
+
 
 
         public ViewHolder(View itemView) {
@@ -117,6 +125,8 @@ public class RequestAdapter extends RecyclerView.Adapter <RequestAdapter.ViewHol
             serialeText = root.findViewById(R.id.serialeText);
             cfuText = root.findViewById(R.id.cfuText);
             btSend = root.findViewById(R.id.btSend);
+            enteText = root.findViewById(R.id.enteText);
+            statoText = root.findViewById(R.id.statoText);
 
 
 

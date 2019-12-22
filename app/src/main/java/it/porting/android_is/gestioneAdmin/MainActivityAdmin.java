@@ -52,7 +52,7 @@ public class MainActivityAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_segreteria);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Home Segreteria");
+        actionBar.setTitle("Home Admin");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
 
 

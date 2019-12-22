@@ -18,9 +18,11 @@ public class RequestBean {
     private String user_key;
     private String user_name;
     private String user_surname;
+    private String ente;
+    private boolean stato=true;
 
 
-    public RequestBean(int id, String level, int serial, int validated_cfu, String year, Timestamp release_date, Timestamp expiry_date, String user_key, String user_name, String user_surname) {
+    public RequestBean(int id, String level, int serial, int validated_cfu, String year, Timestamp release_date, Timestamp expiry_date, String user_key, String user_name, String user_surname, String ente, Boolean stato) {
         this.id = id;
         this.level = level;
         this.serial = serial;
@@ -31,6 +33,9 @@ public class RequestBean {
         this.user_key = user_key;
         this.user_name = user_name;
         this.user_surname = user_surname;
+        this.ente = ente;
+        this.stato = stato;
+
     }
 
     public RequestBean(){}
@@ -115,6 +120,24 @@ public class RequestBean {
         this.user_surname = user_surname;
     }
 
+    public String getEnte() {
+        return ente;
+    }
+
+    public void setEnte(String ente) {
+        this.ente = ente;
+    }
+
+    public boolean isStato() {
+        return stato;
+    }
+
+    public void setStato(boolean stato) {
+        this.stato = stato;
+    }
+
+
+
     @Override
     public String toString() {
         return "RequestBean{" +
@@ -128,6 +151,8 @@ public class RequestBean {
                 ", user_key='" + user_key + '\'' +
                 ", user_name='" + user_name + '\'' +
                 ", user_surname='" + user_surname + '\'' +
+                ", ente= '" + ente + '\'' +
+                ", stato= '"+ stato +'\'' +
                 '}';
     }
 }
