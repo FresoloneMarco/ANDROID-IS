@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -19,9 +20,13 @@ import it.porting.android_is.R;
 import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
+import it.porting.android_is.network.Network;
 import it.porting.android_is.utility.LazyInitializedSingleton;
 
 public class MainActivityStudente extends AppCompatActivity {
+
+
+   //private Button contactServerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,14 @@ public class MainActivityStudente extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable (Color.rgb(255,153,0)));
         actionBar.setTitle("Home");
+        /*contactServerButton = findViewById(R.id.contact);
+        contactServerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Network.HttpGetRequest request = new Network.HttpGetRequest();
+                request.execute();
+            }
+        });*/
 
     }
 

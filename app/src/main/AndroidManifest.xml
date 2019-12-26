@@ -3,12 +3,15 @@
     package="it.porting.android_is">
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo_standard"
         android:label="EV English Validation"
         android:roundIcon="@drawable/logo_standard"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity android:name=".gestioneStudente.Register"></activity>
         <activity android:name=".gestioneStudente.MainActivityStudente"></activity>

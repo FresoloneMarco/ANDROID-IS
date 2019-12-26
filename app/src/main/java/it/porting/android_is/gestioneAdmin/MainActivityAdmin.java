@@ -9,11 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
+import android.print.PrintAttributes;
+import android.print.pdf.PrintedPdfDocument;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,13 +37,14 @@ import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
 import it.porting.android_is.utility.LazyInitializedSingleton;
 
+import static android.graphics.pdf.PdfDocument.*;
+
 public class MainActivityAdmin extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private RequestAdapterAdmin requestAdapterAdmin;
     private FireBaseArchive fireBaseArchive;
-    private FireBaseArchive fireBaseArchive2;
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
 
     @Override
@@ -59,7 +65,6 @@ public class MainActivityAdmin extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         //inizializzo un riferimento all'oggetto che si interfaccia con firebase
         fireBaseArchive = new FireBaseArchive();
-        fireBaseArchive2 = new FireBaseArchive();
         //prelevo tutte le request da inserire nella recyclerview
         fireBaseArchive.getAllRequests(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -79,8 +84,6 @@ public class MainActivityAdmin extends AppCompatActivity {
                 }
             }
         });
-
-
 
 
 
