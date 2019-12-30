@@ -11,6 +11,5 @@ import retrofit2.http.POST;
 public interface Network {
 
     @POST("createPDF")
-    @FormUrlEncoded
     Call<Void> createPDF(@Body RequestBean requestBean);
 }

@@ -8,6 +8,7 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 const db = admin.firestore();
+router.use(express.json());
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -17,8 +18,13 @@ router.get('/', function(req, res, next) {
 //crea PDF 
 router.post('/createPDF', function(req, res, next) {
   const doc = new PDFDocument;
-  var bean = req.body.requestBean;
-  console.log(bean);
+  doc.pipe(fs.createWriteStream('file.pdf'));
+  console.log('In server...');
+  var bean = req.body;
+  doc.text(JSON.stringify(bean));
+  console.log(JSON.stringify(bean));
+  doc.end();
+  res.download('192.168.1.4:3000/file.pdf', 'file.pdf'); //non funziona
   
 });
 
