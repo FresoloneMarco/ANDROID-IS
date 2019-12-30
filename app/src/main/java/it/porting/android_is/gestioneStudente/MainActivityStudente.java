@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
 import it.porting.android_is.R;
+import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
@@ -45,10 +46,15 @@ public class MainActivityStudente extends AppCompatActivity {
         actionBar.setTitle("Home");
         res = findViewById(R.id.res);
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.9:3000")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.4:3000")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         Network network = retrofit.create(Network.class);
-        Call<Void> call = network.getUtenti();
+
+        RequestBean requestBean = new RequestBean();
+        requestBean.setEnte("Cambridge English School");
+        requestBean.setLevel("A1");
+        requestBean.setSerial(1234);
+        Call<Void> call = network.createPDF(requestBean);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
