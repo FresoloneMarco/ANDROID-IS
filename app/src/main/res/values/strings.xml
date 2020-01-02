@@ -46,5 +46,17 @@
     <string name="seriale">Seriale</string>
     <string name="cfu_da_validare">CFU da validare</string>
     <string name="studente">Studente</string>
+    <string name="richiesta">Richiesta</string>
+    <string name="anno_accademico">Anno Accademico</string>
+    <string name="matricola">Matricola</string>
+    <string name="ente">Ente</string>
+    <string name="ente_di_rilascio">Ente di rilascio</string>
+    <string name="cfu_da_conseguire">CFU da conseguire</string>
+    <string name="invia">Invia</string>
+    <string name="anno_di_immatricolazione">Anno di immatricolazione</string>
+    <string name="modifica_profilo">Modifica profilo</string>
+    <string name="inserisci_richiesta">Inserisci richiesta</string>
+    <string name="logout">Logout</string>
+    <string name="guida">Guida</string>
     //End Activity_Register
 </resources>

@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -20,6 +22,7 @@
         <activity android:name=".gestioneUtente.Guida"></activity>
         <activity android:name=".gestioneUtente.EditActivityUtente"></activity>
         <activity android:name=".gestioneAdmin.MainActivityAdmin"></activity>
+        <activity android:name=".gestioneStudente.RequestForm"></activity>
         <activity android:name=".gestioneUtente.LoginActivity">
 
             <intent-filter>

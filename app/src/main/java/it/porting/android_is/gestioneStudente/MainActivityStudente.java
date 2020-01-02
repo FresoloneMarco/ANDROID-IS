@@ -4,22 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.List;
-
 import it.porting.android_is.R;
-import it.porting.android_is.firebaseArchive.bean.UtenteBean;
+import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
@@ -45,10 +43,17 @@ public class MainActivityStudente extends AppCompatActivity {
         actionBar.setTitle("Home");
         res = findViewById(R.id.res);
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.9:3000")
+        //baseUrl = vostro ip Locale con porta 3000 (la porta riservata al server node)
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://172.19.129.95:3000")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         Network network = retrofit.create(Network.class);
-        Call<Void> call = network.getUtenti();
+
+        RequestBean requestBean = new RequestBean();
+        requestBean.setEnte("Cambridge English School");
+        requestBean.setLevel("A1");
+        requestBean.setSerial(1234);
+        requestBean.setUser_key(LazyInitializedSingleton.getInstance().getUser().get("email").toString());
+        Call<Void> call = network.createPDF(requestBean);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -64,6 +69,7 @@ public class MainActivityStudente extends AppCompatActivity {
             }
         });
 
+
     }
 
     @Override
@@ -72,7 +78,12 @@ public class MainActivityStudente extends AppCompatActivity {
             case R.id.option1:
                 modpage();
                 return true;
+
             case R.id.option2:
+                reqForm();
+                return true;
+
+            case R.id.option3:
                 guida();
                 return true;
             case R.id.logout:
@@ -89,6 +100,11 @@ public class MainActivityStudente extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void reqForm() {
+        Intent intent = new Intent(getApplicationContext(), RequestForm.class);
+        startActivity(intent);
+    }
+
     public void guida() {
         Intent intent = new Intent(getApplicationContext(), Guida.class);
         startActivity(intent);
@@ -96,7 +112,7 @@ public class MainActivityStudente extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
+        getMenuInflater().inflate(R.menu.home_menu_studente, menu);
 
         return true;
     }
