@@ -4,6 +4,8 @@ var router = express.Router();
 const admin = require ('firebase-admin');
 const PDFDocument = require('pdfkit');
 const serviceAccount = ('./serviceAccountKey.json');
+const path = require('path');
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
@@ -24,9 +26,9 @@ router.post('/createPDF', function(req, res, next) {
   doc.text(JSON.stringify(bean));
   console.log(JSON.stringify(bean));
   doc.end();
-  res.download('192.168.1.4:3000/file.pdf', 'file.pdf'); //non funziona
   
 });
+
 
 router.get('/boh/:id',function(req,res,next){
   res.send('boh' + req.params.id);

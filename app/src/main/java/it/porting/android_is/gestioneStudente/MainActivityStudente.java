@@ -4,10 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Url;
 
 public class MainActivityStudente extends AppCompatActivity {
 
@@ -46,7 +51,7 @@ public class MainActivityStudente extends AppCompatActivity {
         actionBar.setTitle("Home");
         res = findViewById(R.id.res);
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.4:3000")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.7:3000")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         Network network = retrofit.create(Network.class);
 
