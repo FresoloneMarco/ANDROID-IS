@@ -4,13 +4,15 @@ var router = express.Router();
 const admin = require ('firebase-admin');
 const PDFDocument = require('pdfkit');
 const serviceAccount = ('./serviceAccountKey.json');
-const path = require('path');
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 const db = admin.firestore();
+const storage = admin.storage();
 router.use(express.json());
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -26,7 +28,9 @@ router.post('/createPDF', function(req, res, next) {
   doc.text(JSON.stringify(bean));
   console.log(JSON.stringify(bean));
   doc.end();
-  
+  storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/file.pdf');
+
+
 });
 
 
