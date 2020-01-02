@@ -28,9 +28,16 @@ router.post('/createPDF', function(req, res, next) {
   doc.text(JSON.stringify(bean));
   console.log(JSON.stringify(bean));
   doc.end();
-  storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/file.pdf');
-
-
+  storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/file.pdf',
+  function(err, file) {
+    if (!err) {
+      console.log('File caricato');
+      res.send('200');
+    }
+    else{
+      console.log(err);
+    }
+  });
 });
 
 
