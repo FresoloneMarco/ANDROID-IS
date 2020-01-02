@@ -22,6 +22,7 @@ public class LazyInitializedSingleton {
         instance = null;
     }
 
+
     public void setUser(Map<String, Object> user){
         this.user = user;
     }

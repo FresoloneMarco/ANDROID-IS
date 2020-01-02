@@ -4,27 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DownloadManager;
-import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.List;
-
 import it.porting.android_is.R;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
-import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
@@ -35,7 +28,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Url;
 
 public class MainActivityStudente extends AppCompatActivity {
 
@@ -60,6 +52,7 @@ public class MainActivityStudente extends AppCompatActivity {
         requestBean.setEnte("Cambridge English School");
         requestBean.setLevel("A1");
         requestBean.setSerial(1234);
+        requestBean.setUser_key(LazyInitializedSingleton.getInstance().getUser().get("email").toString());
         Call<Void> call = network.createPDF(requestBean);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -75,6 +68,7 @@ public class MainActivityStudente extends AppCompatActivity {
                 res.setText((t.getMessage()));
             }
         });
+
 
     }
 

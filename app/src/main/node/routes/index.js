@@ -23,13 +23,14 @@ router.get('/', function(req, res, next) {
 //crea PDF 
 router.post('/createPDF', function(req, res, next) {
   const doc = new PDFDocument;
-  doc.pipe(fs.createWriteStream('file.pdf'));
-  console.log('In server...');
   var bean = req.body;
+  var filename = req.body.user_key + '.pdf';
+  doc.pipe(fs.createWriteStream(filename));
+  console.log('In server...');
   doc.text(JSON.stringify(bean));
   console.log(JSON.stringify(bean));
   doc.end();
-  storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/file.pdf',
+  storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
   function(err, file) {
     if (!err) {
       console.log('File caricato');
