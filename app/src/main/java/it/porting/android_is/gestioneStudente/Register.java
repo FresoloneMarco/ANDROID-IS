@@ -24,7 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 
@@ -55,7 +54,7 @@ public class Register extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        etNome = findViewById(R.id.etNome);
+        etNome = findViewById(R.id.etAnno);
         etCognome = findViewById(R.id.etCognome);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);

@@ -78,7 +78,12 @@ public class MainActivityStudente extends AppCompatActivity {
             case R.id.option1:
                 modpage();
                 return true;
+
             case R.id.option2:
+                reqForm();
+                return true;
+
+            case R.id.option3:
                 guida();
                 return true;
             case R.id.logout:
@@ -95,6 +100,11 @@ public class MainActivityStudente extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void reqForm() {
+        Intent intent = new Intent(getApplicationContext(), RequestForm.class);
+        startActivity(intent);
+    }
+
     public void guida() {
         Intent intent = new Intent(getApplicationContext(), Guida.class);
         startActivity(intent);
@@ -102,7 +112,7 @@ public class MainActivityStudente extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
+        getMenuInflater().inflate(R.menu.home_menu_studente, menu);
 
         return true;
     }

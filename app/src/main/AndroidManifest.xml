@@ -22,6 +22,7 @@
         <activity android:name=".gestioneUtente.Guida"></activity>
         <activity android:name=".gestioneUtente.EditActivityUtente"></activity>
         <activity android:name=".gestioneAdmin.MainActivityAdmin"></activity>
+        <activity android:name=".gestioneStudente.RequestForm"></activity>
         <activity android:name=".gestioneUtente.LoginActivity">
 
             <intent-filter>
