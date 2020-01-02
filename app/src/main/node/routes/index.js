@@ -9,7 +9,8 @@ const serviceAccount = ('./serviceAccountKey.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
-const db = admin.firestore();
+
+
 const storage = admin.storage();
 router.use(express.json());
 
