@@ -54,7 +54,7 @@ public class Register extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        etNome = findViewById(R.id.etAnno);
+        etNome = findViewById(R.id.etNome);
         etCognome = findViewById(R.id.etCognome);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
