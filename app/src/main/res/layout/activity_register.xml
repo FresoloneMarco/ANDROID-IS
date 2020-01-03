@@ -58,13 +58,16 @@
             android:id="@+id/rd_M"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/m" />
+            android:checked="false"
+            android:text="@string/m"
+            android:onClick="clickSex"/>
 
         <RadioButton
             android:id="@+id/rd_F"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/f" />
+            android:text="@string/f"
+            android:onClick="clickSex"/>
 
     </RadioGroup>
 
