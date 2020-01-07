@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,7 +36,11 @@ import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
+import it.porting.android_is.network.RetrofitSingleton;
 import it.porting.android_is.utility.LazyInitializedSingleton;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.graphics.pdf.PdfDocument.*;
 
@@ -53,7 +58,7 @@ public class MainActivityAdmin extends AppCompatActivity {
         setContentView(R.layout.activity_home_admin);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Home Admin");
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255, 153, 0)));
 
 
         //individuo la recyclerview
@@ -69,22 +74,20 @@ public class MainActivityAdmin extends AppCompatActivity {
         fireBaseArchive.getAllRequests(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     //Se il task ha successo, salvo ogni "tupla" all'interno dell ArrayList
-                    for(QueryDocumentSnapshot req : task.getResult()){
+                    for (QueryDocumentSnapshot req : task.getResult()) {
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
                     }
 
                     requestAdapterAdmin = new RequestAdapterAdmin(requestBeans);
                     recyclerView.setAdapter(requestAdapterAdmin);
-                }
-                else{
-                    Log.d("Errore nella query","ERRORE");
+                } else {
+                    Log.d("Errore nella query", "ERRORE");
                 }
             }
         });
-
 
 
     }
@@ -92,16 +95,21 @@ public class MainActivityAdmin extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.option1:  modpage();
+        switch (item.getItemId()) {
+            case R.id.option1:
+                modpage();
                 return true;
-            case R.id.option2:  guida();
+            case R.id.option2:
+                excelApproved();
                 return true;
-            case R.id.option3:  excelApproved();
+            case R.id.option3:
+                guida();
                 return true;
-            case R.id.option4: excelRefused();
+            case R.id.option4:
+                excelRefused();
                 return true;
-            case R.id.logout: logout();
+            case R.id.logout:
+                logout();
                 return true;
 
         }
@@ -111,13 +119,13 @@ public class MainActivityAdmin extends AppCompatActivity {
 
 
     //trasferisce il controllo alla pagina di visualizzazione del profilo
-    public void modpage(){
+    public void modpage() {
         Intent intent = new Intent(getApplicationContext(), ViewActivityUtente.class);
         startActivity(intent);
     }
 
     //visualizza la guida utente
-    public void guida(){
+    public void guida() {
         Intent intent = new Intent(getApplicationContext(), Guida.class);
         startActivity(intent);
     }
@@ -130,7 +138,7 @@ public class MainActivityAdmin extends AppCompatActivity {
     }
 
 
-    public void logout(){
+    public void logout() {
         //Logout dal modulo di autenticazione di firebase
         FirebaseAuth.getInstance().signOut();
         //elimino la "sessione"
@@ -142,15 +150,43 @@ public class MainActivityAdmin extends AppCompatActivity {
     }
 
 
-    public void excelApproved(){
+    public void excelApproved() {
+        RetrofitSingleton.getInstance().performCreateApprovedExcel(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
+                }
+
+                Toast.makeText(getApplicationContext(), "File Excel creato", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
-    public void excelRefused(){
+    public void excelRefused() {
+        RetrofitSingleton.getInstance().performCreateRefusedExcel(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
+                }
+                Toast.makeText(getApplicationContext(), "File Excel creato", Toast.LENGTH_SHORT).show();
 
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
-
 
 
 }
