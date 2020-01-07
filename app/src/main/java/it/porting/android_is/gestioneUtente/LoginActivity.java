@@ -362,6 +362,7 @@ public class LoginActivity extends AppCompatActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
             Intent intent = new Intent(getApplicationContext(), MainActivitySegreteria.class);
+
             startActivity(intent);
             this.finish();
         }

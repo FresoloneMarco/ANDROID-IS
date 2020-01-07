@@ -22,6 +22,7 @@ import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
 import it.porting.android_is.network.Network;
+import it.porting.android_is.network.RetrofitSingleton;
 import it.porting.android_is.utility.LazyInitializedSingleton;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,17 +45,15 @@ public class MainActivityStudente extends AppCompatActivity {
         res = findViewById(R.id.res);
 
         //baseUrl = vostro ip Locale con porta 3000 (la porta riservata al server node)
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://172.19.129.95:3000")
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        Network network = retrofit.create(Network.class);
+
 
         RequestBean requestBean = new RequestBean();
         requestBean.setEnte("Cambridge English School");
         requestBean.setLevel("A1");
         requestBean.setSerial(1234);
         requestBean.setUser_key(LazyInitializedSingleton.getInstance().getUser().get("email").toString());
-        Call<Void> call = network.createPDF(requestBean);
-        call.enqueue(new Callback<Void>() {
+
+        RetrofitSingleton.getInstance().performCreatePDF(requestBean,new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!response.isSuccessful()) {
@@ -68,8 +67,6 @@ public class MainActivityStudente extends AppCompatActivity {
                 res.setText((t.getMessage()));
             }
         });
-
-
     }
 
     @Override
