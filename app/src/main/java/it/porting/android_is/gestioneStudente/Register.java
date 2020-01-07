@@ -85,17 +85,7 @@ public class Register extends AppCompatActivity {
         final String email = String.valueOf(etEmail.getText());
         final String password = String.valueOf(etPassword.getText());
         final String vpassword = String.valueOf(etVPassword.getText());
-
-
-
-
-
-
         final Context context = this;
-
-
-
-
         //La registrazione non va a buon fine in quanto uno dei campi è vuoto
         if (nome.equals("") || cognome.equals("") || email.equals("") || password.equals("") || vpassword.equals("")) {
             progressBar.setVisibility(View.GONE);
