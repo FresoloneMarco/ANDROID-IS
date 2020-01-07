@@ -30,7 +30,7 @@ router.post('/createPDF', function(req, res, next) {
   doc.text(JSON.stringify(bean));
   console.log(JSON.stringify(bean));
   doc.end();
-  storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
+  storage.bucket("gs://porting-android-is.appspot.com").upload('C:/Users/Windows/Documents/GitHub/ANDROID-IS/app/src/main/node/'+filename,
   function(err, file) {
     if (!err) {
       console.log('File caricato');

@@ -44,7 +44,7 @@ public class MainActivityStudente extends AppCompatActivity {
         res = findViewById(R.id.res);
 
         //baseUrl = vostro ip Locale con porta 3000 (la porta riservata al server node)
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://172.19.129.95:3000")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.18:3000")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         Network network = retrofit.create(Network.class);
 
@@ -61,6 +61,9 @@ public class MainActivityStudente extends AppCompatActivity {
                     res.setText(("Code: " + response.code()));
                 }
                 res.setText("ok");
+                Intent intent = new Intent(getApplicationContext(), DownloadPDF.class);
+                startActivity(intent);
+
             }
 
             @Override
