@@ -80,7 +80,7 @@ public class RequestForm extends AppCompatActivity {
          public void onClick(View v) {
                 int seriale=Integer.parseInt(et6.getText().toString());
              int cfu=Integer.parseInt(et8.getText().toString());
-             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd ");
+             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
              Date parsedDate = null;
              try {
                  parsedDate = dateFormat.parse(et4.getText().toString());
