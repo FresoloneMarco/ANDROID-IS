@@ -58,6 +58,7 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter <RequestAdapterAdm
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         int formato = DateFormat.LONG;
+
         DateFormat dateFormat = DateFormat.getDateInstance(formato, Locale.ITALY);
         String dataRelease = dateFormat.format(arrayList.get(position).getRelease_date().toDate());
         String dataExpiry = dateFormat.format(arrayList.get(position).getExpiry_date().toDate());

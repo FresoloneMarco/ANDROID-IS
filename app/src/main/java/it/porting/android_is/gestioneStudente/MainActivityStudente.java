@@ -47,7 +47,7 @@ public class MainActivityStudente extends AppCompatActivity {
         //baseUrl = vostro ip Locale con porta 3000 (la porta riservata al server node)
 
 
-        RequestBean requestBean = new RequestBean();
+       /* RequestBean requestBean = new RequestBean();
         requestBean.setEnte("Cambridge English School");
         requestBean.setLevel("A1");
         requestBean.setSerial(1234);
@@ -66,7 +66,7 @@ public class MainActivityStudente extends AppCompatActivity {
             public void onFailure(Call<Void> call, Throwable t) {
                 res.setText((t.getMessage()));
             }
-        });
+        });*/
     }
 
     @Override
@@ -83,6 +83,7 @@ public class MainActivityStudente extends AppCompatActivity {
             case R.id.option3:
                 guida();
                 return true;
+
             case R.id.logout:
                 logout();
                 return true;
