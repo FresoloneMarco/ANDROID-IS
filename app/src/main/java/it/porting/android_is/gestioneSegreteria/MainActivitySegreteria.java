@@ -3,11 +3,14 @@ package it.porting.android_is.gestioneSegreteria;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -31,6 +34,7 @@ import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
 import it.porting.android_is.utility.LazyInitializedSingleton;
+import it.porting.android_is.utility.MyDialogFragment;
 
 public class MainActivitySegreteria extends AppCompatActivity {
 
@@ -40,6 +44,8 @@ public class MainActivitySegreteria extends AppCompatActivity {
     private FireBaseArchive fireBaseArchive;
     private FireBaseArchive fireBaseArchive2;
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
+    private static SharedPreferences.Editor editor;
+    private static SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,22 @@ public class MainActivitySegreteria extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
         /*requestBeans = new ArrayList<RequestBean>();
         */
+
+
+        //Inizializzazione shared preferences ed editor, saranno utilizzate per verificare
+        //se l'utente ha associato l'account all'impronta digitale
+        preferences = this.getSharedPreferences(
+                "myPref", Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        //Controlliamo se fingerSaved è uguale a 0, se è 0 vuol dire che l'utente non ha
+        //associato la sua impronta e visualizziamo quindi il dialogFragment dove gli chiediamo se
+        //vuole memorizzarla o meno
+       if(preferences.getInt("fingerSaved", 0) == 0){
+           MyDialogFragment dialogFragment = new MyDialogFragment();
+           FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+           dialogFragment.show(ft, "dialog");
+       }
+
 
         //individuo la recyclerview
         recyclerView = findViewById(R.id.recycler_view);

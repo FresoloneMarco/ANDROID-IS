@@ -7,16 +7,18 @@ import android.content.Intent;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.CancellationSignal;
+import android.util.Log;
 import android.widget.Toast;
 
 import it.porting.android_is.gestioneStudente.MainActivityStudente;
+
 
 
 @TargetApi(Build.VERSION_CODES.M)
 public class Fingerprint extends FingerprintManager.AuthenticationCallback {
 
     private Context context;
-
+    private Context activity;
 
     public Fingerprint(Context context) {
 
@@ -24,11 +26,11 @@ public class Fingerprint extends FingerprintManager.AuthenticationCallback {
 
     }
 
-    public void startAuth(FingerprintManager fingerprintManager, FingerprintManager.CryptoObject cryptoObject) {
+    public void startAuth(FingerprintManager fingerprintManager, FingerprintManager.CryptoObject cryptoObject, Context activity) {
 
         CancellationSignal cancellationSignal = new CancellationSignal();
         fingerprintManager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
-
+        this.activity = activity;
 
     }
 
@@ -37,8 +39,11 @@ public class Fingerprint extends FingerprintManager.AuthenticationCallback {
     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
 
 
-        Intent intent = new Intent(context.getApplicationContext(), MainActivityStudente.class);
-        context.startActivity(intent);
+        /*Intent intent = new Intent(context.getApplicationContext(), MainActivityStudente.class);
+        context.startActivity(intent)*/;
+        LoginActivity log = new LoginActivity();
+        log.fingerprintLogin(activity);
+
 
     }
 

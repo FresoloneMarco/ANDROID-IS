@@ -1,24 +1,22 @@
 package it.porting.android_is.gestioneAdmin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
-import android.print.PrintAttributes;
-import android.print.pdf.PrintedPdfDocument;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,8 +34,7 @@ import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
 import it.porting.android_is.utility.LazyInitializedSingleton;
-
-import static android.graphics.pdf.PdfDocument.*;
+import it.porting.android_is.utility.MyDialogFragment;
 
 public class MainActivityAdmin extends AppCompatActivity {
 
@@ -46,6 +43,8 @@ public class MainActivityAdmin extends AppCompatActivity {
     private RequestAdapterAdmin requestAdapterAdmin;
     private FireBaseArchive fireBaseArchive;
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
+    private static SharedPreferences.Editor editor;
+    private static SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +54,19 @@ public class MainActivityAdmin extends AppCompatActivity {
         actionBar.setTitle("Home Admin");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
 
+        //Inizializzazione shared preferences ed editor, saranno utilizzate per verificare
+        //se l'utente ha associato l'account all'impronta digitale
+        preferences = this.getSharedPreferences(
+                "myPref", Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        //Controlliamo se fingerSaved è uguale a 0, se è 0 vuol dire che l'utente non ha
+        //associato la sua impronta e visualizziamo quindi il dialogFragment dove gli chiediamo se
+        //vuole memorizzarla o meno
+        if(preferences.getInt("fingerSaved", 0) == 0){
+            MyDialogFragment dialogFragment = new MyDialogFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            dialogFragment.show(ft, "dialog");
+        }
 
         //individuo la recyclerview
         recyclerView = findViewById(R.id.recycler_view);
