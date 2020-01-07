@@ -79,10 +79,16 @@ public class RetrofitSingleton {
         response.enqueue(userCallback);
     }
 
-    public void performCreateExcel(Callback<Void> userCallback){
+    public void performCreateApprovedExcel(Callback<Void> userCallback){
         Call<Void> response = apiService.createApprovedExcel();
         response.enqueue(userCallback);
     }
+
+    public void performCreateRefusedExcel(Callback<Void> userCallback){
+        Call<Void> response = apiService.createRefusedExcel();
+        response.enqueue(userCallback);
+    }
+
 
 
 }
