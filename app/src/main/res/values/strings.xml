@@ -58,5 +58,7 @@
     <string name="inserisci_richiesta">Inserisci richiesta</string>
     <string name="logout">Logout</string>
     <string name="guida">Guida</string>
+    <string name="richieste_approvate">Richieste Approvate</string>
+    <string name="richieste_rifiutate">Richieste Rifiutate</string>
     //End Activity_Register
 </resources>

@@ -12,4 +12,8 @@ public interface Network {
 
     @POST("createPDF")
     Call<Void> createPDF(@Body RequestBean requestBean);
+
+    @POST("createApprovedExcel")
+    Call<Void> createApprovedExcel();
+
 }

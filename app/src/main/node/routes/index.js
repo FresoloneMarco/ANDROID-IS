@@ -11,7 +11,17 @@ admin.initializeApp({
 });
 
 
-const storage = admin.storage();
+
+
+
+
+
+
+
+
+
+
+
 router.use(express.json());
 
 
@@ -38,9 +48,18 @@ router.post('/createPDF', function(req, res, next) {
     }
     else{
       console.log(err);
+      res.send('500');
     }
   });
 });
+
+
+//crea Excel richieste approvate
+router.post('/createApprovedExcel', function(req, res, next) {
+
+  
+});
+
 
 
 router.get('/boh/:id',function(req,res,next){
