@@ -97,6 +97,10 @@ public class MainActivityAdmin extends AppCompatActivity {
                 return true;
             case R.id.option2:  guida();
                 return true;
+            case R.id.option3:  excelApproved();
+                return true;
+            case R.id.option4: excelRefused();
+                return true;
             case R.id.logout: logout();
                 return true;
 
@@ -105,11 +109,14 @@ public class MainActivityAdmin extends AppCompatActivity {
 
     }
 
+
+    //trasferisce il controllo alla pagina di visualizzazione del profilo
     public void modpage(){
         Intent intent = new Intent(getApplicationContext(), ViewActivityUtente.class);
         startActivity(intent);
     }
 
+    //visualizza la guida utente
     public void guida(){
         Intent intent = new Intent(getApplicationContext(), Guida.class);
         startActivity(intent);
@@ -117,7 +124,7 @@ public class MainActivityAdmin extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
+        getMenuInflater().inflate(R.menu.home_menu_admin, menu);
 
         return true;
     }
@@ -134,6 +141,14 @@ public class MainActivityAdmin extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    public void excelApproved(){
+
+    }
+
+    public void excelRefused(){
+
+    }
 
 
 
