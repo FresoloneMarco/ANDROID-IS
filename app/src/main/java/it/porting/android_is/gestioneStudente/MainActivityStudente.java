@@ -22,6 +22,7 @@ import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
 import it.porting.android_is.network.Network;
+import it.porting.android_is.network.RetrofitSingleton;
 import it.porting.android_is.utility.LazyInitializedSingleton;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,35 +45,28 @@ public class MainActivityStudente extends AppCompatActivity {
         res = findViewById(R.id.res);
 
         //baseUrl = vostro ip Locale con porta 3000 (la porta riservata al server node)
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.18:3000")
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        Network network = retrofit.create(Network.class);
 
-        RequestBean requestBean = new RequestBean();
+
+       /* RequestBean requestBean = new RequestBean();
         requestBean.setEnte("Cambridge English School");
         requestBean.setLevel("A1");
         requestBean.setSerial(1234);
         requestBean.setUser_key(LazyInitializedSingleton.getInstance().getUser().get("email").toString());
-        Call<Void> call = network.createPDF(requestBean);
-        call.enqueue(new Callback<Void>() {
+
+        RetrofitSingleton.getInstance().performCreatePDF(requestBean,new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!response.isSuccessful()) {
                     res.setText(("Code: " + response.code()));
                 }
                 res.setText("ok");
-                Intent intent = new Intent(getApplicationContext(), DownloadPDF.class);
-                startActivity(intent);
-
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 res.setText((t.getMessage()));
             }
-        });
-
-
+        });*/
     }
 
     @Override
@@ -89,6 +83,7 @@ public class MainActivityStudente extends AppCompatActivity {
             case R.id.option3:
                 guida();
                 return true;
+
             case R.id.logout:
                 logout();
                 return true;

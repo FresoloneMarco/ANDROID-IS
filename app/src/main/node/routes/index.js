@@ -12,6 +12,8 @@ admin.initializeApp({
 
 
 const storage = admin.storage();
+const db = admin.firestore();
+
 router.use(express.json());
 
 
@@ -37,23 +39,89 @@ router.post('/createPDF', function(req, res, next) {
       res.send('200');
     }
     else{
+      res.send('500');
       console.log(err);
     }
   });
 });
 
-
-router.get('/boh/:id',function(req,res,next){
-  res.send('boh' + req.params.id);
+//crea Excel richieste approvate
+router.post('/createApprovedExcel', function(req, res, next){
+  db.collection('request').where('status', '==', 'approvata').get()
+  .then(snapshot => {
+    if(snapshot.empty){
+      console.log('Nessun risultato');
+      res.send('404');
+    }
+    var filename = 'Accettate.xls';
+    var writeStream = fs.createWriteStream(filename);
+      writeStream.write('EMAIL \t NOME \t COGNOME \n');
+      snapshot.forEach(doc =>{
+        console.log(doc.data());
+        writeStream.write(doc.get('user_key').toString());
+        writeStream.write('\t');
+        writeStream.write(doc.get('user_name').toString());
+        writeStream.write('\t');
+        writeStream.write(doc.get('user_surname').toString());
+        writeStream.write('\n'); 
+      })
+      writeStream.close();
+      storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
+      function(err, file) {
+        if (!err) {
+          console.log('File caricato');
+          res.send('200');
+        }
+        else{
+          res.send('500');
+          console.log(err);
+        }
+      });
+  })
+  .catch(err =>{
+    console.error('Error getting document', err);
+    res.send('500');
+  })
 });
 
-router.post('/sub', function(req,res,next){
-  var id = 5;
-  res.redirect('/boh/' + ' ' + id);
+//crea Excel richieste rifiutate
+router.post('/createRefusedExcel', function(req, res, next){
+  db.collection('request').where('status', '==', 'rifiutata').get()
+  .then(snapshot => {
+    if(snapshot.empty){
+      console.log('Nessun risultato');
+      res.send('404');
+    }
+      var filename = 'Rifiutate.xls';
+      var writeStream = fs.createWriteStream(filename);
+      writeStream.write('EMAIL \t NOME \t COGNOME \n');
+      snapshot.forEach(doc =>{
+        console.log(doc.data());
+        writeStream.write(doc.get('user_key').toString());
+        writeStream.write('\t');
+        writeStream.write(doc.get('user_name').toString());
+        writeStream.write('\t');
+        writeStream.write(doc.get('user_surname').toString());
+        writeStream.write('\n'); 
+      })
+      writeStream.close();
+      storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
+      function(err, file) {
+        if (!err) {
+          console.log('File caricato');
+          res.send('200');
+        }
+        else{
+          res.send('500');
+          console.log(err);
+        }
+      });
+  })
+  .catch(err =>{
+    console.error('Error getting document', err);
+    res.send('500');
+  })
 });
-
-
-
 
 
 module.exports = router;
