@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -41,10 +42,12 @@ public class Register extends AppCompatActivity {
     private EditText etPassword;
     private EditText etVPassword;
     private RadioGroup rdgroup_Sex;
+    private RadioButton radioButtonSex;
     private ProgressBar progressBar;
     private Button btReg;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String sex;
 
 
     @Override
@@ -82,7 +85,12 @@ public class Register extends AppCompatActivity {
         final String email = String.valueOf(etEmail.getText());
         final String password = String.valueOf(etPassword.getText());
         final String vpassword = String.valueOf(etVPassword.getText());
-        final String sex = "M";
+
+
+
+
+
+
         final Context context = this;
 
 
@@ -154,6 +162,7 @@ public class Register extends AppCompatActivity {
                                 user.put("cognome", cognome);
                                 user.put("email", email);
                                 user.put("password", password);
+
                                 user.put("sesso", sex);
                                 user.put("ruolo", "studente");
 
@@ -189,6 +198,15 @@ public class Register extends AppCompatActivity {
                     });
         }
     }
+
+    public void clickSex(View v){
+        int radioSexM = rdgroup_Sex.getCheckedRadioButtonId();
+        radioButtonSex = findViewById(radioSexM);
+        sex = radioButtonSex.getText().toString();
+
+    }
+
+
 }
 
 
