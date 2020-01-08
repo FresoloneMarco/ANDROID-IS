@@ -107,7 +107,8 @@ public class RequestForm extends AppCompatActivity {
              requestBean.setLevel(et7.getText().toString());
              requestBean.setValidated_cfu(cfu);
              requestBean.setStato("Inviato");
-
+             requestBean.setUser_name(LazyInitializedSingleton.getInstance().getUser().get("nome").toString());
+             requestBean.setUser_surname(LazyInitializedSingleton.getInstance().getUser().get("cognome").toString());
              requestBean.setUser_key(LazyInitializedSingleton.getInstance().getUser().get("email").toString());
 
              db.collection("request").add(requestBean).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
