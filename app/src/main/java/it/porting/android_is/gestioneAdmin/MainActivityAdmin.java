@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Bundle;
 import android.print.PrintAttributes;
 import android.print.pdf.PrintedPdfDocument;
@@ -22,10 +25,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -43,6 +50,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.graphics.pdf.PdfDocument.*;
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class MainActivityAdmin extends AppCompatActivity {
 
@@ -51,6 +59,11 @@ public class MainActivityAdmin extends AppCompatActivity {
     private RequestAdapterAdmin requestAdapterAdmin;
     private FireBaseArchive fireBaseArchive;
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
+    private static FirebaseStorage firebaseStorage;
+    private static StorageReference storageReference;
+    private static StorageReference ref;
+    private String file;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +171,11 @@ public class MainActivityAdmin extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
                 }
 
+
                 Toast.makeText(getApplicationContext(), "File Excel creato", Toast.LENGTH_SHORT).show();
+
+                downloadAccepted();
+
 
             }
 
@@ -178,6 +195,7 @@ public class MainActivityAdmin extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
                 }
                 Toast.makeText(getApplicationContext(), "File Excel creato", Toast.LENGTH_SHORT).show();
+                downloadRefused();
 
             }
 
@@ -186,6 +204,52 @@ public class MainActivityAdmin extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+
+    public void downloadAccepted(){
+        storageReference=firebaseStorage.getInstance().getReference();
+        file = "Accettate.xlsx";
+        ref=storageReference.child(file);
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String url=uri.toString();
+                downloadFile(getApplicationContext(),file,".xlsx", DIRECTORY_DOWNLOADS,url);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),"ERRORE", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void downloadRefused(){
+        storageReference=firebaseStorage.getInstance().getReference();
+        file = "Rifiutate.xlsx";
+        ref=storageReference.child(file);
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String url=uri.toString();
+                downloadFile(getApplicationContext(),file,".xlsx",DIRECTORY_DOWNLOADS,url);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "ERRORE", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void downloadFile(Context context, String fileName, String fileExtension, String destinationDir, String url){
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(context, destinationDir,fileName+fileExtension);
+        downloadManager.enqueue(request);
     }
 
 

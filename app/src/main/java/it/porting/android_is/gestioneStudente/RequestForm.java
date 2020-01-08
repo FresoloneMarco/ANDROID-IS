@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -114,6 +115,10 @@ public class RequestForm extends AppCompatActivity {
              db.collection("request").add(requestBean).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                  @Override
                  public void onSuccess(DocumentReference documentReference) {
+                     Toast.makeText(getApplicationContext(), "Richiesta caricata con successo", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MainActivityStudente.class);
+                    startActivity(intent);
+
 
                  }
              })
@@ -121,6 +126,8 @@ public class RequestForm extends AppCompatActivity {
                          @Override
                          public void onFailure(@NonNull Exception e) {
                              Log.w("DEBUG", "Error writing document", e);
+                             Toast.makeText(getApplicationContext(), "Richiesta non caricata", Toast.LENGTH_SHORT).show();
+
                          }
                      });
 
