@@ -26,13 +26,24 @@ router.get('/', function(req, res, next) {
 router.post('/createPDF', function(req, res, next) {
   const doc = new PDFDocument;
   var bean = req.body;
+
   var filename = req.body.user_key + '.pdf';
+  //var writeStream = fs.createWriteStream(filename);
   doc.pipe(fs.createWriteStream(filename));
   console.log('In server...');
-  doc.text(JSON.stringify(bean));
+
+  doc.text('UNIVERSITA DEGLI STUDI DI SALERNO, DIPARTIMENTO DI INFORMATICA \n\nAlla Presidente del Consiglio Didattico di Informatica \n'+
+  'DOMANDA DI RICONOSCIMENTO DEI CREDITI FORMATIVI PREVISTI PER LA CONOSCENZA DELLA LINGUA INGLESE \n\n'+
+  'La/Il sottoscritta/o ' + req.body.user_name +' ' + req.body.user_surname + ' immatricolata/o nell aa ' + req.body.year+ ' ' + 'al corso di Laurea Triennale in Informatica, matricola n°'+
+  req.body.matricola + '\n\n                                                               ' + 'CHIEDE\n\nChe venga valutata la certificazione allegata.\n' + 'ENTE CERTIFICATORE: ' + req.body.ente + '\nLIVELLO CEFR: ' +
+  req.body.level + '\n' + 'ai fini del riconoscimento di n°' + req.body.validated_cfu + ' ' + 'CFU relativi alla prova di Lingua Inglese previsti nel proprio piano' +
+  'di studi.\nSi allega certificazione.\n\n Fisciano, _____________     Firma studente ___________________________');
+
+
   console.log(JSON.stringify(bean));
   doc.end();
-  storage.bucket("gs://porting-android-is.appspot.com").upload('C:/Users/Windows/Documents/GitHub/ANDROID-IS/app/src/main/node/'+filename,
+
+  storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
   function(err, file) {
     if (!err) {
       console.log('File caricato');
