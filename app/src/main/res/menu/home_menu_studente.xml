@@ -15,6 +15,16 @@
         android:title="@string/guida"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/option4"
+        android:title="Download"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/option5"
+        android:title="Upload"
+        app:showAsAction="never" />
+
 
     <item android:id="@+id/logout"
         android:title="@string/logout"
