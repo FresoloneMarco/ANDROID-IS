@@ -84,6 +84,14 @@ public class MainActivityStudente extends AppCompatActivity {
                 guida();
                 return true;
 
+            case R.id.option4:
+                downl();
+                return true;
+
+            case R.id.option5:
+                upl();
+                return true;
+
             case R.id.logout:
                 logout();
                 return true;
@@ -91,6 +99,16 @@ public class MainActivityStudente extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public void downl(){
+        Intent intent = new Intent(getApplicationContext(), DownloadPDF.class);
+        startActivity(intent);
+    }
+
+    public void upl(){
+        Intent intent = new Intent(getApplicationContext(), UploadFiles.class);
+        startActivity(intent);
     }
 
     public void modpage() {
