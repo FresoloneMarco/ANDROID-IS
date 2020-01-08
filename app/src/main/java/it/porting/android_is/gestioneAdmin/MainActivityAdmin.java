@@ -215,7 +215,7 @@ public class MainActivityAdmin extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 String url=uri.toString();
-                downloadFile(getApplicationContext(),file,".xlsx", DIRECTORY_DOWNLOADS,url);
+                downloadFile(getApplicationContext(),file, DIRECTORY_DOWNLOADS,url);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -233,7 +233,7 @@ public class MainActivityAdmin extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 String url=uri.toString();
-                downloadFile(getApplicationContext(),file,".xlsx",DIRECTORY_DOWNLOADS,url);
+                downloadFile(getApplicationContext(),file,DIRECTORY_DOWNLOADS,url);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -243,12 +243,12 @@ public class MainActivityAdmin extends AppCompatActivity {
         });
     }
 
-    private void downloadFile(Context context, String fileName, String fileExtension, String destinationDir, String url){
+    private void downloadFile(Context context, String fileName, String destinationDir, String url){
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(context, destinationDir,fileName+fileExtension);
+        request.setDestinationInExternalFilesDir(context, destinationDir,fileName);
         downloadManager.enqueue(request);
     }
 

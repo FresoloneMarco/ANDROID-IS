@@ -58,7 +58,7 @@ public class DownloadPDF extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 String url=uri.toString();
-                downloadFile(DownloadPDF.this,mail,".pdf",DIRECTORY_DOWNLOADS,url);
+                downloadFile(DownloadPDF.this,mail,DIRECTORY_DOWNLOADS,url);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -68,12 +68,12 @@ public class DownloadPDF extends AppCompatActivity {
         });
     }
 
-    public void downloadFile(Context context,String fileName,String fileExtension,String destinationDir,String url){
+    public void downloadFile(Context context,String fileName,String destinationDir,String url){
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(context, destinationDir,fileName+fileExtension);
+        request.setDestinationInExternalFilesDir(context, destinationDir,fileName);
         downloadManager.enqueue(request);
     }
 }

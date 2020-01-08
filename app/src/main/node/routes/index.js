@@ -4,7 +4,6 @@ var router = express.Router();
 const admin = require ('firebase-admin');
 const PDFDocument = require('pdfkit');
 const serviceAccount = ('./serviceAccountKey.json');
-const Excel = require('exceljs')
 
 
 admin.initializeApp({
@@ -66,22 +65,18 @@ router.post('/createApprovedExcel', function(req, res, next){
       res.send('404');
     }
     var filename = 'Accettate.xlsx';
-      const workbook = new Excel.Workbook();
-      const worksheet = workbook.addWorksheet('Richieste');
-      worksheet.getCell('A1').value = 'EMAIL'
-      worksheet.getCell('B1').value = 'NOME'
-      worksheet.getCell('C1').value = 'COGNOME'
+    var writeStream = fs.createWriteStream(filename);
+      writeStream.write('EMAIL \t NOME \t COGNOME \n');
       snapshot.forEach(doc =>{
-        var cont = 2;
-        worksheet.getCell('A'+cont).value = doc.get('user_key').toString();
-        worksheet.getCell('B'+cont).value = doc.get('user_name').toString();
-        worksheet.getCell('C'+cont).value = doc.get('user_surname').toString();
-
         console.log(doc.data());
-
-        cont = parseInt(cont) + parseInt(1);
+        writeStream.write(doc.get('user_key').toString());
+        writeStream.write('\t');
+        writeStream.write(doc.get('user_name').toString());
+        writeStream.write('\t');
+        writeStream.write(doc.get('user_surname').toString());
+        writeStream.write('\n'); 
       })
-      workbook.xlsx.writeFile(filename);
+      writeStream.close();
       storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
       function(err, file) {
         if (!err) {
@@ -109,23 +104,18 @@ router.post('/createRefusedExcel', function(req, res, next){
       res.send('404');
     }
       var filename = 'Rifiutate.xlsx';
-      const workbook = new Excel.Workbook();
-      const worksheet = workbook.addWorksheet('Richieste');
-      worksheet.getCell('A1').value = 'EMAIL'
-      worksheet.getCell('B1').value = 'NOME'
-      worksheet.getCell('C1').value = 'COGNOME'
+      var writeStream = fs.createWriteStream(filename);
+      writeStream.write('EMAIL \t NOME \t COGNOME \n');
       snapshot.forEach(doc =>{
-        var cont = 2;
-        worksheet.getCell('A'+cont).value = doc.get('user_key').toString();
-        worksheet.getCell('B'+cont).value = doc.get('user_name').toString();
-        worksheet.getCell('C'+cont).value = doc.get('user_surname').toString();
-
         console.log(doc.data());
-
-        cont = parseInt(cont) + parseInt(1);
+        writeStream.write(doc.get('user_key').toString());
+        writeStream.write('\t');
+        writeStream.write(doc.get('user_name').toString());
+        writeStream.write('\t');
+        writeStream.write(doc.get('user_surname').toString());
+        writeStream.write('\n'); 
       })
-
-      workbook.xlsx.writeFile(filename);
+      writeStream.close();
       storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
       function(err, file) {
         if (!err) {
