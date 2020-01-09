@@ -66,7 +66,7 @@ public class MainActivityStudente extends AppCompatActivity {
         //baseUrl = vostro ip Locale con porta 3000 (la porta riservata al server node)
 
 
-        RequestBean requestBean = new RequestBean();
+       /* RequestBean requestBean = new RequestBean();
         requestBean.setEnte("Cambridge English School");
         requestBean.setLevel("A1");
         requestBean.setSerial(1234);
@@ -85,7 +85,7 @@ public class MainActivityStudente extends AppCompatActivity {
             public void onFailure(Call<Void> call, Throwable t) {
                 res.setText((t.getMessage()));
             }
-        });
+        });*/
     }
 
     @Override
@@ -102,6 +102,15 @@ public class MainActivityStudente extends AppCompatActivity {
             case R.id.option3:
                 guida();
                 return true;
+
+            case R.id.option4:
+                downl();
+                return true;
+
+            case R.id.option5:
+                upl();
+                return true;
+
             case R.id.logout:
                 logout();
                 return true;
@@ -109,6 +118,16 @@ public class MainActivityStudente extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public void downl(){
+        Intent intent = new Intent(getApplicationContext(), DownloadPDF.class);
+        startActivity(intent);
+    }
+
+    public void upl(){
+        Intent intent = new Intent(getApplicationContext(), UploadFiles.class);
+        startActivity(intent);
     }
 
     public void modpage() {

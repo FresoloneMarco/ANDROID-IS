@@ -11,6 +11,7 @@ public class UtenteBean {
     private String sesso;
     private String ruolo;
     private String password;
+    private  int cfu;
 
     public String getPassword() {
         return password;
@@ -32,9 +33,9 @@ public class UtenteBean {
         this.sesso = sesso;
     }
 
-    public void setRuolo(String ruolo) {
-        this.ruolo = ruolo;
-    }
+    public void setRuolo(String ruolo) { this.ruolo = ruolo; }
+
+    public void setCfu(int cfu) { this.cfu = cfu; }
 
     public String getNome() {
         return nome;
@@ -48,7 +49,7 @@ public class UtenteBean {
         return sesso;
     }
 
-    public String getRuolo() {
-        return ruolo;
-    }
+    public String getRuolo() { return ruolo; }
+
+    public int getCfu() { return cfu; }
 }

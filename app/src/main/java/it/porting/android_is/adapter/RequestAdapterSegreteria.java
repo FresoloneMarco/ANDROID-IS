@@ -1,6 +1,7 @@
 package it.porting.android_is.adapter;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -17,13 +22,16 @@ import java.util.Locale;
 import it.porting.android_is.R;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 
 /**
  * Classe Adapter che consente la gestione della recyclerView nell'activity della segreteria
  */
-public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapterSegreteria.ViewHolder>{
+public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapterSegreteria.ViewHolder> {
 
     ArrayList<RequestBean> arrayList;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     public RequestAdapterSegreteria(ArrayList<RequestBean> arrayList) {
@@ -33,6 +41,7 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
 
     /**
      * Inserisce nella recyclerview la formattazione di ogni riga
+     *
      * @param parent
      * @param viewType
      * @return
@@ -51,18 +60,19 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
 
     /**
      * Inserisce in ogni campo il rispettivo valore
-     * @param holder la recyclerview
+     *
+     * @param holder   la recyclerview
      * @param position posizione della tupla
      */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
         int formato = DateFormat.LONG;
         DateFormat dateFormat = DateFormat.getDateInstance(formato, Locale.ITALY);
         String dataRelease = dateFormat.format(arrayList.get(position).getRelease_date().toDate());
         String dataExpiry = dateFormat.format(arrayList.get(position).getExpiry_date().toDate());
-        holder.idText.setText("ID richiesta: "  + Integer.toString(arrayList.get(position).getId()));
-        holder.livelloText.setText("Livello: " +  arrayList.get(position).getLevel());
+        holder.idText.setText("ID richiesta: " + Integer.toString(arrayList.get(position).getId()));
+        holder.livelloText.setText("Livello: " + arrayList.get(position).getLevel());
         holder.releaseText.setText("Rilascio: " + dataRelease);
         holder.expiryText.setText("Scadenza: " + dataExpiry);
         holder.annoText.setText("Anno: " + arrayList.get(position).getYear());
@@ -71,13 +81,37 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
         holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " + arrayList.get(position).getUser_surname());
         holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
 
+        holder.btSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                String email = arrayList.get(position).getUser_key();
+                int cfu = arrayList.get(position).getValidated_cfu();
 
+                db.collection("utenti").document((email))
+                        .update("cfu", cfu ).
+                        addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("onClick", "DocumentSnapshot caricato correttamente");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Errore nel caricamento del documento", e);
+                            }
+                        });
+            }
+        });
     }
+
+
 
 
     /**
      * conteggio elementi
+     *
      * @return
      */
     @Override
@@ -106,9 +140,6 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
         Button btSend;
 
 
-
-
-
         public ViewHolder(View itemView) {
             super(itemView);
             root = itemView;
@@ -124,13 +155,7 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
             btSend = root.findViewById(R.id.btSend);
 
 
-
-
         }
     }
-
-
-
-
 
 }

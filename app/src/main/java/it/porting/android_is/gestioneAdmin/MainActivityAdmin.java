@@ -4,8 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Bundle;
+import android.print.PrintAttributes;
+import android.print.pdf.PrintedPdfDocument;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,12 +22,18 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -33,8 +44,15 @@ import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
+import it.porting.android_is.network.RetrofitSingleton;
 import it.porting.android_is.utility.LazyInitializedSingleton;
 import it.porting.android_is.utility.MyDialogFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.graphics.pdf.PdfDocument.*;
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class MainActivityAdmin extends AppCompatActivity {
 
@@ -45,6 +63,11 @@ public class MainActivityAdmin extends AppCompatActivity {
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
     private static SharedPreferences.Editor editor;
     private static SharedPreferences preferences;
+    private static FirebaseStorage firebaseStorage;
+    private static StorageReference storageReference;
+    private static StorageReference ref;
+    private String file;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +75,7 @@ public class MainActivityAdmin extends AppCompatActivity {
         setContentView(R.layout.activity_home_admin);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Home Admin");
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255,153,0)));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255, 153, 0)));
 
         //Inizializzazione shared preferences ed editor, saranno utilizzate per verificare
         //se l'utente ha associato l'account all'impronta digitale
@@ -81,18 +104,17 @@ public class MainActivityAdmin extends AppCompatActivity {
         fireBaseArchive.getAllRequests(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     //Se il task ha successo, salvo ogni "tupla" all'interno dell ArrayList
-                    for(QueryDocumentSnapshot req : task.getResult()){
+                    for (QueryDocumentSnapshot req : task.getResult()) {
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
                     }
 
                     requestAdapterAdmin = new RequestAdapterAdmin(requestBeans);
                     recyclerView.setAdapter(requestAdapterAdmin);
-                }
-                else{
-                    Log.d("Errore nella query","ERRORE");
+                } else {
+                    Log.d("Errore nella query", "ERRORE");
                 }
             }
         });
@@ -104,16 +126,21 @@ public class MainActivityAdmin extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.option1:  modpage();
+        switch (item.getItemId()) {
+            case R.id.option1:
+                modpage();
                 return true;
-            case R.id.option2:  guida();
+            case R.id.option2:
+                excelApproved();
                 return true;
-            case R.id.option3:  excelApproved();
+            case R.id.option3:
+                guida();
                 return true;
-            case R.id.option4: excelRefused();
+            case R.id.option4:
+                excelRefused();
                 return true;
-            case R.id.logout: logout();
+            case R.id.logout:
+                logout();
                 return true;
 
         }
@@ -154,15 +181,94 @@ public class MainActivityAdmin extends AppCompatActivity {
     }
 
 
-    public void excelApproved(){
+    public void excelApproved() {
+        RetrofitSingleton.getInstance().performCreateApprovedExcel(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
+                }
+
+
+                Toast.makeText(getApplicationContext(), "File Excel creato", Toast.LENGTH_SHORT).show();
+
+                downloadAccepted();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
-    public void excelRefused(){
+    public void excelRefused() {
+        RetrofitSingleton.getInstance().performCreateRefusedExcel(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
+                }
+                Toast.makeText(getApplicationContext(), "File Excel creato", Toast.LENGTH_SHORT).show();
+                downloadRefused();
 
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
+    public void downloadAccepted(){
+        storageReference=firebaseStorage.getInstance().getReference();
+        file = "Accettate.xlsx";
+        ref=storageReference.child(file);
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String url=uri.toString();
+                downloadFile(getApplicationContext(),file, DIRECTORY_DOWNLOADS,url);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),"ERRORE", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void downloadRefused(){
+        storageReference=firebaseStorage.getInstance().getReference();
+        file = "Rifiutate.xlsx";
+        ref=storageReference.child(file);
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String url=uri.toString();
+                downloadFile(getApplicationContext(),file,DIRECTORY_DOWNLOADS,url);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "ERRORE", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void downloadFile(Context context, String fileName, String destinationDir, String url){
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(context, destinationDir,fileName);
+        downloadManager.enqueue(request);
+    }
 
 
 }

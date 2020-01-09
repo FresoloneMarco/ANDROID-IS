@@ -19,10 +19,11 @@ public class RequestBean {
     private String user_name;
     private String user_surname;
     private String ente;
-    private boolean stato=true;
+    private String stato;
+    private String matricola;
 
 
-    public RequestBean(int id, String level, int serial, int validated_cfu, String year, Timestamp release_date, Timestamp expiry_date, String user_key, String user_name, String user_surname, String ente, Boolean stato) {
+    public RequestBean(int id, String level, int serial, int validated_cfu, String year, Timestamp release_date, Timestamp expiry_date, String user_key, String user_name, String user_surname, String ente, String stato,String matricola) {
         this.id = id;
         this.level = level;
         this.serial = serial;
@@ -35,6 +36,7 @@ public class RequestBean {
         this.user_surname = user_surname;
         this.ente = ente;
         this.stato = stato;
+        this.matricola= matricola;
 
     }
 
@@ -71,6 +73,8 @@ public class RequestBean {
     public void setValidated_cfu(int validated_cfu) {
         this.validated_cfu = validated_cfu;
     }
+    public String getMatricola(){ return matricola;}
+    public void setMatricola(String matricola){ this.matricola = matricola;}
 
     public String getYear() {
         return year;
@@ -128,11 +132,11 @@ public class RequestBean {
         this.ente = ente;
     }
 
-    public boolean isStato() {
+    public String isStato() {
         return stato;
     }
 
-    public void setStato(boolean stato) {
+    public void setStato(String stato) {
         this.stato = stato;
     }
 
@@ -145,6 +149,7 @@ public class RequestBean {
                 ", level='" + level + '\'' +
                 ", serial=" + serial +
                 ", validated_cfu=" + validated_cfu +
+                ", matricola='" + matricola + '\'' +
                 ", year='" + year + '\'' +
                 ", release_date=" + release_date +
                 ", expiry_date=" + expiry_date +
