@@ -11,7 +11,7 @@ public class UtenteBean {
     private String sesso;
     private String ruolo;
     private String password;
-    private  int cfu;
+    private int cfu;
 
     public String getPassword() {
         return password;
