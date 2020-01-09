@@ -19,7 +19,7 @@
 //ENDGLOBAL
 
 <string name="not_yet_registered">Not registered yet? </string>
-<string name="register_now">Sign in</string>
+<string name="register_now">Register now</string>
 <string name="login_failed">The data are incorrect. </string>
 <string name="missing_data">Please insert your data.</string>
 
@@ -29,7 +29,7 @@
 <string name="sesso">Gender</string>
 <string name="missingData">Please make sure that you have filled in all fields!</string>
 <string name="accedi">Login</string>
-<string name="registrati">Sign in</string>
+<string name="registrati">Register now</string>
 <string name="f">F</string>
 <string name="m">M</string>
 <string name="home_studente">Home Student</string>
@@ -44,7 +44,7 @@
 <string name="anno">Year</string>
 <string name="livello">Level</string>
 <string name="seriale">Serial</string>
-<string name="cfu_da_validare">CFU da validare</string>
+<string name="cfu_da_validare">CFU to validate</string>
 <string name="studente">Student</string>
 //End Activity_Register
 </resources>
