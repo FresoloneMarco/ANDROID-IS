@@ -11,9 +11,11 @@ import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -44,6 +46,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.prefs.Preferences;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -118,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             startFingerAuth();
         }
 
-        tvRegisterNow.setOnClickListener(new View.OnClickListener() {
+                tvRegisterNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 register();
@@ -257,6 +260,7 @@ public class LoginActivity extends AppCompatActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
             Intent intent = new Intent(getApplicationContext(), MainActivitySegreteria.class);
+
             startActivity(intent);
             this.finish();
         }
