@@ -1,5 +1,6 @@
 package it.porting.android_is.gestioneAdmin;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
