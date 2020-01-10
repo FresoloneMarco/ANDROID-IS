@@ -142,6 +142,7 @@ public class MainActivityStudente extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.home_menu_studente, menu);
 
         return true;
+
     }
 
 

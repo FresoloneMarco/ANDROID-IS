@@ -114,7 +114,7 @@ public class MainActivityAdmin extends AppCompatActivity {
                         requestBeans.add(requestBean);
                     }
 
-                    requestAdapterAdmin = new RequestAdapterAdmin(requestBeans);
+                    requestAdapterAdmin = new RequestAdapterAdmin(requestBeans, getApplicationContext());
                     recyclerView.setAdapter(requestAdapterAdmin);
                 } else {
                     Log.d("Errore nella query", "ERRORE");
