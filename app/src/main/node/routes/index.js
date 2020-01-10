@@ -4,15 +4,19 @@ var router = express.Router();
 const admin = require ('firebase-admin');
 const PDFDocument = require('pdfkit');
 const serviceAccount = ('./serviceAccountKey.json');
+const Excel = require('exceljs');
+
 
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-
 const storage = admin.storage();
 const db = admin.firestore();
+
+/*const clientFS = new Storage(serviceAccount);
+const bucket = 'gs://porting-android-is.appspot.com';*/
 
 router.use(express.json());
 
@@ -38,8 +42,6 @@ router.post('/createPDF', function(req, res, next) {
   req.body.matricola + '\n\n                                                               ' + 'CHIEDE\n\nChe venga valutata la certificazione allegata.\n' + 'ENTE CERTIFICATORE: ' + req.body.ente + '\nLIVELLO CEFR: ' +
   req.body.level + '\n' + 'ai fini del riconoscimento di n°' + req.body.validated_cfu + ' ' + 'CFU relativi alla prova di Lingua Inglese previsti nel proprio piano' +
   'di studi.\nSi allega certificazione.\n\n Fisciano, _____________     Firma studente ___________________________');
-
-
   console.log(JSON.stringify(bean));
   doc.end();
 
@@ -58,25 +60,26 @@ router.post('/createPDF', function(req, res, next) {
 
 //crea Excel richieste approvate
 router.post('/createApprovedExcel', function(req, res, next){
-  db.collection('request').where('status', '==', 'approvata').get()
+  db.collection('request').where('stato', '==', 'Approvata').get()
   .then(snapshot => {
     if(snapshot.empty){
       console.log('Nessun risultato');
       res.send('404');
     }
-    var filename = 'Accettate.xlsx';
-    var writeStream = fs.createWriteStream(filename);
-      writeStream.write('EMAIL \t NOME \t COGNOME \n');
-      snapshot.forEach(doc =>{
-        console.log(doc.data());
-        writeStream.write(doc.get('user_key').toString());
-        writeStream.write('\t');
-        writeStream.write(doc.get('user_name').toString());
-        writeStream.write('\t');
-        writeStream.write(doc.get('user_surname').toString());
-        writeStream.write('\n'); 
-      })
-      writeStream.close();
+      var filename = 'Accettate.xlsx';
+      const workbook = new Excel.Workbook();
+      const worksheet = workbook.addWorksheet('Richieste');
+      worksheet.getCell('A1').value = 'EMAIL';
+      worksheet.getCell('B1').value = 'NOME';
+      worksheet.getCell('C1').value = 'COGNOME';
+      snapshot.forEach(doc =>{	     
+        var cont = 2;
+        worksheet.getCell('A'+cont).value = doc.get('user_key').toString();
+        worksheet.getCell('B'+cont).value = doc.get('user_name').toString();
+        worksheet.getCell('C'+cont).value = doc.get('user_surname').toString();
+        console.log(doc.data());	
+      })	       
+      workbook.xlsx.writeFile(filename);
       storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
       function(err, file) {
         if (!err) {
@@ -97,25 +100,27 @@ router.post('/createApprovedExcel', function(req, res, next){
 
 //crea Excel richieste rifiutate
 router.post('/createRefusedExcel', function(req, res, next){
-  db.collection('request').where('status', '==', 'rifiutata').get()
+  db.collection('request').where('stato', '==', 'Rifiutata').get()
   .then(snapshot => {
     if(snapshot.empty){
       console.log('Nessun risultato');
       res.send('404');
     }
       var filename = 'Rifiutate.xlsx';
-      var writeStream = fs.createWriteStream(filename);
-      writeStream.write('EMAIL \t NOME \t COGNOME \n');
-      snapshot.forEach(doc =>{
-        console.log(doc.data());
-        writeStream.write(doc.get('user_key').toString());
-        writeStream.write('\t');
-        writeStream.write(doc.get('user_name').toString());
-        writeStream.write('\t');
-        writeStream.write(doc.get('user_surname').toString());
-        writeStream.write('\n'); 
-      })
-      writeStream.close();
+      const workbook = new Excel.Workbook();
+      const worksheet = workbook.addWorksheet('Richieste');
+      worksheet.getCell('A1').value = 'EMAIL'
+      worksheet.getCell('B1').value = 'NOME'
+      worksheet.getCell('C1').value = 'COGNOME'
+      snapshot.forEach(doc =>{	     
+        var cont = 2;
+        worksheet.getCell('A'+cont).value = doc.get('user_key').toString();
+        worksheet.getCell('B'+cont).value = doc.get('user_name').toString();
+        worksheet.getCell('C'+cont).value = doc.get('user_surname').toString();
+        console.log(doc.data());	
+      })	       
+       
+      workbook.xlsx.writeFile(filename);
       storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
       function(err, file) {
         if (!err) {

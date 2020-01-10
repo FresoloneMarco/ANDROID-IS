@@ -34,10 +34,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import io.grpc.Metadata;
 import it.porting.android_is.R;
 import it.porting.android_is.adapter.RequestAdapterAdmin;
 import it.porting.android_is.firebaseArchive.FireBaseArchive;
@@ -234,7 +236,7 @@ public class MainActivityAdmin extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 String url=uri.toString();
-                downloadFile(getApplicationContext(),file, DIRECTORY_DOWNLOADS,url);
+                 downloadFile(getApplicationContext(),file, DIRECTORY_DOWNLOADS,url);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -252,6 +254,8 @@ public class MainActivityAdmin extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 String url=uri.toString();
+                Log.d("URL",url);
+
                 downloadFile(getApplicationContext(),file,DIRECTORY_DOWNLOADS,url);
             }
         }).addOnFailureListener(new OnFailureListener() {
