@@ -18,19 +18,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.firebase.auth.FirebaseAuth;
 
 import it.porting.android_is.R;
-import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
-import it.porting.android_is.network.Network;
-import it.porting.android_is.network.RetrofitSingleton;
 import it.porting.android_is.utility.LazyInitializedSingleton;
 import it.porting.android_is.utility.MyDialogFragment;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivityStudente extends AppCompatActivity {
 
@@ -136,7 +128,7 @@ public class MainActivityStudente extends AppCompatActivity {
     }
 
     public void reqForm() {
-        Intent intent = new Intent(getApplicationContext(), RequestForm.class);
+        Intent intent = new Intent(getApplicationContext(), UploadFiles.RequestForm.class);
         startActivity(intent);
     }
 

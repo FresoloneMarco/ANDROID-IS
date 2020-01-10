@@ -71,8 +71,8 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter <RequestAdapterAdm
         holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
         holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " + arrayList.get(position).getUser_surname());
         holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
-        holder.enteText.setText("Ente :" + arrayList.get(position).getEnte());
-        holder.statoText.setText("Stato :" + arrayList.get(position).isStato());
+        holder.enteText.setText("Ente : " + arrayList.get(position).getEnte());
+        holder.statoText.setText("Stato : " + arrayList.get(position).isStato());
 
 
     }

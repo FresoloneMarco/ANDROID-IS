@@ -61,4 +61,27 @@
     <string name="richieste_approvate">Richieste Approvate</string>
     <string name="richieste_rifiutate">Richieste Rifiutate</string>
     //End Activity_Register
+
+    //SPINNER ENTE
+    <string-array name="enti">
+        <item>Cambridge Assessment English</item>
+        <item>City and Guilds (Pitman)</item>
+        <item>Edexcel /Pearson Ltd </item>
+        <item>Educational Testing Service (ETS)</item>
+        <item>English Speaking Board (ESB) </item>
+        <item>International English Language Testing System (IELTS)</item>
+        <item>Pearson - LCCI</item>
+        <item>Pearson - EDI</item>
+        <item>Trinity College London (TCL)</item>
+        <item>Department of English, Faculty of Arts - University of Malta</item>
+        <item>NQAI - ACELS </item>
+
+</string-array>
+
+    //SPINNER CFU
+    <string-array name="cfu">
+    <item>3</item>
+    <item>6</item>
+    </string-array>
+
 </resources>
