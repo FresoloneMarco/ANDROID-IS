@@ -2,6 +2,8 @@ package it.porting.android_is.firebaseArchive.bean;
 
 import com.google.firebase.Timestamp;
 
+import java.util.ArrayList;
+
 /**
  * Bean per requests
  */
@@ -139,6 +141,7 @@ public class RequestBean {
     public void setStato(String stato) {
         this.stato = stato;
     }
+
 
 
 

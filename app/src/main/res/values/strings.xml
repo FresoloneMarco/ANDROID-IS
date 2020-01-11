@@ -60,6 +60,8 @@
     <string name="guida">Guida</string>
     <string name="richieste_approvate">Richieste Approvate</string>
     <string name="richieste_rifiutate">Richieste Rifiutate</string>
+    <string name="rifiuta">RIFIUTA</string>
+    <string name="approva">APPROVA</string>
     //End Activity_Register
 
     //SPINNER ENTE
@@ -76,12 +78,14 @@
         <item>Department of English, Faculty of Arts - University of Malta</item>
         <item>NQAI - ACELS</item>
 
-</string-array>
+    </string-array>
 
     //SPINNER CFU
     <string-array name="cfu">
-    <item>3</item>
-    <item>6</item>
+        <item>3</item>
+        <item>6</item>
     </string-array>
+    <string name="title_activity_approved">ApprovedActivity</string>
+    <string name="cfu_validati">CFU validati</string>
 
 </resources>

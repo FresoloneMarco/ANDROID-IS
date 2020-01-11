@@ -45,6 +45,8 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter <RequestAdapterAdm
     }
 
 
+
+
     /**
      * Inserisce nella recyclerview la formattazione di ogni riga
      * @param parent
@@ -70,7 +72,9 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter <RequestAdapterAdm
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
+
         int formato = DateFormat.LONG;
+
 
         DateFormat dateFormat = DateFormat.getDateInstance(formato, Locale.ITALY);
         String dataRelease = dateFormat.format(arrayList.get(position).getRelease_date().toDate());
@@ -211,6 +215,7 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter <RequestAdapterAdm
 
 
 
+
         public ViewHolder(View itemView) {
             super(itemView);
             root = itemView;
@@ -225,6 +230,7 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter <RequestAdapterAdm
             cfuText = root.findViewById(R.id.cfuText);
             enteText = root.findViewById(R.id.enteText);
             statoText = root.findViewById(R.id.statoText);
+
 
 
 
