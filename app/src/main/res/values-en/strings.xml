@@ -83,4 +83,6 @@
         <item>3</item>
         <item>6</item>
     </string-array>
+    <string name="title_activity_approved">ApprovedActivity</string>
+    <string name="cfu_validati">CFU validated</string>
 </resources>
