@@ -12,6 +12,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -49,6 +50,13 @@ public class FireBaseArchive {
         collectionReference.get().addOnCompleteListener(onCompleteListener);
     }
 
+    public void getRequestByKey(String email, OnCompleteListener<QuerySnapshot> listener) {
+
+        //Abbiamo fatto il casting
+        Query collectionReference = db.collection("request").whereEqualTo("user_key", email);
+        collectionReference.get().addOnCompleteListener(listener);
+
+    }
     public void getUserByKey(String email, OnCompleteListener<DocumentSnapshot> onCompleteListener) {
         DocumentReference doc = db.collection("utenti").document(email);
         doc.get().addOnCompleteListener(onCompleteListener);

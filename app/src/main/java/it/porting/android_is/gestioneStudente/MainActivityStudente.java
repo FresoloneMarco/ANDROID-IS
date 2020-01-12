@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -14,30 +15,44 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 import it.porting.android_is.R;
+import it.porting.android_is.adapter.RequestAdapterSegreteria;
+import it.porting.android_is.adapter.RequestAdapterStudente;
+import it.porting.android_is.firebaseArchive.FireBaseArchive;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
 import it.porting.android_is.gestioneUtente.ViewActivityUtente;
-import it.porting.android_is.network.Network;
-import it.porting.android_is.network.RetrofitSingleton;
 import it.porting.android_is.utility.LazyInitializedSingleton;
 import it.porting.android_is.utility.MyDialogFragment;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivityStudente extends AppCompatActivity {
 
 
-    private TextView res;
+
     private static SharedPreferences.Editor editor;
     private static SharedPreferences preferences;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private RequestAdapterStudente requestAdapterStudente;
+    private String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+    private ArrayList<RequestBean> requestBeans = new ArrayList<>();
+    private FireBaseArchive fireBaseArchive;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +61,6 @@ public class MainActivityStudente extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255, 153, 0)));
         actionBar.setTitle("Home");
-        res = findViewById(R.id.res);
 
         //Inizializzazione shared preferences ed editor, saranno utilizzate per verificare
         //se l'utente ha associato l'account all'impronta digitale
@@ -61,6 +75,38 @@ public class MainActivityStudente extends AppCompatActivity {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             dialogFragment.show(ft, "dialog");
         }
+
+        //individuo la recyclerview
+        recyclerView = findViewById(R.id.recycler_view);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        //inizializzo un riferimento all'oggetto che si interfaccia con firebase
+        fireBaseArchive = new FireBaseArchive();
+
+
+        //prelevo tutte le request per  emailda inserire nella recyclerview
+        fireBaseArchive.getRequestByKey(email, new OnCompleteListener<QuerySnapshot>(){
+
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    //Se il task ha successo, salvo ogni "tupla" all'interno dell ArrayList
+                    for (QueryDocumentSnapshot req : task.getResult()) {
+                        RequestBean requestBean = req.toObject(RequestBean.class);
+                        requestBeans.add(requestBean);
+                    }
+
+                    requestAdapterStudente = new RequestAdapterStudente(requestBeans);
+                    recyclerView.setAdapter(requestAdapterStudente);
+                }
+                else{
+                    Log.d("Errore nella query","ERRORE");
+                }
+            }
+                });
 
 
         //baseUrl = vostro ip Locale con porta 3000 (la porta riservata al server node)
@@ -136,7 +182,7 @@ public class MainActivityStudente extends AppCompatActivity {
     }
 
     public void reqForm() {
-        Intent intent = new Intent(getApplicationContext(), RequestForm.class);
+        Intent intent = new Intent(getApplicationContext(), UploadFiles.RequestForm.class);
         startActivity(intent);
     }
 
@@ -150,6 +196,7 @@ public class MainActivityStudente extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.home_menu_studente, menu);
 
         return true;
+
     }
 
 

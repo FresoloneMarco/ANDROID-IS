@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -13,20 +13,19 @@
         android:label="EV English Validation"
         android:roundIcon="@drawable/logo_standard"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".gestioneStudente.Register"></activity>
-        <activity android:name=".gestioneStudente.MainActivityStudente"></activity>
-        <activity android:name=".gestioneSegreteria.MainActivitySegreteria"></activity>
-        <activity android:name=".gestioneUtente.ViewActivityUtente"></activity>
-        <activity android:name=".gestioneStudente.DownloadPDF"></activity>
-        <activity android:name=".gestioneStudente.UploadFiles"></activity>
-        <activity android:name=".gestioneUtente.Guida"></activity>
-        <activity android:name=".gestioneUtente.EditActivityUtente"></activity>
-        <activity android:name=".gestioneAdmin.MainActivityAdmin"></activity>
-        <activity android:name=".gestioneStudente.RequestForm"></activity>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".gestioneStudente.Register" />
+        <activity android:name=".gestioneStudente.MainActivityStudente" />
+        <activity android:name=".gestioneSegreteria.MainActivitySegreteria" />
+        <activity android:name=".gestioneUtente.ViewActivityUtente" />
+        <activity android:name=".gestioneStudente.DownloadPDF" />
+        <activity android:name=".gestioneStudente.UploadFiles" />
+        <activity android:name=".gestioneUtente.Guida" />
+        <activity android:name=".gestioneUtente.EditActivityUtente" />
+        <activity android:name=".gestioneAdmin.MainActivityAdmin" />
+        <activity android:name=".gestioneStudente.UploadFiles$RequestForm" />
         <activity android:name=".gestioneUtente.LoginActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

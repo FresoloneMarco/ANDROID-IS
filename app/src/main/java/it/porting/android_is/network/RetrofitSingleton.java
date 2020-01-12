@@ -66,7 +66,7 @@ public class RetrofitSingleton {
 
         apiService = retrofit.create(ApiService.class);*/
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.5:3000")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.195:3000")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         apiService = retrofit.create(Network.class);
 

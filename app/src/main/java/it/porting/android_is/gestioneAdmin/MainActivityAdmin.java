@@ -5,13 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
-import android.print.PrintAttributes;
-import android.print.pdf.PrintedPdfDocument;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +19,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
+
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,12 +31,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-import io.grpc.Metadata;
 import it.porting.android_is.R;
 import it.porting.android_is.adapter.RequestAdapterAdmin;
 import it.porting.android_is.firebaseArchive.FireBaseArchive;
@@ -54,7 +49,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.graphics.pdf.PdfDocument.*;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class MainActivityAdmin extends AppCompatActivity {
@@ -70,7 +64,8 @@ public class MainActivityAdmin extends AppCompatActivity {
     private static StorageReference storageReference;
     private static StorageReference ref;
     private String file;
-
+    Button btn_approva;
+    Button btn_rifiuta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +74,8 @@ public class MainActivityAdmin extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Home Admin");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255, 153, 0)));
+        //btn_approva.findViewById(R.id.btn_approva);
+        //btn_rifiuta.findViewById(R.id.btn_rifiuta);
 
         //Inizializzazione shared preferences ed editor, saranno utilizzate per verificare
         //se l'utente ha associato l'account all'impronta digitale
@@ -112,10 +109,16 @@ public class MainActivityAdmin extends AppCompatActivity {
                     for (QueryDocumentSnapshot req : task.getResult()) {
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
+
+
+
                     }
 
-                    requestAdapterAdmin = new RequestAdapterAdmin(requestBeans);
+                    requestAdapterAdmin = new RequestAdapterAdmin(requestBeans, getApplicationContext());
                     recyclerView.setAdapter(requestAdapterAdmin);
+
+
+
                 } else {
                     Log.d("Errore nella query", "ERRORE");
                 }
@@ -190,11 +193,10 @@ public class MainActivityAdmin extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!response.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Errore in fase di creazione", Toast.LENGTH_SHORT).show();
+
                 }
 
-
                 Toast.makeText(getApplicationContext(), "File Excel creato", Toast.LENGTH_SHORT).show();
-
                 downloadAccepted();
 
 
@@ -244,6 +246,7 @@ public class MainActivityAdmin extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"ERRORE", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     public void downloadRefused(){
