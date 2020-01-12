@@ -28,11 +28,13 @@ import static androidx.core.content.ContextCompat.startActivity;
 public class RequestAdapterStudente extends RecyclerView.Adapter <RequestAdapterStudente.ViewHolder> {
 
     ArrayList<RequestBean> arrayList;
+    private ArrayList<String> idFields = new ArrayList<>();
 
 
 
-    public RequestAdapterStudente(ArrayList<RequestBean> arrayList) {
+    public RequestAdapterStudente(ArrayList<RequestBean> arrayList, ArrayList<String> idFields) {
         this.arrayList = arrayList;
+        this.idFields = idFields;
 
     }
 
@@ -66,10 +68,9 @@ public class RequestAdapterStudente extends RecyclerView.Adapter <RequestAdapter
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
-
-        holder.idText.setText("ID richiesta: "  + Integer.toString(arrayList.get(position).getId()));
+        holder.idText.setText("ID richiesta: "  + idFields.get(position));
         holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
-        holder.statoText.setText("Stato : " + arrayList.get(position).isStato());
+        holder.statoText.setText("Stato : " + arrayList.get(position).getStato());
 
     }
 

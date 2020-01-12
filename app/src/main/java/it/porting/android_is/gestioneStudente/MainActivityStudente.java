@@ -52,6 +52,7 @@ public class MainActivityStudente extends AppCompatActivity {
     private String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
     private FireBaseArchive fireBaseArchive;
+    private ArrayList<String> idFields = new ArrayList<>();
 
 
     @Override
@@ -97,9 +98,11 @@ public class MainActivityStudente extends AppCompatActivity {
                     for (QueryDocumentSnapshot req : task.getResult()) {
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
+                        idFields.add(req.getId());
+
                     }
 
-                    requestAdapterStudente = new RequestAdapterStudente(requestBeans);
+                    requestAdapterStudente = new RequestAdapterStudente(requestBeans, idFields);
                     recyclerView.setAdapter(requestAdapterStudente);
                 }
                 else{

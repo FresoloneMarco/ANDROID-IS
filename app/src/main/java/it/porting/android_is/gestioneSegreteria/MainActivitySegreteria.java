@@ -46,6 +46,8 @@ public class MainActivitySegreteria extends AppCompatActivity {
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
     private static SharedPreferences.Editor editor;
     private static SharedPreferences preferences;
+    private ArrayList<String> idFields = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +94,11 @@ public class MainActivitySegreteria extends AppCompatActivity {
                     for(QueryDocumentSnapshot req : task.getResult()){
                         RequestBean requestBean = req.toObject(RequestBean.class);
                         requestBeans.add(requestBean);
+                        idFields.add(req.getId());
+
                     }
 
-                    requestAdapterSegreteria = new RequestAdapterSegreteria(requestBeans);
+                    requestAdapterSegreteria = new RequestAdapterSegreteria(requestBeans, idFields);
                     recyclerView.setAdapter(requestAdapterSegreteria);
                 }
                 else{

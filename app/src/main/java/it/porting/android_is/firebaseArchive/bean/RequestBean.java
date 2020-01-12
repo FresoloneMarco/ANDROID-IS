@@ -134,7 +134,7 @@ public class RequestBean {
         this.ente = ente;
     }
 
-    public String isStato() {
+    public String getStato() {
         return stato;
     }
 

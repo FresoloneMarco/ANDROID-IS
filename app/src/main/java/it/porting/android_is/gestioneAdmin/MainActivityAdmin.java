@@ -64,8 +64,7 @@ public class MainActivityAdmin extends AppCompatActivity {
     private static StorageReference storageReference;
     private static StorageReference ref;
     private String file;
-    Button btn_approva;
-    Button btn_rifiuta;
+    private ArrayList<String> idFields = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +73,7 @@ public class MainActivityAdmin extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Home Admin");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(255, 153, 0)));
-        //btn_approva.findViewById(R.id.btn_approva);
-        //btn_rifiuta.findViewById(R.id.btn_rifiuta);
+
 
         //Inizializzazione shared preferences ed editor, saranno utilizzate per verificare
         //se l'utente ha associato l'account all'impronta digitale
@@ -108,13 +106,11 @@ public class MainActivityAdmin extends AppCompatActivity {
                     //Se il task ha successo, salvo ogni "tupla" all'interno dell ArrayList
                     for (QueryDocumentSnapshot req : task.getResult()) {
                         RequestBean requestBean = req.toObject(RequestBean.class);
+                        idFields.add(req.getId());
                         requestBeans.add(requestBean);
-
-
-
                     }
 
-                    requestAdapterAdmin = new RequestAdapterAdmin(requestBeans, getApplicationContext());
+                    requestAdapterAdmin = new RequestAdapterAdmin(requestBeans, idFields, getApplicationContext());
                     recyclerView.setAdapter(requestAdapterAdmin);
 
 

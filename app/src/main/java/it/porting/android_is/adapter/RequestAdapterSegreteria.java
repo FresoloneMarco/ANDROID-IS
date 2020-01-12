@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import it.porting.android_is.R;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
+import okhttp3.internal.Internal;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -32,10 +33,13 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
 
     ArrayList<RequestBean> arrayList;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ArrayList<String> idFields = new ArrayList<>();
 
 
-    public RequestAdapterSegreteria(ArrayList<RequestBean> arrayList) {
+
+    public RequestAdapterSegreteria(ArrayList<RequestBean> arrayList, ArrayList<String>idFields) {
         this.arrayList = arrayList;
+        this.idFields = idFields;
     }
 
 
@@ -71,7 +75,7 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
         DateFormat dateFormat = DateFormat.getDateInstance(formato, Locale.ITALY);
         String dataRelease = dateFormat.format(arrayList.get(position).getRelease_date().toDate());
         String dataExpiry = dateFormat.format(arrayList.get(position).getExpiry_date().toDate());
-        holder.idText.setText("ID richiesta: " + Integer.toString(arrayList.get(position).getId()));
+        holder.idText.setText("ID richiesta: " + idFields.get(position));
         holder.livelloText.setText("Livello: " + arrayList.get(position).getLevel());
         holder.releaseText.setText("Rilascio: " + dataRelease);
         holder.expiryText.setText("Scadenza: " + dataExpiry);
