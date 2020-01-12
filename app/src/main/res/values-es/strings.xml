@@ -80,6 +80,7 @@
 
     //SPINNER CFU
     <string-array name="cfu">
+        <item> </item>
         <item>3</item>
         <item>6</item>
     </string-array>
