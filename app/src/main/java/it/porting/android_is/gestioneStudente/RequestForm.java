@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,12 +55,12 @@ import retrofit2.Response;
 public class RequestForm extends AppCompatActivity {
     private EditText et1;
     private EditText et2;
-    private EditText et3;
+    private Spinner et3;
     private EditText et4;
     private EditText et5;
     private EditText et6;
     private EditText et7;
-    private EditText et8;
+    private Spinner et8;
     private Button button;
     private TextView textView;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -79,12 +80,12 @@ public class RequestForm extends AppCompatActivity {
 
         et1 = findViewById(R.id.etAnno);
         et2 = findViewById(R.id.etMatricola);
-        et3 = findViewById(R.id.etEnte);
+        et3=findViewById(R.id.spinner_ente);
         et4 = findViewById(R.id.etRelease);
         et5 = findViewById(R.id.et_scadenza);
         et6 = findViewById(R.id.et_seriale);
         et7 = findViewById(R.id.et_livello);
-        et8 = findViewById(R.id.et_cfu);
+        et8 = findViewById(R.id.spinner_cfu);
         textView = findViewById(R.id.boxContainer2);
 
 
@@ -93,13 +94,13 @@ public class RequestForm extends AppCompatActivity {
                                       public void onClick(View v) {
 
 
-                                          if (et1.getText().toString().isEmpty()||et2.getText().toString().isEmpty()||et3.getText().toString().isEmpty()||et4.getText().toString().isEmpty()||et5.getText().toString().isEmpty()||et6.getText().toString().isEmpty()||et7.getText().toString().isEmpty()||et8.getText().toString().isEmpty()) {
+                                          if (et1.getText().toString().isEmpty()||et2.getText().toString().isEmpty()||et4.getText().toString().isEmpty()||et5.getText().toString().isEmpty()||et6.getText().toString().isEmpty()||et7.getText().toString().isEmpty()) {
                                               Toast.makeText(getApplicationContext(), "compila tutti i dati", Toast.LENGTH_SHORT).show();
                                           } else {
 
 
                                               int seriale = Integer.parseInt(et6.getText().toString());
-                                              int cfu = Integer.parseInt(et8.getText().toString());
+                                              int cfu = Integer.parseInt(et8.getSelectedItem().toString());
                                               SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                                               Date parsedDate = null;
                                               try {
@@ -120,7 +121,7 @@ public class RequestForm extends AppCompatActivity {
                                               Timestamp timestamp2 = new Timestamp(parsedDate2);
                                               requestBean.setYear(et1.getText().toString());
                                               requestBean.setMatricola(et2.getText().toString());
-                                              requestBean.setEnte(et3.getText().toString());
+                                              requestBean.setEnte(et3.getSelectedItem().toString());
                                               requestBean.setRelease_date(timestamp1);
                                               requestBean.setExpiry_date(timestamp2);
                                               requestBean.setSerial(seriale);
