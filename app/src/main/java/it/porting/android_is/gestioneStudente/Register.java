@@ -50,6 +50,7 @@ public class Register extends AppCompatActivity {
     private String sex;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +87,7 @@ public class Register extends AppCompatActivity {
         final String password = String.valueOf(etPassword.getText());
         final String vpassword = String.valueOf(etVPassword.getText());
         final Context context = this;
+        final int cfu = 0;
         //La registrazione non va a buon fine in quanto uno dei campi è vuoto
         if (nome.equals("") || cognome.equals("") || email.equals("") || password.equals("") || vpassword.equals("")) {
             progressBar.setVisibility(View.GONE);
@@ -152,9 +154,9 @@ public class Register extends AppCompatActivity {
                                 user.put("cognome", cognome);
                                 user.put("email", email);
                                 user.put("password", password);
-
                                 user.put("sesso", sex);
                                 user.put("ruolo", "studente");
+                                user.put("cfu", cfu);
 
                                 db.collection("utenti").document(email)
                                         .set(user, SetOptions.merge())

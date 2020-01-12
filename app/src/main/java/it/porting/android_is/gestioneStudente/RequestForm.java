@@ -92,8 +92,6 @@ public class RequestForm extends AppCompatActivity {
         button = findViewById(R.id.btSendForm);
         button.setOnClickListener(new View.OnClickListener() {
                                       public void onClick(View v) {
-
-
                                           if (et1.getText().toString().isEmpty()||et2.getText().toString().isEmpty()||et4.getText().toString().isEmpty()||et5.getText().toString().isEmpty()||et6.getText().toString().isEmpty()||et7.getText().toString().isEmpty()) {
                                               Toast.makeText(getApplicationContext(), "compila tutti i dati", Toast.LENGTH_SHORT).show();
                                           } else {
