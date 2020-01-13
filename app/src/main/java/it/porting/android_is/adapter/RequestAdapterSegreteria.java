@@ -13,16 +13,23 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
 import it.porting.android_is.R;
+import it.porting.android_is.firebaseArchive.FireBaseArchive;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
+import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 import okhttp3.internal.Internal;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -36,6 +43,8 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
     ArrayList<RequestBean> arrayList;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<String> idFields = new ArrayList<>();
+    private ArrayList<UtenteBean> user= new ArrayList<>();;
+    private FireBaseArchive fireBaseArchive = new FireBaseArchive();
     private  Context context;
 
 
@@ -88,8 +97,7 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
         holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " + arrayList.get(position).getUser_surname());
         holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
 
-        String email = arrayList.get(position).getUser_key();
-        int cfu = arrayList.get(position).getValidated_cfu();
+
 
 
 
@@ -99,37 +107,51 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
             public void onClick(View v) {
 
                 final String email = arrayList.get(position).getUser_key();
-                int cfu = arrayList.get(position).getValidated_cfu();
 
 
-                    db.collection("utenti").document((email))
-                            .update("cfu", cfu ).
-                            addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid){
+                fireBaseArchive.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            UtenteBean utenteBean = document.toObject(UtenteBean.class);
+                            user.add(utenteBean);
 
-                                    final String email = arrayList.get(position).getUser_key();
-                                    int cfu = arrayList.get(position).getValidated_cfu();
+                            int cfuBean = utenteBean.getCfu();
 
-                                    if (!db.collection("utenti").whereEqualTo("email", email).whereEqualTo("cfu", cfu).equals(0)){
+                            if(cfuBean != 0){
+                                Toast.makeText(context, "Cfu già convalidati",Toast.LENGTH_LONG).show();
+                            }
 
-                                        Toast.makeText(context, "Cfu già validati", Toast.LENGTH_LONG).show();
-                                    }
+                         else if(cfuBean == 0){
 
-                                    else {
-                                        Toast.makeText(context, "Cfu aggiunti corettamente", Toast.LENGTH_SHORT).show();
+                             int cfu = arrayList.get(position).getValidated_cfu();
 
-                                        Log.d("onClick", "DocumentSnapshot caricato correttamente");
-                                    }
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(context, "Cfu non aggiunti", Toast.LENGTH_SHORT).show();
-                                    Log.w(TAG, "Errore nel caricamento del documento", e);
-                                }
-                            });
+                             db.collection("utenti").document((email)).update("cfu", cfu ).
+                                addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                               @Override
+                               public void onSuccess(Void aVoid){
+
+                                   Toast.makeText(context, "Cfu aggiunti corettamente", Toast.LENGTH_SHORT).show();
+                                   Log.d("onClick", "DocumentSnapshot caricato correttamente");
+
+                               }
+
+                                 }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(context, "Cfu non aggiunti", Toast.LENGTH_SHORT).show();
+                                                Log.w(TAG, "Errore nel caricamento del documento", e);
+                                            }
+
+                                 });
+                            }
+
+                        }
+
+                    }
+                });
 
             }
         });
