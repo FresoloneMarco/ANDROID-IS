@@ -24,6 +24,7 @@
     <string name="missing_data">Please insert your data.</string>
 
     //Activity_Register
+
     <string name="registrazione_1">Registration</string>
     <string name="registrazione_2">Please fill out all fields to register.</string>
     <string name="sesso">Gender</string>
@@ -60,10 +61,13 @@
     <string name="guida">Training</string>
     <string name="richieste_approvate">Approved requests</string>
     <string name="richieste_rifiutate">Rejected requests </string>
+    <string name="rifiuta">REJECT</string>
+    <string name="approva">APPROVED</string>
     //End Activity_Register
 
     //SPINNER ENTE
     <string-array name="enti">
+        <item> </item>
         <item>Cambridge Assessment English</item>
         <item>City and Guilds (Pitman)</item>
         <item>Edexcel /Pearson Ltd </item>
@@ -80,9 +84,11 @@
 
     //SPINNER CFU
     <string-array name="cfu">
+        <item> </item>
         <item>3</item>
         <item>6</item>
     </string-array>
     <string name="title_activity_approved">ApprovedActivity</string>
     <string name="cfu_validati">CFU validated</string>
+    <string name="aggiungi_cfu">add CFU</string>
 </resources>
