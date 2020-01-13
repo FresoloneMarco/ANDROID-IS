@@ -49,7 +49,7 @@
     <string name="studente">Student</string>
     <string name="richiesta">Request</string>
     <string name="anno_accademico">Accademic Year </string>
-    <string name="matricola">Freshman</string>
+    <string name="matricola">Student ID</string>
     <string name="ente">Institution</string>
     <string name="ente_di_rilascio">Issuing body</string>
     <string name="cfu_da_conseguire">CFU to achieve</string>
