@@ -24,6 +24,7 @@
     <string name="missing_data">Inserta tus datos</string>
 
     //Activity_Register
+
     <string name="registrazione_1">Inscripción</string>
     <string name="registrazione_2">Rellene todos los campos para registrarse</string>
     <string name="sesso">Género</string>
@@ -60,10 +61,14 @@
     <string name="guida">Instrucción</string>
     <string name="richieste_approvate">Solicitudes aprobadas</string>
     <string name="richieste_rifiutate">Solicitudes rechazadas</string>
+    <string name="rifiuta"><string name="rifiuta">REJECT</string>
+    <string name="approva">NEGÓ</string></string>
+    <string name="approva">APROBADO</string>
     //End Activity_Register
 
     //SPINNER ENTE
     <string-array name="enti">
+        <item> </item>
         <item>Cambridge Assessment English</item>
         <item>City and Guilds (Pitman)</item>
         <item>Edexcel /Pearson Ltd </item>
