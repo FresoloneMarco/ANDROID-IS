@@ -44,6 +44,7 @@ public class MainActivitySegreteria extends AppCompatActivity {
     private FireBaseArchive fireBaseArchive;
     private FireBaseArchive fireBaseArchive2;
     private ArrayList<RequestBean> requestBeans = new ArrayList<>();
+
     private static SharedPreferences.Editor editor;
     private static SharedPreferences preferences;
     private ArrayList<String> idFields = new ArrayList<>();
@@ -98,7 +99,7 @@ public class MainActivitySegreteria extends AppCompatActivity {
 
                     }
 
-                    requestAdapterSegreteria = new RequestAdapterSegreteria(requestBeans, idFields);
+                    requestAdapterSegreteria = new RequestAdapterSegreteria(requestBeans, idFields, getApplicationContext());
                     recyclerView.setAdapter(requestAdapterSegreteria);
                 }
                 else{

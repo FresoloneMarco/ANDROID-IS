@@ -1,12 +1,14 @@
 package it.porting.android_is.adapter;
 
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,12 +36,13 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
     ArrayList<RequestBean> arrayList;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<String> idFields = new ArrayList<>();
+    private  Context context;
 
 
-
-    public RequestAdapterSegreteria(ArrayList<RequestBean> arrayList, ArrayList<String>idFields) {
+    public RequestAdapterSegreteria(ArrayList<RequestBean> arrayList, ArrayList<String>idFields, Context context) {
         this.arrayList = arrayList;
         this.idFields = idFields;
+        this.context = context;
     }
 
 
@@ -69,7 +72,7 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
      * @param position posizione della tupla
      */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         int formato = DateFormat.LONG;
         DateFormat dateFormat = DateFormat.getDateInstance(formato, Locale.ITALY);
@@ -85,27 +88,49 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
         holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " + arrayList.get(position).getUser_surname());
         holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
 
+        String email = arrayList.get(position).getUser_key();
+        int cfu = arrayList.get(position).getValidated_cfu();
+
+
+
+
         holder.btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String email = arrayList.get(position).getUser_key();
+                final String email = arrayList.get(position).getUser_key();
                 int cfu = arrayList.get(position).getValidated_cfu();
 
-                db.collection("utenti").document((email))
-                        .update("cfu", cfu ).
-                        addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d("onClick", "DocumentSnapshot caricato correttamente");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Errore nel caricamento del documento", e);
-                            }
-                        });
+
+                    db.collection("utenti").document((email))
+                            .update("cfu", cfu ).
+                            addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid){
+
+                                    final String email = arrayList.get(position).getUser_key();
+                                    int cfu = arrayList.get(position).getValidated_cfu();
+
+                                    if (!db.collection("utenti").whereEqualTo("email", email).whereEqualTo("cfu", cfu).equals(0)){
+
+                                        Toast.makeText(context, "Cfu già validati", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    else {
+                                        Toast.makeText(context, "Cfu aggiunti corettamente", Toast.LENGTH_SHORT).show();
+
+                                        Log.d("onClick", "DocumentSnapshot caricato correttamente");
+                                    }
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(context, "Cfu non aggiunti", Toast.LENGTH_SHORT).show();
+                                    Log.w(TAG, "Errore nel caricamento del documento", e);
+                                }
+                            });
+
             }
         });
     }
