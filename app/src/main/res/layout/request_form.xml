@@ -195,7 +195,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/richieste_già_effettuta"
+            android:text="@string/richieste_già_effettuata"
             android:textSize="24sp" />
 
 

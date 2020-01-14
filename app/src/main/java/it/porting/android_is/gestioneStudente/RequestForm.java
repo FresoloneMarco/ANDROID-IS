@@ -261,16 +261,28 @@ public class RequestForm extends AppCompatActivity {
         });
     }
 
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option1:
                 modpage();
                 return true;
+
             case R.id.option2:
+                reqForm();
+                return true;
+
+            case R.id.option3:
                 guida();
                 return true;
+
+            case R.id.option4:
+                downl();
+                return true;
+
+            case R.id.option5:
+                upl();
+                return true;
+
             case R.id.logout:
                 logout();
                 return true;
@@ -280,21 +292,35 @@ public class RequestForm extends AppCompatActivity {
 
     }
 
+    public void downl(){
+        Intent intent = new Intent(getApplicationContext(), DownloadPDF.class);
+        startActivity(intent);
+    }
+
+    public void upl(){
+        Intent intent = new Intent(getApplicationContext(), UploadFiles.class);
+        startActivity(intent);
+    }
+
     public void modpage() {
         Intent intent = new Intent(getApplicationContext(), ViewActivityUtente.class);
+        startActivity(intent);
+    }
+
+    public void reqForm() {
+        Intent intent = new Intent(getApplicationContext(),RequestForm.class);
         startActivity(intent);
     }
 
     public void guida() {
         Intent intent = new Intent(getApplicationContext(), Guida.class);
         startActivity(intent);
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
+        getMenuInflater().inflate(R.menu.home_menu_studente, menu);
+
         return true;
 
     }
