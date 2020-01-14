@@ -66,7 +66,6 @@
 
     //SPINNER ENTE
     <string-array name="enti">
-        <item> </item>
         <item>Cambridge Assessment English</item>
         <item>City and Guilds (Pitman)</item>
         <item>Edexcel /Pearson Ltd </item>
@@ -83,7 +82,6 @@
 
     //SPINNER CFU
     <string-array name="cfu">
-        <item> </item>
         <item>3</item>
         <item>6</item>
     </string-array>
