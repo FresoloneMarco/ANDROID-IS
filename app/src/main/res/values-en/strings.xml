@@ -89,4 +89,5 @@
     <string name="title_activity_approved">ApprovedActivity</string>
     <string name="cfu_validati">CFU validated</string>
     <string name="aggiungi_cfu">add CFU</string>
+    <string name="richieste_già_effettuata">Requests Already Maked</string>
 </resources>
