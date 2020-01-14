@@ -35,6 +35,7 @@ import it.porting.android_is.firebaseArchive.FireBaseArchive;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.firebaseArchive.bean.UtenteBean;
 import it.porting.android_is.gestioneAdmin.MainActivityAdmin;
+import it.porting.android_is.utility.AttachmentsDownloader;
 
 import static androidx.core.content.ContextCompat.createDeviceProtectedStorageContext;
 import static androidx.core.content.ContextCompat.startActivity;
@@ -237,6 +238,13 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter<RequestAdapterAdmi
             }
         });
 
+        holder.bt_attachments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AttachmentsDownloader.getInstance().downloadAttachments(arrayList.get(position).getUser_key(), context);
+            }
+        });
+
 
     }
 
@@ -273,6 +281,7 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter<RequestAdapterAdmi
         TextView statoText;
         Button bt_approva;
         Button bt_rifiuta;
+        Button bt_attachments;
 
 
         public ViewHolder(View itemView) {
@@ -291,6 +300,7 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter<RequestAdapterAdmi
             statoText = root.findViewById(R.id.statoText);
             bt_approva = root.findViewById(R.id.btApprova);
             bt_rifiuta = root.findViewById(R.id.btRifiuta);
+            bt_attachments = root.findViewById(R.id.btAttachmentsAd);
 
         }
     }

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,8 @@ import java.util.Locale;
 
 import it.porting.android_is.R;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
+import it.porting.android_is.utility.AttachmentsDownloader;
+import it.porting.android_is.utility.LazyInitializedSingleton;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
@@ -29,12 +32,14 @@ public class RequestAdapterStudente extends RecyclerView.Adapter <RequestAdapter
 
     ArrayList<RequestBean> arrayList;
     private ArrayList<String> idFields = new ArrayList<>();
+    Context context;
 
 
 
-    public RequestAdapterStudente(ArrayList<RequestBean> arrayList, ArrayList<String> idFields) {
+    public RequestAdapterStudente(ArrayList<RequestBean> arrayList, ArrayList<String> idFields, Context context) {
         this.arrayList = arrayList;
         this.idFields = idFields;
+        this.context = context;
 
     }
 
@@ -71,6 +76,12 @@ public class RequestAdapterStudente extends RecyclerView.Adapter <RequestAdapter
         holder.idText.setText("ID richiesta: "  + idFields.get(position));
         holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
         holder.statoText.setText("Stato : " + arrayList.get(position).getStato());
+        holder.bt_attachments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AttachmentsDownloader.getInstance().downloadAttachments(arrayList.get(position).getUser_key(), context);
+            }
+        });
 
     }
 
@@ -97,6 +108,7 @@ public class RequestAdapterStudente extends RecyclerView.Adapter <RequestAdapter
         TextView idText;
         TextView emailText;
         TextView statoText;
+        Button bt_attachments;
 
 
 
@@ -109,6 +121,7 @@ public class RequestAdapterStudente extends RecyclerView.Adapter <RequestAdapter
             idText = root.findViewById(R.id.idText);
             emailText = root.findViewById(R.id.emailText);
             statoText = root.findViewById(R.id.statoText);
+            bt_attachments = root.findViewById(R.id.btAttachmentsSt);
 
 
         }

@@ -30,6 +30,8 @@ import it.porting.android_is.R;
 import it.porting.android_is.firebaseArchive.FireBaseArchive;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.firebaseArchive.bean.UtenteBean;
+import it.porting.android_is.gestioneStudente.DownloadPDF;
+import it.porting.android_is.utility.AttachmentsDownloader;
 import okhttp3.internal.Internal;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -38,17 +40,18 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 /**
  * Classe Adapter che consente la gestione della recyclerView nell'activity della segreteria
  */
-public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapterSegreteria.ViewHolder> {
+public class RequestAdapterSegreteria extends RecyclerView.Adapter<RequestAdapterSegreteria.ViewHolder> {
 
     ArrayList<RequestBean> arrayList;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<String> idFields = new ArrayList<>();
-    private ArrayList<UtenteBean> user= new ArrayList<>();;
+    private ArrayList<UtenteBean> user = new ArrayList<>();
+    ;
     private FireBaseArchive fireBaseArchive = new FireBaseArchive();
-    private  Context context;
+    private Context context;
 
 
-    public RequestAdapterSegreteria(ArrayList<RequestBean> arrayList, ArrayList<String>idFields, Context context) {
+    public RequestAdapterSegreteria(ArrayList<RequestBean> arrayList, ArrayList<String> idFields, Context context) {
         this.arrayList = arrayList;
         this.idFields = idFields;
         this.context = context;
@@ -98,10 +101,6 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
         holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
 
 
-
-
-
-
         holder.btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,33 +118,31 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
 
                             int cfuBean = utenteBean.getCfu();
 
-                            if(cfuBean != 0){
-                                Toast.makeText(context, "Cfu già convalidati",Toast.LENGTH_LONG).show();
-                            }
+                            if (cfuBean != 0) {
+                                Toast.makeText(context, "Cfu già convalidati", Toast.LENGTH_LONG).show();
+                            } else if (cfuBean == 0) {
 
-                         else if(cfuBean == 0){
+                                int cfu = arrayList.get(position).getValidated_cfu();
 
-                             int cfu = arrayList.get(position).getValidated_cfu();
+                                db.collection("utenti").document((email)).update("cfu", cfu).
+                                        addOnSuccessListener(new OnSuccessListener<Void>() {
 
-                             db.collection("utenti").document((email)).update("cfu", cfu ).
-                                addOnSuccessListener(new OnSuccessListener<Void>() {
-
-                               @Override
-                               public void onSuccess(Void aVoid){
-
-                                   Toast.makeText(context, "Cfu aggiunti corettamente", Toast.LENGTH_SHORT).show();
-                                   Log.d("onClick", "DocumentSnapshot caricato correttamente");
-
-                               }
-
-                                 }).addOnFailureListener(new OnFailureListener() {
                                             @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(context, "Cfu non aggiunti", Toast.LENGTH_SHORT).show();
-                                                Log.w(TAG, "Errore nel caricamento del documento", e);
+                                            public void onSuccess(Void aVoid) {
+
+                                                Toast.makeText(context, "Cfu aggiunti corettamente", Toast.LENGTH_SHORT).show();
+                                                Log.d("onClick", "DocumentSnapshot caricato correttamente");
+
                                             }
 
-                                 });
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(context, "Cfu non aggiunti", Toast.LENGTH_SHORT).show();
+                                        Log.w(TAG, "Errore nel caricamento del documento", e);
+                                    }
+
+                                });
                             }
 
                         }
@@ -155,9 +152,14 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
 
             }
         });
+
+        holder.btAttachments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AttachmentsDownloader.getInstance().downloadAttachments(arrayList.get(position).getUser_key(), context);
+            }
+        });
     }
-
-
 
 
     /**
@@ -189,7 +191,7 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
         TextView serialeText;
         TextView cfuText;
         Button btSend;
-
+        Button btAttachments;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -204,6 +206,7 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter <RequestAdapt
             serialeText = root.findViewById(R.id.serialeText);
             cfuText = root.findViewById(R.id.cfuText);
             btSend = root.findViewById(R.id.btSend);
+            btAttachments = root.findViewById((R.id.btAttachments));
 
 
         }
