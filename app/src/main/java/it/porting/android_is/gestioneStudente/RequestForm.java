@@ -114,20 +114,21 @@ public class RequestForm extends AppCompatActivity {
                         RequestBean requestBean = req.toObject(RequestBean.class);
 
                         if(requestBean.getUser_key().equals(email)){
+                            if(!requestBean.getStato().equals("Rifiutata")) {
 
-                            frameLayout.setVisibility(View.VISIBLE);
+                                frameLayout.setVisibility(View.VISIBLE);
 
-                            button.setVisibility(View.GONE);
-                            et1.setVisibility(View.GONE);
-                            et2.setVisibility(View.GONE);
-                            et3.setVisibility(View.GONE);
-                            et4.setVisibility(View.GONE);
-                            et5.setVisibility(View.GONE);
-                            et6.setVisibility(View.GONE);
-                            et7.setVisibility(View.GONE);
-                            et8.setVisibility(View.GONE);
+                                button.setVisibility(View.GONE);
+                                et1.setVisibility(View.GONE);
+                                et2.setVisibility(View.GONE);
+                                et3.setVisibility(View.GONE);
+                                et4.setVisibility(View.GONE);
+                                et5.setVisibility(View.GONE);
+                                et6.setVisibility(View.GONE);
+                                et7.setVisibility(View.GONE);
+                                et8.setVisibility(View.GONE);
 
-
+                            }
                         }
 
 

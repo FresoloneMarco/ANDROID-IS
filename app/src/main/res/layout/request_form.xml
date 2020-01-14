@@ -210,8 +210,6 @@
         android:focusable="false"
         android:gravity="center"
         android:hint="@string/data_scadenza"
-
-        android:textSize="12sp"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
