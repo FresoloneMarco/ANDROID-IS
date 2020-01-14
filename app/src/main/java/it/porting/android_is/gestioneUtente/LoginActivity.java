@@ -114,7 +114,6 @@ public class LoginActivity extends AppCompatActivity {
         preferences = this.getSharedPreferences(
                 "myPref", Context.MODE_PRIVATE);
         editor = preferences.edit();
-        setAppLocale(preferences.getString("language", "it"));
 
         mAuth = FirebaseAuth.getInstance();
         bLogin = findViewById(R.id.bLogin);
@@ -125,6 +124,9 @@ public class LoginActivity extends AppCompatActivity {
         tvRegisterNow = findViewById(R.id.register_now);
         progressBar = findViewById(R.id.progressBar);
         spinner = findViewById(R.id.spinner_lingua);
+
+
+
 
         spinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -445,10 +447,16 @@ public class LoginActivity extends AppCompatActivity {
 
     public void changeLanguage(AdapterView<?> arg0, View arg1, int position,long id) {
         Toast.makeText(getApplicationContext(), countryNames[position], Toast.LENGTH_LONG).show();
-        editor.putString("language", countryNames[position]);
-        Intent intent = getIntent();
+
+        setAppLocale(countryNames[position].toLowerCase());
+        Intent refresh = new Intent(this, LoginActivity.class);
+        spinner.setSelection(position);
         finish();
-        startActivity(intent);
+        recreate();
+        startActivity(refresh);
+
+
+
     }
 
     public void setAppLocale(String language){
