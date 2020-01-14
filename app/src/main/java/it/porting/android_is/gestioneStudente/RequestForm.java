@@ -151,10 +151,14 @@ public class RequestForm extends AppCompatActivity {
                                       public void onClick(View v) {
                                           if (et1.getText().toString().isEmpty() || et2.getText().toString().isEmpty() || et4.getText().toString().isEmpty() || et5.getText().toString().isEmpty() || et6.getText().toString().isEmpty() || et7.getText().toString().isEmpty()) {
                                               Toast.makeText(getApplicationContext(), "compila tutti i dati", Toast.LENGTH_SHORT).show();
+                                          }
 
+                                          else if(et2.getText().length() < 10 || et2.getText().length() > 10)
+                                          {
+                                              Toast.makeText(getApplicationContext(), "matricola non valida", Toast.LENGTH_SHORT).show();
 
-
-                                          } else {
+                                          }
+                                          else {
 
 
                                               int seriale = Integer.parseInt(et6.getText().toString());
