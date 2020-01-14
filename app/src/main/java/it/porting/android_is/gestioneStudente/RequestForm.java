@@ -153,7 +153,7 @@ public class RequestForm extends AppCompatActivity {
                                               Toast.makeText(getApplicationContext(), "compila tutti i dati", Toast.LENGTH_SHORT).show();
                                           }
 
-                                          else if(et2.getText().length() < 9)
+                                          else if(et2.getText().length() < 10 || et2.getText().length() > 10)
                                           {
                                               Toast.makeText(getApplicationContext(), "matricola non valida", Toast.LENGTH_SHORT).show();
 
