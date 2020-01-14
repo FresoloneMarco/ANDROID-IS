@@ -185,7 +185,7 @@ public class MainActivityStudente extends AppCompatActivity {
     }
 
     public void reqForm() {
-        Intent intent = new Intent(getApplicationContext(), UploadFiles.RequestForm.class);
+        Intent intent = new Intent(getApplicationContext(),RequestForm.class);
         startActivity(intent);
     }
 

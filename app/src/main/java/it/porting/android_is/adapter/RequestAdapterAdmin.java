@@ -192,9 +192,11 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter<RequestAdapterAdmi
                                 RequestBean requestBean = requestBeans.get(0);
                                 requestBean.setStato("Approvata");
 
+
                                 db.collection("request").document(idFields.get(position)).set(requestBean);
-                                Toast.makeText(context.getApplicationContext(), "Richiesta approvata! " +
-                                        "Riaccedi per visualizzare i cambiamenti", Toast.LENGTH_SHORT);
+                                Toast.makeText(context.getApplicationContext(), "Richiesta approvata! ", Toast.LENGTH_SHORT).show();
+                                arrayList.get(position).setStato("Approvata");
+                                notifyDataSetChanged();
 
                             }
                         }
@@ -224,9 +226,10 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter<RequestAdapterAdmi
                                 RequestBean requestBean = requestBeans.get(0);
                                 requestBean.setStato("Rifiutata");
                                 db.collection("request").document(idFields.get(position)).set(requestBean);
-                                Toast.makeText(context.getApplicationContext(), "Richiesta rifiutata! " +
-                                        " Riaccedi per visualizzare i cambiamenti" +
-                                        "", Toast.LENGTH_SHORT);
+                                Toast.makeText(context.getApplicationContext(), "Richiesta rifiutata! ", Toast.LENGTH_SHORT).show();
+                                arrayList.get(position).setStato("Rifiutata");
+                                notifyDataSetChanged();
+
                             }
                         }
                     });

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gestioneStudente.Register">
+    tools:context=".gestioneStudente.RequestForm">
 
 
 
@@ -151,21 +151,6 @@
         app:layout_constraintVertical_bias="0.748" />
 
     <EditText
-        android:id="@+id/et_scadenza"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:gravity="center"
-        android:hint="@string/data_scadenza"
-        android:focusable="false"
-        android:clickable="true"
-
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRelease" />
-
-    <EditText
         android:id="@+id/etRelease"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -190,6 +175,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_standard" />
+
+    <FrameLayout
+
+        android:id="@+id/frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#FFF"
+        android:visibility="gone"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/richieste_già_effettuta"
+            android:textSize="24sp" />
+
+
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/et_scadenza"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:clickable="true"
+        android:focusable="false"
+        android:gravity="center"
+        android:hint="@string/data_scadenza"
+
+        android:textSize="12sp"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etRelease" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".gestioneStudente.Register" />
         <activity android:name=".gestioneStudente.MainActivityStudente" />
+        <activity android:name=".gestioneStudente.RequestForm" />
         <activity android:name=".gestioneSegreteria.MainActivitySegreteria" />
         <activity android:name=".gestioneUtente.ViewActivityUtente" />
         <activity android:name=".gestioneStudente.DownloadPDF" />
