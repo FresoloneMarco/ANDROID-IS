@@ -20,6 +20,7 @@ public class AttachmentsDownloader {
     StorageReference storageReference;
     StorageReference ref;
     String fileToDownload;
+    String fileToDownload2;
     private static AttachmentsDownloader instance;
 
 
@@ -33,13 +34,13 @@ public class AttachmentsDownloader {
     }
     public void downloadAttachments(String email, final Context context){
         storageReference=firebaseStorage.getInstance().getReference();
-        fileToDownload = "Certificato_"+email+".pdf";
-        ref = storageReference.child(fileToDownload);
+        fileToDownload = "Certificato_"+email;
+        ref = storageReference.getRoot().child(fileToDownload);
         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 String url=uri.toString();
-                downloadFile(context.getApplicationContext(),fileToDownload,DIRECTORY_DOWNLOADS,url);
+                downloadFile(context.getApplicationContext(),fileToDownload+".pdf",DIRECTORY_DOWNLOADS,url);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -48,18 +49,19 @@ public class AttachmentsDownloader {
 
             }
         });
-        fileToDownload = "Richiesta_Firmata_"+email+".pdf";
-        ref = storageReference.child(fileToDownload);
+
+        fileToDownload2 = "Richiesta_Firmata_"+email;
+        ref = storageReference.getRoot().child(fileToDownload2);
         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 String url=uri.toString();
-                downloadFile(context.getApplicationContext(),fileToDownload,DIRECTORY_DOWNLOADS,url);
+                downloadFile(context.getApplicationContext(),fileToDownload2+".pdf",DIRECTORY_DOWNLOADS,url);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context.getApplicationContext(), fileToDownload + "  non esistente sul db", Toast.LENGTH_LONG).show();
+                Toast.makeText(context.getApplicationContext(), fileToDownload2 + "  non esistente sul db", Toast.LENGTH_LONG).show();
             }
         });
 

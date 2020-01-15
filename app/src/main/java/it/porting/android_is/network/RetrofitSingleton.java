@@ -32,7 +32,7 @@ public class RetrofitSingleton {
 
     public void createConnection() {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.6:3000")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://172.19.180.90:3000")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         apiService = retrofit.create(Network.class);
 

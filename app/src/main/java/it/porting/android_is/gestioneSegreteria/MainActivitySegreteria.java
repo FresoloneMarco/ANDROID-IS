@@ -94,9 +94,10 @@ public class MainActivitySegreteria extends AppCompatActivity {
                     //Se il task ha successo, salvo ogni "tupla" all'interno dell ArrayList
                     for(QueryDocumentSnapshot req : task.getResult()){
                         RequestBean requestBean = req.toObject(RequestBean.class);
-                        requestBeans.add(requestBean);
-                        idFields.add(req.getId());
-
+                        if(requestBean.getStato().equals("Approvata")){
+                            requestBeans.add(requestBean);
+                            idFields.add(req.getId());
+                        }
                     }
 
                     requestAdapterSegreteria = new RequestAdapterSegreteria(requestBeans, idFields, getApplicationContext());
