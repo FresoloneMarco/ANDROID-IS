@@ -76,6 +76,30 @@ public class Register extends AppCompatActivity {
 
     }
 
+    public EditText getEtNome() {
+        return etNome;
+    }
+
+    public EditText getEtCognome() {
+        return etCognome;
+    }
+
+    public EditText getEtEmail() {
+        return etEmail;
+    }
+
+    public EditText getEtPassword() {
+        return etPassword;
+    }
+
+    public EditText getEtVPassword() {
+        return etVPassword;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
     public void register() {
         progressBar.setVisibility(View.VISIBLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
