@@ -31,45 +31,10 @@ public class RetrofitSingleton {
      */
 
     public void createConnection() {
-        /*if (base_url.equalsIgnoreCase("")) {
-            base_url = "https://safework.cloud";
-        }
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapterFactory(new ItemTypeAdapterFactory())
-                .setDateFormat("dd-MM-yyyy")
-                .create();
 
-
-        OkHttpClient okClient = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        if(!performLogin) {
-                            Request newRequest = chain.request().newBuilder()
-                                    .addHeader("Authorization", "Bearer " + SafeWorkApp.token)
-                                    .build();
-                            return chain.proceed(newRequest);
-                        } else
-                            return chain.proceed(chain.request());
-                    }
-                })
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(base_url)
-                .client(okClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-
-        apiService = retrofit.create(ApiService.class);*/
-
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.5:3000")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://172.19.180.90:3000")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         apiService = retrofit.create(Network.class);
-
 
     }
 

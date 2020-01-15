@@ -43,7 +43,6 @@ import it.porting.android_is.utility.MyDialogFragment;
 public class MainActivityStudente extends AppCompatActivity {
 
 
-
     private static SharedPreferences.Editor editor;
     private static SharedPreferences preferences;
     private RecyclerView recyclerView;
@@ -71,7 +70,7 @@ public class MainActivityStudente extends AppCompatActivity {
         //Controlliamo se fingerSaved è uguale a 0, se è 0 vuol dire che l'utente non ha
         //associato la sua impronta e visualizziamo quindi il dialogFragment dove gli chiediamo se
         //vuole memorizzarla o meno
-        if(preferences.getInt("fingerSaved", 0) == 0){
+        if (preferences.getInt("fingerSaved", 0) == 0) {
             MyDialogFragment dialogFragment = new MyDialogFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             dialogFragment.show(ft, "dialog");
@@ -89,7 +88,7 @@ public class MainActivityStudente extends AppCompatActivity {
 
 
         //prelevo tutte le request per  emailda inserire nella recyclerview
-        fireBaseArchive.getRequestByKey(email, new OnCompleteListener<QuerySnapshot>(){
+        fireBaseArchive.getRequestByKey(email, new OnCompleteListener<QuerySnapshot>() {
 
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -102,39 +101,13 @@ public class MainActivityStudente extends AppCompatActivity {
 
                     }
 
-                    requestAdapterStudente = new RequestAdapterStudente(requestBeans, idFields);
+                    requestAdapterStudente = new RequestAdapterStudente(requestBeans, idFields, getApplicationContext());
                     recyclerView.setAdapter(requestAdapterStudente);
-                }
-                else{
-                    Log.d("Errore nella query","ERRORE");
+                } else {
+                    Log.d("Errore nella query", "ERRORE");
                 }
             }
-                });
-
-
-        //baseUrl = vostro ip Locale con porta 3000 (la porta riservata al server node)
-
-
-       /* RequestBean requestBean = new RequestBean();
-        requestBean.setEnte("Cambridge English School");
-        requestBean.setLevel("A1");
-        requestBean.setSerial(1234);
-        requestBean.setUser_key(LazyInitializedSingleton.getInstance().getUser().get("email").toString());
-
-        RetrofitSingleton.getInstance().performCreatePDF(requestBean,new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (!response.isSuccessful()) {
-                    res.setText(("Code: " + response.code()));
-                }
-                res.setText("ok");
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                res.setText((t.getMessage()));
-            }
-        });*/
+        });
     }
 
     @Override
@@ -169,12 +142,12 @@ public class MainActivityStudente extends AppCompatActivity {
 
     }
 
-    public void downl(){
+    public void downl() {
         Intent intent = new Intent(getApplicationContext(), DownloadPDF.class);
         startActivity(intent);
     }
 
-    public void upl(){
+    public void upl() {
         Intent intent = new Intent(getApplicationContext(), UploadFiles.class);
         startActivity(intent);
     }
@@ -185,7 +158,7 @@ public class MainActivityStudente extends AppCompatActivity {
     }
 
     public void reqForm() {
-        Intent intent = new Intent(getApplicationContext(), UploadFiles.RequestForm.class);
+        Intent intent = new Intent(getApplicationContext(), RequestForm.class);
         startActivity(intent);
     }
 

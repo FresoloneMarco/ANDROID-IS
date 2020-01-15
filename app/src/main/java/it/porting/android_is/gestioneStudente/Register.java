@@ -119,13 +119,13 @@ public class Register extends AppCompatActivity {
             Toast.makeText(this, "Non hai compilato tutti i campi", Toast.LENGTH_LONG).show();
 
         //La registrazione non va a buon fine in quanto il nome è in un formato non consentito
-        }else if((nome.matches(".*\\W+.*")|| (nome.matches(".*\\d+.*")))) {
+        }else if((nome.matches(".*\\W+.*")|| (nome.matches(".*\\d+.*"))) || nome.length() > 20 ){
             progressBar.setVisibility(View.GONE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             Toast.makeText(context, "Il campo Nome non rispetta il formato desiderato", Toast.LENGTH_LONG).show();
 
         //La registrazione non va a buon fine in quanto il cognome è in un formato non consentito
-        } else if((cognome.matches(".*\\W+.*")|| (nome.matches(".*\\d+.*")))) {
+        } else if((cognome.matches(".*\\W+.*")|| (nome.matches(".*\\d+.*"))) || cognome.length() > 20) {
             progressBar.setVisibility(View.GONE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             Toast.makeText(context, "Il campo Nome non rispetta il formato desiderato", Toast.LENGTH_LONG).show();

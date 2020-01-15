@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,12 +17,16 @@ import android.preference.PreferenceManager;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +52,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.crypto.Cipher;
@@ -54,6 +61,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import it.porting.android_is.R;
+import it.porting.android_is.adapter.SpinnerAdapter;
 import it.porting.android_is.gestioneAdmin.MainActivityAdmin;
 import it.porting.android_is.gestioneSegreteria.MainActivitySegreteria;
 import it.porting.android_is.gestioneStudente.MainActivityStudente;
@@ -81,8 +89,11 @@ public class LoginActivity extends AppCompatActivity {
     private String KEY_NAME = "AndroidKey";
     private SharedPreferences.Editor editor;
     private static SharedPreferences preferences;
+    private Spinner spinner;
+    private boolean isSpinnerTouched = false;
 
-
+    String[] countryNames={"IT","ES","EN"};
+    int flags[] = {R.drawable.italy, R.drawable.spain, R.drawable.uk};
 
 
     // START FIRESTORE DECLARATION
@@ -116,6 +127,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+        preferences = this.getSharedPreferences(
+                "myPref", Context.MODE_PRIVATE);
+        editor = preferences.edit();
+
         mAuth = FirebaseAuth.getInstance();
         bLogin = findViewById(R.id.bLogin);
         etEmail = findViewById(R.id.etEmail);
@@ -124,11 +139,38 @@ public class LoginActivity extends AppCompatActivity {
         etPassword.setText("");
         tvRegisterNow = findViewById(R.id.register_now);
         progressBar = findViewById(R.id.progressBar);
+        spinner = findViewById(R.id.spinner_lingua);
+
+
+
+
+        spinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                isSpinnerTouched = true;
+                return false;
+            }
+        });
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!isSpinnerTouched) return;
+                    changeLanguage(parent, view, position, id);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //doNothing
+            }
+        });
+        SpinnerAdapter customAdapter=new SpinnerAdapter(getApplicationContext(),flags,countryNames);
+        spinner.setAdapter(customAdapter);
+
         context = this;
 
-        preferences = this.getSharedPreferences(
-                "myPref", Context.MODE_PRIVATE);
-        editor = preferences.edit();
+
 
 
         //Controlliamo se è stata associata un'impronta digitale all'account
@@ -417,5 +459,31 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+
+
+    public void changeLanguage(AdapterView<?> arg0, View arg1, int position,long id) {
+        Toast.makeText(getApplicationContext(), countryNames[position], Toast.LENGTH_LONG).show();
+
+        setAppLocale(countryNames[position].toLowerCase());
+        Intent refresh = new Intent(this, LoginActivity.class);
+        spinner.setSelection(position);
+        finish();
+        recreate();
+        startActivity(refresh);
+
+
+
+    }
+
+    public void setAppLocale(String language){
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+
+        conf.setLocale(new Locale(language.toLowerCase()));
+        res.updateConfiguration(conf, dm);
+    }
+
+
 
 }

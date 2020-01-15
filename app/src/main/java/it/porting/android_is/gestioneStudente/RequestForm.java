@@ -1,22 +1,19 @@
 package it.porting.android_is.gestioneStudente;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,25 +22,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Random;
-import java.util.TimeZone;
 
 import it.porting.android_is.R;
+import it.porting.android_is.firebaseArchive.FireBaseArchive;
 import it.porting.android_is.firebaseArchive.bean.RequestBean;
 import it.porting.android_is.gestioneUtente.Guida;
 import it.porting.android_is.gestioneUtente.LoginActivity;
@@ -65,14 +64,18 @@ public class RequestForm extends AppCompatActivity {
     private Spinner et8;
     private Button button;
     private TextView textView;
+    private FrameLayout frameLayout;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+    private FireBaseArchive fireBaseArchive;
+    private ArrayList<RequestBean> requestBeans = new ArrayList<>();
     private DatePickerDialog dataPicker;
+
     private Random random;
 
 
     RequestBean requestBean = new RequestBean();
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +94,56 @@ public class RequestForm extends AppCompatActivity {
         et7 = findViewById(R.id.et_livello);
         et8 = findViewById(R.id.spinner_cfu);
         textView = findViewById(R.id.boxContainer2);
+        frameLayout = findViewById(R.id.frame);
+
+
+
+
+        fireBaseArchive = new FireBaseArchive();
+
+
+
+        //prelevo tutte le request per  emailda inserire nella recyclerview
+        fireBaseArchive.getRequestByKey(email, new OnCompleteListener<QuerySnapshot>(){
+
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    //Se il task ha successo, salvo ogni "tupla" all'interno dell ArrayList
+                    for (QueryDocumentSnapshot req : task.getResult()) {
+                        RequestBean requestBean = req.toObject(RequestBean.class);
+
+                        if(requestBean.getUser_key().equals(email)){
+                            if(!requestBean.getStato().equals("Rifiutata")) {
+
+                                frameLayout.setVisibility(View.VISIBLE);
+
+                                button.setVisibility(View.GONE);
+                                et1.setVisibility(View.GONE);
+                                et2.setVisibility(View.GONE);
+                                et3.setVisibility(View.GONE);
+                                et4.setVisibility(View.GONE);
+                                et5.setVisibility(View.GONE);
+                                et6.setVisibility(View.GONE);
+                                et7.setVisibility(View.GONE);
+                                et8.setVisibility(View.GONE);
+
+                            }
+                        }
+
+
+
+                    }
+
+
+                }
+                else{
+                    Log.d("Errore nella query","ERRORE");
+                }
+            }
+        });
+
+
 
 
         button = findViewById(R.id.btSendForm);
@@ -98,7 +151,14 @@ public class RequestForm extends AppCompatActivity {
                                       public void onClick(View v) {
                                           if (et1.getText().toString().isEmpty() || et2.getText().toString().isEmpty() || et4.getText().toString().isEmpty() || et5.getText().toString().isEmpty() || et6.getText().toString().isEmpty() || et7.getText().toString().isEmpty()) {
                                               Toast.makeText(getApplicationContext(), "compila tutti i dati", Toast.LENGTH_SHORT).show();
-                                          } else {
+                                          }
+
+                                          else if(et2.getText().length() < 10 || et2.getText().length() > 10)
+                                          {
+                                              Toast.makeText(getApplicationContext(), "matricola non valida", Toast.LENGTH_SHORT).show();
+
+                                          }
+                                          else {
 
 
                                               int seriale = Integer.parseInt(et6.getText().toString());
@@ -206,16 +266,28 @@ public class RequestForm extends AppCompatActivity {
         });
     }
 
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option1:
                 modpage();
                 return true;
+
             case R.id.option2:
+                reqForm();
+                return true;
+
+            case R.id.option3:
                 guida();
                 return true;
+
+            case R.id.option4:
+                downl();
+                return true;
+
+            case R.id.option5:
+                upl();
+                return true;
+
             case R.id.logout:
                 logout();
                 return true;
@@ -225,21 +297,35 @@ public class RequestForm extends AppCompatActivity {
 
     }
 
+    public void downl(){
+        Intent intent = new Intent(getApplicationContext(), DownloadPDF.class);
+        startActivity(intent);
+    }
+
+    public void upl(){
+        Intent intent = new Intent(getApplicationContext(), UploadFiles.class);
+        startActivity(intent);
+    }
+
     public void modpage() {
         Intent intent = new Intent(getApplicationContext(), ViewActivityUtente.class);
+        startActivity(intent);
+    }
+
+    public void reqForm() {
+        Intent intent = new Intent(getApplicationContext(),RequestForm.class);
         startActivity(intent);
     }
 
     public void guida() {
         Intent intent = new Intent(getApplicationContext(), Guida.class);
         startActivity(intent);
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
+        getMenuInflater().inflate(R.menu.home_menu_studente, menu);
+
         return true;
 
     }

@@ -14,10 +14,6 @@ admin.initializeApp({
 
 const storage = admin.storage();
 const db = admin.firestore();
-
-/*const clientFS = new Storage(serviceAccount);
-const bucket = 'gs://porting-android-is.appspot.com';*/
-
 router.use(express.json());
 
 
@@ -32,7 +28,6 @@ router.post('/createPDF', function(req, res, next) {
   var bean = req.body;
 
   var filename = req.body.user_key + '.pdf';
-  //var writeStream = fs.createWriteStream(filename);
   doc.pipe(fs.createWriteStream(filename));
   console.log('In server...');
 
@@ -68,19 +63,21 @@ router.post('/createApprovedExcel', function(req, res, next){
     }
       var filename = 'Accettate.xlsx';
       const workbook = new Excel.Workbook();
+      var cont = 2;
       const worksheet = workbook.addWorksheet('Richieste');
       worksheet.getCell('A1').value = 'EMAIL';
       worksheet.getCell('B1').value = 'NOME';
       worksheet.getCell('C1').value = 'COGNOME';
       snapshot.forEach(doc =>{	     
-        var cont = 2;
         worksheet.getCell('A'+cont).value = doc.get('user_key').toString();
         worksheet.getCell('B'+cont).value = doc.get('user_name').toString();
         worksheet.getCell('C'+cont).value = doc.get('user_surname').toString();
         console.log(doc.data());	
+        cont = cont + 1;
       })	       
-      workbook.xlsx.writeFile(filename);
-      storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
+      workbook.xlsx.writeFile(filename)
+      .then (function(){
+        storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
       function(err, file) {
         if (!err) {
           console.log('File caricato');
@@ -91,7 +88,12 @@ router.post('/createApprovedExcel', function(req, res, next){
           console.log(err);
         }
       });
+
+      });
+      
   })
+      
+      
   .catch(err =>{
     console.error('Error getting document', err);
     res.send('500');
@@ -108,20 +110,22 @@ router.post('/createRefusedExcel', function(req, res, next){
     }
       var filename = 'Rifiutate.xlsx';
       const workbook = new Excel.Workbook();
+      var cont = 2;
       const worksheet = workbook.addWorksheet('Richieste');
       worksheet.getCell('A1').value = 'EMAIL'
       worksheet.getCell('B1').value = 'NOME'
       worksheet.getCell('C1').value = 'COGNOME'
       snapshot.forEach(doc =>{	     
-        var cont = 2;
         worksheet.getCell('A'+cont).value = doc.get('user_key').toString();
         worksheet.getCell('B'+cont).value = doc.get('user_name').toString();
         worksheet.getCell('C'+cont).value = doc.get('user_surname').toString();
         console.log(doc.data());	
+        cont = cont + 1;
       })	       
-       
-      workbook.xlsx.writeFile(filename);
-      storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
+      
+      workbook.xlsx.writeFile(filename)
+      .then (function(){
+        storage.bucket("gs://porting-android-is.appspot.com").upload('D:/Documenti/GitHub/ANDROID-IS/app/src/main/node/'+filename,
       function(err, file) {
         if (!err) {
           console.log('File caricato');
@@ -132,6 +136,9 @@ router.post('/createRefusedExcel', function(req, res, next){
           console.log(err);
         }
       });
+
+      });
+      
   })
   .catch(err =>{
     console.error('Error getting document', err);
