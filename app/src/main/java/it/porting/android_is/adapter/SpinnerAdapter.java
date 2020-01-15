@@ -14,13 +14,13 @@ public class SpinnerAdapter extends BaseAdapter {
     Context context;
     int flags[];
     String[] countryNames;
-    LayoutInflater inflter;
+    LayoutInflater inflater;
 
     public SpinnerAdapter(Context applicationContext, int[] flags, String[] countryNames) {
         this.context = applicationContext;
         this.flags = flags;
         this.countryNames = countryNames;
-        inflter = (LayoutInflater.from(applicationContext));
+        inflater = (LayoutInflater.from(applicationContext));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class SpinnerAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.custom_spinner_items, null);
+        view = inflater.inflate(R.layout.custom_spinner_items, null);
         ImageView icon = (ImageView) view.findViewById(R.id.imageView);
         TextView names = (TextView) view.findViewById(R.id.textView);
         icon.setImageResource(flags[i]);

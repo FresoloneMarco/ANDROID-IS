@@ -86,79 +86,81 @@ public class RequestAdapterSegreteria extends RecyclerView.Adapter<RequestAdapte
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-        int formato = DateFormat.LONG;
-        DateFormat dateFormat = DateFormat.getDateInstance(formato, Locale.ITALY);
-        String dataRelease = dateFormat.format(arrayList.get(position).getRelease_date().toDate());
-        String dataExpiry = dateFormat.format(arrayList.get(position).getExpiry_date().toDate());
-        holder.idText.setText("ID richiesta: " + idFields.get(position));
-        holder.livelloText.setText("Livello: " + arrayList.get(position).getLevel());
-        holder.releaseText.setText("Rilascio: " + dataRelease);
-        holder.expiryText.setText("Scadenza: " + dataExpiry);
-        holder.annoText.setText("Anno: " + arrayList.get(position).getYear());
-        holder.serialeText.setText("Seriale: " + Integer.toString(arrayList.get(position).getSerial()));
-        holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
-        holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " + arrayList.get(position).getUser_surname());
-        holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
+            int formato = DateFormat.LONG;
+            DateFormat dateFormat = DateFormat.getDateInstance(formato, Locale.ITALY);
+            String dataRelease = dateFormat.format(arrayList.get(position).getRelease_date().toDate());
+            String dataExpiry = dateFormat.format(arrayList.get(position).getExpiry_date().toDate());
+            holder.idText.setText("ID richiesta: " + idFields.get(position));
+            holder.livelloText.setText("Livello: " + arrayList.get(position).getLevel());
+            holder.releaseText.setText("Rilascio: " + dataRelease);
+            holder.expiryText.setText("Scadenza: " + dataExpiry);
+            holder.annoText.setText("Anno: " + arrayList.get(position).getYear());
+            holder.serialeText.setText("Seriale: " + Integer.toString(arrayList.get(position).getSerial()));
+            holder.cfuText.setText("CFU: " + Integer.toString(arrayList.get(position).getValidated_cfu()));
+            holder.utenteText.setText("Studente: " + arrayList.get(position).getUser_name() + " " + arrayList.get(position).getUser_surname());
+            holder.emailText.setText("Email: " + arrayList.get(position).getUser_key());
 
 
-        holder.btSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            holder.btSend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                final String email = arrayList.get(position).getUser_key();
+                    final String email = arrayList.get(position).getUser_key();
 
 
-                fireBaseArchive.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            UtenteBean utenteBean = document.toObject(UtenteBean.class);
-                            user.add(utenteBean);
+                    fireBaseArchive.getUserByKey(email, new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                UtenteBean utenteBean = document.toObject(UtenteBean.class);
+                                user.add(utenteBean);
 
-                            int cfuBean = utenteBean.getCfu();
+                                int cfuBean = utenteBean.getCfu();
 
-                            if (cfuBean != 0) {
-                                Toast.makeText(context, "Cfu già convalidati", Toast.LENGTH_LONG).show();
-                            } else if (cfuBean == 0) {
+                                if (cfuBean != 0) {
+                                    Toast.makeText(context, "Cfu già convalidati", Toast.LENGTH_LONG).show();
+                                } else if (cfuBean == 0) {
 
-                                int cfu = arrayList.get(position).getValidated_cfu();
+                                    int cfu = arrayList.get(position).getValidated_cfu();
 
-                                db.collection("utenti").document((email)).update("cfu", cfu).
-                                        addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    db.collection("utenti").document((email)).update("cfu", cfu).
+                                            addOnSuccessListener(new OnSuccessListener<Void>() {
 
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
 
-                                                Toast.makeText(context, "Cfu aggiunti corettamente", Toast.LENGTH_SHORT).show();
-                                                Log.d("onClick", "DocumentSnapshot caricato correttamente");
+                                                    Toast.makeText(context, "Cfu aggiunti corettamente", Toast.LENGTH_SHORT).show();
+                                                    Log.d("onClick", "DocumentSnapshot caricato correttamente");
 
-                                            }
+                                                }
 
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(context, "Cfu non aggiunti", Toast.LENGTH_SHORT).show();
-                                        Log.w(TAG, "Errore nel caricamento del documento", e);
-                                    }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(context, "Cfu non aggiunti", Toast.LENGTH_SHORT).show();
+                                            Log.w(TAG, "Errore nel caricamento del documento", e);
+                                        }
 
-                                });
+                                    });
+                                }
+
                             }
 
                         }
+                    });
 
-                    }
-                });
+                }
+            });
 
-            }
-        });
+            holder.btAttachments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AttachmentsDownloader.getInstance().downloadAttachments(arrayList.get(position).getUser_key(), context);
+                }
+            });
 
-        holder.btAttachments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AttachmentsDownloader.getInstance().downloadAttachments(arrayList.get(position).getUser_key(), context);
-            }
-        });
+
     }
 
 

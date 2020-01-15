@@ -6,7 +6,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="v_password">Verificar Password</string>
-    <string name="send">Send</string>
+    <string name="send">Presentar</string>
 
     //LOGIN
     <string name="login">Login</string>
@@ -61,8 +61,7 @@
     <string name="guida">Instrucción</string>
     <string name="richieste_approvate">Solicitudes aprobadas</string>
     <string name="richieste_rifiutate">Solicitudes rechazadas</string>
-    <string name="rifiuta"><string name="rifiuta">REJECT</string>
-    <string name="approva">NEGÓ</string></string>
+    <string name="rifiuta">RECHEZAR</string>
     <string name="approva">APROBADO</string>
     //End Activity_Register
 
@@ -90,5 +89,7 @@
     <string name="title_activity_approved">ApprovedActivity</string>
     <string name="cfu_validati">CFU Validado</string>
     <string name="aggiungi_cfu">añadir CFU</string>
-    <string name="richieste_già_effettuata">Solicitudes ya hechas</string>
+    <string name="richieste_già_effettuata">Solicitud ya enviada</string>
+    <string name="scarica_allegati">Descargar adjuntos</string>
+    <string name="stato">Estado</string>
 </resources>

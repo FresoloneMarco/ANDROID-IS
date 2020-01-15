@@ -241,7 +241,8 @@ public class RequestAdapterAdmin extends RecyclerView.Adapter<RequestAdapterAdmi
         holder.bt_attachments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AttachmentsDownloader.getInstance().downloadAttachments(arrayList.get(position).getUser_key(), context);
+                AttachmentsDownloader.getInstance().downloadAttachments(arrayList.get(position)
+                        .getUser_key(), context);
             }
         });
 

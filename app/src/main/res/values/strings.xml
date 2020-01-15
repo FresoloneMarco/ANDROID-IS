@@ -88,7 +88,7 @@
     <string name="title_activity_approved">ApprovedActivity</string>
     <string name="cfu_validati">CFU validati</string>
     <string name="aggiungi_cfu">aggiungi CFU</string>
-    <string name="richieste_già_effettuata">Richieste già effettuata</string>
+    <string name="richieste_già_effettuata">Richiesta già inviata</string>
     <string name="scarica_allegati">Scarica allegati</string>
     <string name="stato">Stato</string>
 
